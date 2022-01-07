@@ -1,0 +1,101 @@
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./LinearPerceptronModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../Performance/ClassificationPerformance", "nlptoolkit-math/dist/Vector"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.MultiLayerPerceptronModel = void 0;
+    const LinearPerceptronModel_1 = require("./LinearPerceptronModel");
+    const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
+    const ActivationFunction_1 = require("../Parameter/ActivationFunction");
+    const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
+    const Vector_1 = require("nlptoolkit-math/dist/Vector");
+    class MultiLayerPerceptronModel extends LinearPerceptronModel_1.LinearPerceptronModel {
+        /**
+         * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
+         * nodes with given {@link InstanceList} then creates an input vector by using given trainSet and finds error.
+         * Via the validationSet it finds the classification performance and reassigns the allocated weight Matrix with the matrix
+         * that has the best accuracy and the Matrix V with the best Vector input.
+         *
+         * @param trainSet      InstanceList that is used to train.
+         * @param validationSet InstanceList that is used to validate.
+         * @param parameters    Multi layer perceptron parameters; seed, learningRate, etaDecrease, crossValidationRatio, epoch, hiddenNodes.
+         */
+        constructor(trainSet, validationSet, parameters) {
+            super(trainSet);
+            this.activationFunction = parameters.getActivationFunction();
+            this.allocateWeights(parameters.getHiddenNodes());
+            let bestW = this.W.clone();
+            let bestV = this.V.clone();
+            let bestClassificationPerformance = new ClassificationPerformance_1.ClassificationPerformance(0.0);
+            let epoch = parameters.getEpoch();
+            let learningRate = parameters.getLearningRate();
+            for (let i = 0; i < epoch; i++) {
+                trainSet.shuffle(parameters.getSeed());
+                for (let j = 0; j < trainSet.size(); j++) {
+                    this.createInputVector(trainSet.get(j));
+                    let hidden = this.calculateHidden(this.x, this.W, this.activationFunction);
+                    let hiddenBiased = hidden.biased();
+                    let rMinusY = this.calculateRMinusY(trainSet.get(j), hiddenBiased, this.V);
+                    let deltaV = new Matrix_1.Matrix(rMinusY, hiddenBiased);
+                    let tmph = this.V.multiplyWithVectorFromLeft(rMinusY);
+                    tmph.remove(0);
+                    let activationDerivative;
+                    switch (this.activationFunction) {
+                        case ActivationFunction_1.ActivationFunction.SIGMOID:
+                        default:
+                            let oneMinusHidden = this.calculateOneMinusHidden(hidden);
+                            activationDerivative = oneMinusHidden.elementProduct(hidden);
+                            break;
+                        case ActivationFunction_1.ActivationFunction.TANH:
+                            let one = new Vector_1.Vector(hidden.size(), 1.0);
+                            hidden.tanh();
+                            activationDerivative = one.difference(hidden.elementProduct(hidden));
+                            break;
+                        case ActivationFunction_1.ActivationFunction.RELU:
+                            hidden.reluDerivative();
+                            activationDerivative = hidden;
+                            break;
+                    }
+                    let tmpHidden = tmph.elementProduct(activationDerivative);
+                    let deltaW = new Matrix_1.Matrix(tmpHidden, this.x);
+                    deltaV.multiplyWithConstant(learningRate);
+                    this.V.add(deltaV);
+                    deltaW.multiplyWithConstant(learningRate);
+                    this.W.add(deltaW);
+                }
+                let currentClassificationPerformance = this.testClassifier(validationSet);
+                if (currentClassificationPerformance.getAccuracy() > bestClassificationPerformance.getAccuracy()) {
+                    bestClassificationPerformance = currentClassificationPerformance;
+                    bestW = this.W.clone();
+                    bestV = this.V.clone();
+                }
+                learningRate *= parameters.getEtaDecrease();
+            }
+            this.W = bestW;
+            this.V = bestV;
+        }
+        /**
+         * The allocateWeights method allocates layers' weights of Matrix W and V.
+         *
+         * @param H Integer value for weights.
+         */
+        allocateWeights(H) {
+            this.W = this.allocateLayerWeights(H, this.d + 1);
+            this.V = this.allocateLayerWeights(this.K, H + 1);
+        }
+        /**
+         * The calculateOutput method calculates the forward single hidden layer by using Matrices W and V.
+         */
+        calculateOutput() {
+            this.calculateForwardSingleHiddenLayer(this.W, this.V, this.activationFunction);
+        }
+    }
+    exports.MultiLayerPerceptronModel = MultiLayerPerceptronModel;
+});
+//# sourceMappingURL=MultiLayerPerceptronModel.js.map

@@ -1,0 +1,57 @@
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Experiment = void 0;
+    class Experiment {
+        /**
+         * Constructor for a specific machine learning experiment
+         * @param classifier Classifier used in the machine learning experiment
+         * @param parameter Parameter(s) of the classifier.
+         * @param dataSet DataSet on which the classifier is run.
+         */
+        constructor(classifier, parameter, dataSet) {
+            this.classifier = classifier;
+            this.parameter = parameter;
+            this.dataSet = dataSet;
+        }
+        /**
+         * Accessor for the classifier attribute.
+         * @return Classifier attribute.
+         */
+        getClassifier() {
+            return this.classifier;
+        }
+        /**
+         * Accessor for the parameter attribute.
+         * @return Parameter attribute.
+         */
+        getParameter() {
+            return this.parameter;
+        }
+        /**
+         * Accessor for the dataSet attribute.
+         * @return DataSet attribute.
+         */
+        getDataSet() {
+            return this.dataSet;
+        }
+        /**
+         * Construct and returns a feature selection experiment.
+         * @param featureSubSet Feature subset used in the feature selection experiment
+         * @return Experiment constructed
+         */
+        featureSelectedExperiment(featureSubSet) {
+            return new Experiment(this.classifier, this.parameter, this.dataSet.getSubSetOfFeatures(featureSubSet));
+        }
+    }
+    exports.Experiment = Experiment;
+});
+//# sourceMappingURL=Experiment.js.map
