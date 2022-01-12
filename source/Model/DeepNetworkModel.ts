@@ -5,6 +5,7 @@ import {DeepNetworkParameter} from "../Parameter/DeepNetworkParameter";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {Vector} from "nlptoolkit-math/dist/Vector";
 import {ClassificationPerformance} from "../Performance/ClassificationPerformance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class DeepNetworkModel extends NeuralNetworkModel{
 
@@ -21,11 +22,11 @@ export class DeepNetworkModel extends NeuralNetworkModel{
      */
     private allocateWeights(parameters: DeepNetworkParameter){
         this.weights = new Array<Matrix>();
-        this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1));
+        this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1, new Random(parameters.getSeed())));
         for (let i = 0; i < parameters.layerSize() - 1; i++) {
-            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1));
+            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1, new Random(parameters.getSeed())));
         }
-        this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1));
+        this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1, new Random(parameters.getSeed())));
         this.hiddenLayerSize = parameters.layerSize();
     }
 
@@ -69,7 +70,7 @@ export class DeepNetworkModel extends NeuralNetworkModel{
         let epoch = parameters.getEpoch();
         let learningRate = parameters.getLearningRate();
         for (let i = 0; i < epoch; i++) {
-            trainSet.shuffle(parameters.getSeed());
+            trainSet.shuffle(new Random(parameters.getSeed()));
             for (let j = 0; j < trainSet.size(); j++) {
                 this.createInputVector(trainSet.get(j));
                 hidden = new Array<Vector>();

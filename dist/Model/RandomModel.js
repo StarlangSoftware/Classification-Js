@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Model", "../Instance/CompositeInstance"], factory);
+        define(["require", "exports", "./Model", "../Instance/CompositeInstance", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -12,11 +12,12 @@
     exports.RandomModel = void 0;
     const Model_1 = require("./Model");
     const CompositeInstance_1 = require("../Instance/CompositeInstance");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class RandomModel extends Model_1.Model {
         constructor(classLabels, seed) {
             super();
             this.classLabels = classLabels;
-            this.seed = seed;
+            this.random = new Random_1.Random(seed);
         }
         /**
          * The predict method gets an Instance as an input and retrieves the possible class labels as an ArrayList. Then selects a
@@ -29,12 +30,12 @@
             if ((instance instanceof CompositeInstance_1.CompositeInstance)) {
                 let possibleClassLabels = instance.getPossibleClassLabels();
                 let size = possibleClassLabels.length;
-                let index = Math.floor(Math.random() * size);
+                let index = this.random.nextInt(size);
                 return possibleClassLabels[index];
             }
             else {
                 let size = this.classLabels.length;
-                let index = Math.floor(Math.random() * size);
+                let index = this.random.nextInt(size);
                 return this.classLabels[index];
             }
         }

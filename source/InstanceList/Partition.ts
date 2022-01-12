@@ -4,12 +4,13 @@ import {DiscreteAttribute} from "../Attribute/DiscreteAttribute";
 import {DiscreteIndexedAttribute} from "../Attribute/DiscreteIndexedAttribute";
 import {ContinuousAttribute} from "../Attribute/ContinuousAttribute";
 import {Instance} from "../Instance/Instance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class Partition {
 
     private multiList: Array<InstanceList> = new Array<InstanceList>()
 
-    constructor(instanceList?: InstanceList, attributeIndex?: number, stratifiedOrValue?: any) {
+    constructor(instanceList?: InstanceList, attributeIndex?: number, stratifiedOrValue?: any, random?: Random) {
         if (instanceList != undefined){
             if (attributeIndex == undefined){
                 let classLabels = instanceList.getDistinctClassLabels();
@@ -39,6 +40,9 @@ export class Partition {
                             for (let i = 0; i < instanceList.size(); i++){
                                 randomArray.push(i);
                             }
+                            if (random != undefined){
+                                random.shuffle(randomArray)
+                            }
                             for (let i = 0; i < instanceList.size(); i++) {
                                 let instance = instanceList.get(randomArray[i]);
                                 let classIndex = distribution.getIndex(instance.getClassLabel());
@@ -51,6 +55,7 @@ export class Partition {
                                 counts[classIndex]++;
                             }
                         } else {
+                            instanceList.shuffle(random)
                             for (let i = 0; i < instanceList.size(); i++) {
                                 let instance = instanceList.get(i);
                                 let ratio = attributeIndex

@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./LinearPerceptronModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../Performance/ClassificationPerformance", "nlptoolkit-math/dist/Vector"], factory);
+        define(["require", "exports", "./LinearPerceptronModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../Performance/ClassificationPerformance", "nlptoolkit-math/dist/Vector", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -15,6 +15,7 @@
     const ActivationFunction_1 = require("../Parameter/ActivationFunction");
     const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
     const Vector_1 = require("nlptoolkit-math/dist/Vector");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class MultiLayerPerceptronModel extends LinearPerceptronModel_1.LinearPerceptronModel {
         /**
          * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
@@ -29,14 +30,14 @@
         constructor(trainSet, validationSet, parameters) {
             super(trainSet);
             this.activationFunction = parameters.getActivationFunction();
-            this.allocateWeights(parameters.getHiddenNodes());
+            this.allocateWeights(parameters.getHiddenNodes(), new Random_1.Random(parameters.getSeed()));
             let bestW = this.W.clone();
             let bestV = this.V.clone();
             let bestClassificationPerformance = new ClassificationPerformance_1.ClassificationPerformance(0.0);
             let epoch = parameters.getEpoch();
             let learningRate = parameters.getLearningRate();
             for (let i = 0; i < epoch; i++) {
-                trainSet.shuffle(parameters.getSeed());
+                trainSet.shuffle(new Random_1.Random(parameters.getSeed()));
                 for (let j = 0; j < trainSet.size(); j++) {
                     this.createInputVector(trainSet.get(j));
                     let hidden = this.calculateHidden(this.x, this.W, this.activationFunction);
@@ -84,10 +85,11 @@
          * The allocateWeights method allocates layers' weights of Matrix W and V.
          *
          * @param H Integer value for weights.
+         * @param random Random function to set weights.
          */
-        allocateWeights(H) {
-            this.W = this.allocateLayerWeights(H, this.d + 1);
-            this.V = this.allocateLayerWeights(this.K, H + 1);
+        allocateWeights(H, random) {
+            this.W = this.allocateLayerWeights(H, this.d + 1, random);
+            this.V = this.allocateLayerWeights(this.K, H + 1, random);
         }
         /**
          * The calculateOutput method calculates the forward single hidden layer by using Matrices W and V.

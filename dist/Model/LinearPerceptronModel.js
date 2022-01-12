@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Performance/ClassificationPerformance"], factory);
+        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Performance/ClassificationPerformance", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -13,6 +13,7 @@
     const NeuralNetworkModel_1 = require("./NeuralNetworkModel");
     const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
     const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class LinearPerceptronModel extends NeuralNetworkModel_1.NeuralNetworkModel {
         /**
          * Constructor that takes {@link InstanceList}s as trainsSet and validationSet. Initially it allocates layer weights,
@@ -26,13 +27,13 @@
         constructor(trainSet, validationSet, parameters) {
             super(trainSet);
             if (validationSet != undefined) {
-                let W = this.allocateLayerWeights(this.K, this.d + 1);
+                let W = this.allocateLayerWeights(this.K, this.d + 1, new Random_1.Random(parameters.getSeed()));
                 let bestW = W.clone();
                 let bestClassificationPerformance = new ClassificationPerformance_1.ClassificationPerformance(0.0);
                 let epoch = parameters.getEpoch();
                 let learningRate = parameters.getLearningRate();
                 for (let i = 0; i < epoch; i++) {
-                    trainSet.shuffle(parameters.getSeed());
+                    trainSet.shuffle(new Random_1.Random(parameters.getSeed()));
                     for (let j = 0; j < trainSet.size(); j++) {
                         this.createInputVector(trainSet.get(j));
                         let rMinusY = this.calculateRMinusY(trainSet.get(j), this.x, W);

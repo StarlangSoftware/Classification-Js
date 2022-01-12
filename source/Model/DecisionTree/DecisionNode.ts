@@ -9,6 +9,7 @@ import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {Partition} from "../../InstanceList/Partition";
 import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class DecisionNode {
 
@@ -62,6 +63,8 @@ export class DecisionNode {
         }
         let size
         if (parameter != undefined && parameter.getAttributeSubsetSize() < data.get(0).attributeSize()) {
+            let random = new Random(parameter.getSeed())
+            random.shuffle(indexList)
             size = parameter.getAttributeSubsetSize();
         } else {
             size = data.get(0).attributeSize();

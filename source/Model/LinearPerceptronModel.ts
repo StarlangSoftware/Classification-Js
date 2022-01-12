@@ -3,6 +3,7 @@ import {Matrix} from "nlptoolkit-math/dist/Matrix";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {LinearPerceptronParameter} from "../Parameter/LinearPerceptronParameter";
 import {ClassificationPerformance} from "../Performance/ClassificationPerformance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class LinearPerceptronModel extends NeuralNetworkModel{
 
@@ -20,13 +21,13 @@ export class LinearPerceptronModel extends NeuralNetworkModel{
     constructor(trainSet: InstanceList, validationSet?: InstanceList, parameters?: LinearPerceptronParameter) {
         super(trainSet);
         if (validationSet != undefined){
-            let W = this.allocateLayerWeights(this.K, this.d + 1);
+            let W = this.allocateLayerWeights(this.K, this.d + 1, new Random(parameters.getSeed()));
             let bestW = W.clone();
             let bestClassificationPerformance = new ClassificationPerformance(0.0);
             let epoch = parameters.getEpoch();
             let learningRate = parameters.getLearningRate();
             for (let i = 0; i < epoch; i++) {
-                trainSet.shuffle(parameters.getSeed());
+                trainSet.shuffle(new Random(parameters.getSeed()));
                 for (let j = 0; j < trainSet.size(); j++) {
                     this.createInputVector(trainSet.get(j));
                     let rMinusY = this.calculateRMinusY(trainSet.get(j), this.x, W);

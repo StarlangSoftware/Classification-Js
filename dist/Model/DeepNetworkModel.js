@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "nlptoolkit-math/dist/Vector", "../Performance/ClassificationPerformance"], factory);
+        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "nlptoolkit-math/dist/Vector", "../Performance/ClassificationPerformance", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -15,6 +15,7 @@
     const ActivationFunction_1 = require("../Parameter/ActivationFunction");
     const Vector_1 = require("nlptoolkit-math/dist/Vector");
     const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class DeepNetworkModel extends NeuralNetworkModel_1.NeuralNetworkModel {
         /**
          * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
@@ -42,7 +43,7 @@
             let epoch = parameters.getEpoch();
             let learningRate = parameters.getLearningRate();
             for (let i = 0; i < epoch; i++) {
-                trainSet.shuffle(parameters.getSeed());
+                trainSet.shuffle(new Random_1.Random(parameters.getSeed()));
                 for (let j = 0; j < trainSet.size(); j++) {
                     this.createInputVector(trainSet.get(j));
                     hidden = new Array();
@@ -119,11 +120,11 @@
          */
         allocateWeights(parameters) {
             this.weights = new Array();
-            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1));
+            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1, new Random_1.Random(parameters.getSeed())));
             for (let i = 0; i < parameters.layerSize() - 1; i++) {
-                this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1));
+                this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1, new Random_1.Random(parameters.getSeed())));
             }
-            this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1));
+            this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1, new Random_1.Random(parameters.getSeed())));
             this.hiddenLayerSize = parameters.layerSize();
         }
         /**

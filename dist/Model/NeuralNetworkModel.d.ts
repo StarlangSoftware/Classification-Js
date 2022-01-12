@@ -4,6 +4,7 @@ import { InstanceList } from "../InstanceList/InstanceList";
 import { Matrix } from "nlptoolkit-math/dist/Matrix";
 import { Instance } from "../Instance/Instance";
 import { ActivationFunction } from "../Parameter/ActivationFunction";
+import { Random } from "nlptoolkit-util/dist/Random";
 export declare abstract class NeuralNetworkModel extends ValidatedModel {
     protected classLabels: Array<string>;
     protected K: number;
@@ -23,9 +24,10 @@ export declare abstract class NeuralNetworkModel extends ValidatedModel {
      *
      * @param row    Number of rows.
      * @param column Number of columns.
+     * @param random Random function to set weights.
      * @return Matrix with random weights.
      */
-    protected allocateLayerWeights(row: number, column: number): Matrix;
+    protected allocateLayerWeights(row: number, column: number, random: Random): Matrix;
     /**
      * The normalizeOutput method takes an input {@link Vector} o, gets the result for e^o of each element of o,
      * then sums them up. At the end, divides each e^o by the summation.

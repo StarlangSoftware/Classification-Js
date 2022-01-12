@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance"], factory);
+        define(["require", "exports", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/Random"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -18,6 +18,7 @@
     const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
     const Partition_1 = require("../../InstanceList/Partition");
     const CompositeInstance_1 = require("../../Instance/CompositeInstance");
+    const Random_1 = require("nlptoolkit-util/dist/Random");
     class DecisionNode {
         /**
          * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
@@ -68,6 +69,8 @@
             }
             let size;
             if (parameter != undefined && parameter.getAttributeSubsetSize() < data.get(0).attributeSize()) {
+                let random = new Random_1.Random(parameter.getSeed());
+                random.shuffle(indexList);
                 size = parameter.getAttributeSubsetSize();
             }
             else {

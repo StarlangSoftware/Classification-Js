@@ -3,6 +3,7 @@ import { Bootstrap } from "nlptoolkit-sampling/dist/Bootstrap";
 import { DiscreteDistribution } from "nlptoolkit-math/dist/DiscreteDistribution";
 import { Vector } from "nlptoolkit-math/dist/Vector";
 import { Matrix } from "nlptoolkit-math/dist/Matrix";
+import { Random } from "nlptoolkit-util/dist/Random";
 export declare class InstanceList {
     protected list: Array<Instance>;
     /**
@@ -56,9 +57,9 @@ export declare class InstanceList {
     sort(attributeIndex?: number): void;
     /**
      * Shuffles the instance list.
-     * @param seed Seed is used for random number generation.
+     * @param random Random number generation.
      */
-    shuffle(seed: number): void;
+    shuffle(random: Random): void;
     /**
      * Creates a bootstrap sample from the current instance list.
      *

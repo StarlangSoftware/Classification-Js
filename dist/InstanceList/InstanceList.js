@@ -130,9 +130,10 @@
         }
         /**
          * Shuffles the instance list.
-         * @param seed Seed is used for random number generation.
+         * @param random Random number generation.
          */
-        shuffle(seed) {
+        shuffle(random) {
+            random.shuffle(this.list);
         }
         /**
          * Creates a bootstrap sample from the current instance list.

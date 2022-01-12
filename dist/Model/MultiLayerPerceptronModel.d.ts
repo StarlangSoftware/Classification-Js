@@ -9,6 +9,7 @@ export declare class MultiLayerPerceptronModel extends LinearPerceptronModel {
      * The allocateWeights method allocates layers' weights of Matrix W and V.
      *
      * @param H Integer value for weights.
+     * @param random Random function to set weights.
      */
     private allocateWeights;
     /**

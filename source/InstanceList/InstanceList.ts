@@ -13,6 +13,7 @@ import {DiscreteIndexedAttribute} from "../Attribute/DiscreteIndexedAttribute";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {Vector} from "nlptoolkit-math/dist/Vector";
 import {Matrix} from "nlptoolkit-math/dist/Matrix";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class InstanceList {
 
@@ -128,9 +129,10 @@ export class InstanceList {
 
     /**
      * Shuffles the instance list.
-     * @param seed Seed is used for random number generation.
+     * @param random Random number generation.
      */
-    shuffle(seed: number){
+    shuffle(random: Random){
+        random.shuffle(this.list)
     }
 
     /**

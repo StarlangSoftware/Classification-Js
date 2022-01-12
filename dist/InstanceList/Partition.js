@@ -13,7 +13,7 @@
     const InstanceList_1 = require("./InstanceList");
     const InstanceListOfSameClass_1 = require("./InstanceListOfSameClass");
     class Partition {
-        constructor(instanceList, attributeIndex, stratifiedOrValue) {
+        constructor(instanceList, attributeIndex, stratifiedOrValue, random) {
             this.multiList = new Array();
             if (instanceList != undefined) {
                 if (attributeIndex == undefined) {
@@ -46,6 +46,9 @@
                                 for (let i = 0; i < instanceList.size(); i++) {
                                     randomArray.push(i);
                                 }
+                                if (random != undefined) {
+                                    random.shuffle(randomArray);
+                                }
                                 for (let i = 0; i < instanceList.size(); i++) {
                                     let instance = instanceList.get(randomArray[i]);
                                     let classIndex = distribution.getIndex(instance.getClassLabel());
@@ -60,6 +63,7 @@
                                 }
                             }
                             else {
+                                instanceList.shuffle(random);
                                 for (let i = 0; i < instanceList.size(); i++) {
                                     let instance = instanceList.get(i);
                                     let ratio = attributeIndex;

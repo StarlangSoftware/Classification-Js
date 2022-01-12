@@ -1,16 +1,17 @@
 import {Model} from "./Model";
 import {Instance} from "../Instance/Instance";
 import {CompositeInstance} from "../Instance/CompositeInstance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class RandomModel extends Model{
 
     private classLabels: Array<string>
-    private seed: number
+    private random: Random
 
     constructor(classLabels: Array<string>, seed: number) {
         super();
         this.classLabels = classLabels
-        this.seed = seed
+        this.random = new Random(seed)
     }
 
     /**
@@ -24,11 +25,11 @@ export class RandomModel extends Model{
         if ((instance instanceof CompositeInstance)) {
             let possibleClassLabels = (<CompositeInstance> instance).getPossibleClassLabels();
             let size = possibleClassLabels.length;
-            let index = Math.floor(Math.random() * size);
+            let index = this.random.nextInt(size);
             return possibleClassLabels[index];
         } else {
             let size = this.classLabels.length;
-            let index = Math.floor(Math.random() * size);
+            let index = this.random.nextInt(size);
             return this.classLabels[index];
         }
     }

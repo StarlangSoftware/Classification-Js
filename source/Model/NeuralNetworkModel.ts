@@ -5,6 +5,7 @@ import {Matrix} from "nlptoolkit-math/dist/Matrix";
 import {Instance} from "../Instance/Instance";
 import {ActivationFunction} from "../Parameter/ActivationFunction";
 import {CompositeInstance} from "../Instance/CompositeInstance";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export abstract class NeuralNetworkModel extends ValidatedModel{
 
@@ -34,10 +35,11 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
      *
      * @param row    Number of rows.
      * @param column Number of columns.
+     * @param random Random function to set weights.
      * @return Matrix with random weights.
      */
-    protected allocateLayerWeights(row: number, column: number): Matrix{
-        return new Matrix(row, column, -0.01, +0.01);
+    protected allocateLayerWeights(row: number, column: number, random: Random): Matrix{
+        return new Matrix(row, column, -0.01, +0.01, random);
     }
 
     /**

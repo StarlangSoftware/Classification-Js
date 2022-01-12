@@ -2,7 +2,7 @@ import { Model } from "./Model";
 import { Instance } from "../Instance/Instance";
 export declare class RandomModel extends Model {
     private classLabels;
-    private seed;
+    private random;
     constructor(classLabels: Array<string>, seed: number);
     /**
      * The predict method gets an Instance as an input and retrieves the possible class labels as an ArrayList. Then selects a

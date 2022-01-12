@@ -5,6 +5,7 @@ import {InstanceList} from "../InstanceList/InstanceList";
 import {MultiLayerPerceptronParameter} from "../Parameter/MultiLayerPerceptronParameter";
 import {ClassificationPerformance} from "../Performance/ClassificationPerformance";
 import {Vector} from "nlptoolkit-math/dist/Vector";
+import {Random} from "nlptoolkit-util/dist/Random";
 
 export class MultiLayerPerceptronModel extends LinearPerceptronModel{
 
@@ -15,10 +16,11 @@ export class MultiLayerPerceptronModel extends LinearPerceptronModel{
      * The allocateWeights method allocates layers' weights of Matrix W and V.
      *
      * @param H Integer value for weights.
+     * @param random Random function to set weights.
      */
-    private allocateWeights(H: number){
-        this.W = this.allocateLayerWeights(H, this.d + 1);
-        this.V = this.allocateLayerWeights(this.K, H + 1);
+    private allocateWeights(H: number, random: Random){
+        this.W = this.allocateLayerWeights(H, this.d + 1, random);
+        this.V = this.allocateLayerWeights(this.K, H + 1, random);
     }
 
     /**
@@ -34,14 +36,14 @@ export class MultiLayerPerceptronModel extends LinearPerceptronModel{
     constructor(trainSet: InstanceList, validationSet: InstanceList, parameters: MultiLayerPerceptronParameter) {
         super(trainSet);
         this.activationFunction = parameters.getActivationFunction();
-        this.allocateWeights(parameters.getHiddenNodes());
+        this.allocateWeights(parameters.getHiddenNodes(), new Random(parameters.getSeed()));
         let bestW = this.W.clone();
         let bestV = this.V.clone();
         let bestClassificationPerformance = new ClassificationPerformance(0.0);
         let epoch = parameters.getEpoch();
         let learningRate = parameters.getLearningRate();
         for (let i = 0; i < epoch; i++) {
-            trainSet.shuffle(parameters.getSeed());
+            trainSet.shuffle(new Random(parameters.getSeed()));
             for (let j = 0; j < trainSet.size(); j++) {
                 this.createInputVector(trainSet.get(j));
                 let hidden = this.calculateHidden(this.x, this.W, this.activationFunction);

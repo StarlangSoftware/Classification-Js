@@ -1,8 +1,9 @@
 import { InstanceList } from "./InstanceList";
 import { Instance } from "../Instance/Instance";
+import { Random } from "nlptoolkit-util/dist/Random";
 export declare class Partition {
     private multiList;
-    constructor(instanceList?: InstanceList, attributeIndex?: number, stratifiedOrValue?: any);
+    constructor(instanceList?: InstanceList, attributeIndex?: number, stratifiedOrValue?: any, random?: Random);
     /**
      * Adds given instance list to the list of instance lists.
      *

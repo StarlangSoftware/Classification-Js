@@ -32,10 +32,11 @@
          *
          * @param row    Number of rows.
          * @param column Number of columns.
+         * @param random Random function to set weights.
          * @return Matrix with random weights.
          */
-        allocateLayerWeights(row, column) {
-            return new Matrix_1.Matrix(row, column, -0.01, +0.01);
+        allocateLayerWeights(row, column, random) {
+            return new Matrix_1.Matrix(row, column, -0.01, +0.01, random);
         }
         /**
          * The normalizeOutput method takes an input {@link Vector} o, gets the result for e^o of each element of o,
