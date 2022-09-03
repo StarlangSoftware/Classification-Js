@@ -36,7 +36,7 @@ export class Partition {
                         if (stratifiedOrValue){
                             let distribution = instanceList.classDistribution();
                             let counts = new Array<number>(distribution.size).fill(0)
-                            let randomArray = new Array<number>();
+                            let randomArray = new Array<number>()
                             for (let i = 0; i < instanceList.size(); i++){
                                 randomArray.push(i);
                             }

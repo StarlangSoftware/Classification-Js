@@ -10,6 +10,7 @@ import {Partition} from "../../InstanceList/Partition";
 import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
 import {Random} from "nlptoolkit-util/dist/Random";
+import {RandomArray} from "nlptoolkit-util/dist/RandomArray";
 
 export class DecisionNode {
 
@@ -57,16 +58,16 @@ export class DecisionNode {
         if (isStump && condition != null) {
             return;
         }
-        let indexList = new Array<number>();
-        for (let i = 0; i < data.get(0).attributeSize(); i++) {
-            indexList.push(i);
-        }
+        let indexList
         let size
         if (parameter != undefined && parameter.getAttributeSubsetSize() < data.get(0).attributeSize()) {
-            let random = new Random(parameter.getSeed())
-            random.shuffle(indexList)
+            indexList = RandomArray.indexArray(data.get(0).attributeSize(), parameter.getSeed())
             size = parameter.getAttributeSubsetSize();
         } else {
+            indexList = new Array<number>();
+            for (let i = 0; i < data.get(0).attributeSize(); i++) {
+                indexList.push(i);
+            }
             size = data.get(0).attributeSize();
         }
         let classDistribution = data.classDistribution();

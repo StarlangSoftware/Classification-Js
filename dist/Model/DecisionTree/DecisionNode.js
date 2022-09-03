@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/Random"], factory);
+        define(["require", "exports", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/RandomArray"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -18,7 +18,7 @@
     const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
     const Partition_1 = require("../../InstanceList/Partition");
     const CompositeInstance_1 = require("../../Instance/CompositeInstance");
-    const Random_1 = require("nlptoolkit-util/dist/Random");
+    const RandomArray_1 = require("nlptoolkit-util/dist/RandomArray");
     class DecisionNode {
         /**
          * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
@@ -63,17 +63,17 @@
             if (isStump && condition != null) {
                 return;
             }
-            let indexList = new Array();
-            for (let i = 0; i < data.get(0).attributeSize(); i++) {
-                indexList.push(i);
-            }
+            let indexList;
             let size;
             if (parameter != undefined && parameter.getAttributeSubsetSize() < data.get(0).attributeSize()) {
-                let random = new Random_1.Random(parameter.getSeed());
-                random.shuffle(indexList);
+                indexList = RandomArray_1.RandomArray.indexArray(data.get(0).attributeSize(), parameter.getSeed());
                 size = parameter.getAttributeSubsetSize();
             }
             else {
+                indexList = new Array();
+                for (let i = 0; i < data.get(0).attributeSize(); i++) {
+                    indexList.push(i);
+                }
                 size = data.get(0).attributeSize();
             }
             let classDistribution = data.classDistribution();
