@@ -2,6 +2,8 @@ import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {Instance} from "../Instance/Instance";
 import {ValidatedModel} from "./ValidatedModel";
 import {CompositeInstance} from "../Instance/CompositeInstance";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {Vector} from "nlptoolkit-math/dist/Vector";
 
 export abstract class GaussianModel extends ValidatedModel{
 
@@ -50,6 +52,33 @@ export abstract class GaussianModel extends ValidatedModel{
             }
         }
         return predictedClass;
+    }
+
+    loadPriorDistribution(input: FileContents): number{
+        let size = parseInt(input.readLine())
+        this.priorDistribution = new DiscreteDistribution()
+        for (let i = 0; i < size; i++){
+            let line = input.readLine()
+            let items = line.split(" ");
+            for (let j = 0; j < parseInt(items[1]); j++){
+                this.priorDistribution.addItem(items[0])
+            }
+        }
+        return size
+    }
+
+    loadVectors(input: FileContents, size: number): Map<string, Vector>{
+        let map = new Map<string, Vector>()
+        for (let i = 0; i < size; i++){
+            let line = input.readLine()
+            let items = line.split(" ")
+            let vector = new Vector(parseInt(items[1]), 0)
+            for (let j = 2; j < items.length; j++){
+                vector.setValue(j - 2, parseFloat(items[j]))
+            }
+            map.set(items[0], vector)
+        }
+        return map
     }
 
     predictProbability(instance: Instance): Map<string, number> {

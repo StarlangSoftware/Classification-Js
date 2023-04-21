@@ -3,6 +3,7 @@ import {Matrix} from "nlptoolkit-math/dist/Matrix";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {Vector} from "nlptoolkit-math/dist/Vector";
 import {Instance} from "../Instance/Instance";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class QdaModel extends LdaModel{
 
@@ -11,14 +12,27 @@ export class QdaModel extends LdaModel{
     /**
      * The constructor which sets the priorDistribution, w w1 and HashMap of String Matrix.
      *
-     * @param priorDistribution {@link DiscreteDistribution} input.
+     * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
      * @param W                 {@link HashMap} of String and Matrix.
      * @param w                 {@link HashMap} of String and Vectors.
      * @param w0                {@link HashMap} of String and Double.
      */
-    constructor(priorDistribution: DiscreteDistribution, W: Map<string, Matrix>, w: Map<string, Vector>, w0: Map<string, number>) {
-        super(priorDistribution, w, w0);
-        this.W = W
+    constructor(priorDistributionOrFileName: DiscreteDistribution | string, W?: Map<string, Matrix>, w?: Map<string, Vector>, w0?: Map<string, number>) {
+        if (priorDistributionOrFileName instanceof DiscreteDistribution){
+            super(priorDistributionOrFileName, w, w0);
+            this.W = W
+        } else {
+            super()
+            let input = new FileContents(priorDistributionOrFileName)
+            let size = this.loadPriorDistribution(input)
+            this.loadWandW0(input, size)
+            this.W = new Map<string, Matrix>()
+            for (let i = 0; i < size; i++){
+                let c = input.readLine()
+                let matrix = this.loadMatrix(input)
+                this.W.set(c, matrix)
+            }
+        }
     }
 
     /**
@@ -36,4 +50,8 @@ export class QdaModel extends LdaModel{
         let w0i = this.w0.get(Ci);
         return Wi.multiplyWithVectorFromLeft(xi).dotProduct(xi) + wi.dotProduct(xi) + w0i;
     }
+
+    saveTxt(fileName: string){
+    }
+
 }

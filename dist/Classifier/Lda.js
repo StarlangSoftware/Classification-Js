@@ -46,6 +46,9 @@
             }
             this.model = new LdaModel_1.LdaModel(priorDistribution, w, w0);
         }
+        loadModel(fileName) {
+            this.model = new LdaModel_1.LdaModel(fileName);
+        }
     }
     exports.Lda = Lda;
 });

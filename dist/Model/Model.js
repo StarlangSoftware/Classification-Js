@@ -4,13 +4,16 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "nlptoolkit-datastructure/dist/CounterHashMap"], factory);
+        define(["require", "exports", "../Instance/Instance", "nlptoolkit-datastructure/dist/CounterHashMap", "../InstanceList/InstanceList", "nlptoolkit-math/dist/Matrix"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Model = void 0;
+    const Instance_1 = require("../Instance/Instance");
     const CounterHashMap_1 = require("nlptoolkit-datastructure/dist/CounterHashMap");
+    const InstanceList_1 = require("../InstanceList/InstanceList");
+    const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
     class Model {
         /**
          * Given an array of class labels, returns the maximum occurred one.
@@ -24,6 +27,42 @@
                 frequencies.put(label);
             }
             return frequencies.max();
+        }
+        loadInstance(line, attributeTypes) {
+            let items = line.split(",");
+            let instance = new Instance_1.Instance(items[items.length - 1]);
+            for (let i = 0; i < items.length - 1; i++) {
+                switch (attributeTypes[i]) {
+                    case "DISCRETE":
+                        instance.addAttribute(items[i]);
+                        break;
+                    case "CONTINUOUS":
+                        instance.addAttribute(parseFloat(items[i]));
+                        break;
+                }
+            }
+            return instance;
+        }
+        loadInstanceList(input) {
+            let types = input.readLine().split(" ");
+            let instanceCount = parseInt(input.readLine());
+            let instanceList = new InstanceList_1.InstanceList();
+            for (let i = 0; i < instanceCount; i++) {
+                instanceList.add(this.loadInstance(input.readLine(), types));
+            }
+            return instanceList;
+        }
+        loadMatrix(input) {
+            let items = input.readLine().split(" ");
+            let matrix = new Matrix_1.Matrix(parseInt(items[0]), parseInt(items[1]));
+            for (let j = 0; j < matrix.getRow(); j++) {
+                let line = input.readLine();
+                items = line.split(" ");
+                for (let k = 0; k < matrix.getColumn(); k++) {
+                    matrix.setValue(j, k, parseFloat(items[k]));
+                }
+            }
+            return matrix;
         }
     }
     exports.Model = Model;

@@ -44,6 +44,9 @@
             }
             this.model = new QdaModel_1.QdaModel(priorDistribution, W, w, w0);
         }
+        loadModel(fileName) {
+            this.model = new QdaModel_1.QdaModel(fileName);
+        }
     }
     exports.Qda = Qda;
 });

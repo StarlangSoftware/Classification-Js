@@ -23,6 +23,9 @@
         train(trainSet, parameters) {
             this.model = new DecisionTree_1.DecisionTree(new DecisionNode_1.DecisionNode(trainSet, undefined, undefined, true));
         }
+        loadModel(fileName) {
+            this.model = new DecisionTree_1.DecisionTree(fileName);
+        }
     }
     exports.C45Stump = C45Stump;
 });

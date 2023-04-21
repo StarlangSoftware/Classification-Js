@@ -17,5 +17,9 @@ export class Knn extends Classifier{
     train(trainSet: InstanceList, parameters: Parameter): void {
         this.model = new KnnModel(trainSet, (<KnnParameter> parameters).getK(), (<KnnParameter> parameters).getDistanceMetric());
     }
-    
+
+    loadModel(fileName: string): void{
+        this.model = new KnnModel(fileName)
+    }
+
 }

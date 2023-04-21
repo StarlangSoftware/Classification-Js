@@ -20,4 +20,8 @@ export class LinearPerceptron extends Classifier{
         this.model = new LinearPerceptronModel(partition.get(1), partition.get(0), <LinearPerceptronParameter> parameters);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new LinearPerceptronModel(fileName)
+    }
+
 }

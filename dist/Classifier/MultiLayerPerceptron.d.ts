@@ -11,4 +11,5 @@ export declare class MultiLayerPerceptron extends Classifier {
      * @param parameters Parameters of the multilayer perceptron.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

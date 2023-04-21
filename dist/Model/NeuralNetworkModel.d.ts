@@ -5,6 +5,7 @@ import { Matrix } from "nlptoolkit-math/dist/Matrix";
 import { Instance } from "../Instance/Instance";
 import { ActivationFunction } from "../Parameter/ActivationFunction";
 import { Random } from "nlptoolkit-util/dist/Random";
+import { FileContents } from "nlptoolkit-util/dist/FileContents";
 export declare abstract class NeuralNetworkModel extends ValidatedModel {
     protected classLabels: Array<string>;
     protected K: number;
@@ -18,7 +19,7 @@ export declare abstract class NeuralNetworkModel extends ValidatedModel {
      *
      * @param trainSet {@link InstanceList} to use as train set.
      */
-    protected constructor(trainSet: InstanceList);
+    protected constructor(trainSet?: InstanceList);
     /**
      * The allocateLayerWeights method returns a new {@link Matrix} with random weights.
      *
@@ -98,4 +99,6 @@ export declare abstract class NeuralNetworkModel extends ValidatedModel {
      */
     predict(instance: Instance): string;
     predictProbability(instance: Instance): Map<string, number>;
+    loadClassLabels(input: FileContents): void;
+    loadActivationFunction(input: FileContents): ActivationFunction;
 }

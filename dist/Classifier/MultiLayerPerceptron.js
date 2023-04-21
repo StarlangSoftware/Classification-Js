@@ -26,6 +26,9 @@
             let partition = new Partition_1.Partition(trainSet, parameters.getCrossValidationRatio(), true);
             this.model = new MultiLayerPerceptronModel_1.MultiLayerPerceptronModel(partition.get(1), partition.get(0), parameters);
         }
+        loadModel(fileName) {
+            this.model = new MultiLayerPerceptronModel_1.MultiLayerPerceptronModel(fileName);
+        }
     }
     exports.MultiLayerPerceptron = MultiLayerPerceptron;
 });

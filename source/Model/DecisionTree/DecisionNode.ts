@@ -9,45 +9,24 @@ import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {Partition} from "../../InstanceList/Partition";
 import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
-import {Random} from "nlptoolkit-util/dist/Random";
 import {RandomArray} from "nlptoolkit-util/dist/RandomArray";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class DecisionNode {
 
     children: Array<DecisionNode> = undefined
     private EPSILON: number = 0.0000000001;
-    private readonly data : InstanceList = undefined
-    private readonly classLabel : string = undefined
+    private data : InstanceList = undefined
+    private classLabel : string = undefined
     leaf: boolean = false
     private condition: DecisionCondition = undefined
 
-    /**
-     * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
-     * the most occurred class label of given data, it then gets distinct class labels as class labels ArrayList. Later, it adds ordered
-     * indices to the indexList and shuffles them randomly. Then, it gets the class distribution of given data and finds the best entropy value
-     * of these class distribution.
-     * <p>
-     * If an attribute of given data is {@link DiscreteIndexedAttribute}, it creates a Distribution according to discrete indexed attribute class distribution
-     * and finds the entropy. If it is better than the last best entropy it reassigns the best entropy, best attribute and best split value according to
-     * the newly founded best entropy's index. At the end, it also adds new distribution to the class distribution .
-     * <p>
-     * If an attribute of given data is {@link DiscreteAttribute}, it directly finds the entropy. If it is better than the last best entropy it
-     * reassigns the best entropy, best attribute and best split value according to the newly founded best entropy's index.
-     * <p>
-     * If an attribute of given data is {@link ContinuousAttribute}, it creates two distributions; left and right according to class distribution
-     * and discrete distribution respectively, and finds the entropy. If it is better than the last best entropy it reassigns the best entropy,
-     * best attribute and best split value according to the newly founded best entropy's index. At the end, it also adds new distribution to
-     * the right distribution and removes from left distribution .
-     *
-     * @param data      {@link InstanceList} input.
-     * @param condition {@link DecisionCondition} to check.
-     * @param parameter RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
-     * @param isStump   Refers to decision trees with only 1 splitting rule.
-     */
-    constructor(data: InstanceList, condition: DecisionCondition, parameter: RandomForestParameter, isStump: boolean) {
+    constructor1(data: InstanceList, condition?: DecisionCondition | number, parameter?: RandomForestParameter, isStump?: boolean){
         let bestAttribute = -1
         let bestSplitValue = 0
-        this.condition = condition;
+        if (condition instanceof DecisionCondition){
+            this.condition = condition;
+        }
         this.data = data;
         this.classLabel = Model.getMaximum(data.getClassLabels());
         this.leaf = true;
@@ -140,6 +119,63 @@ export class DecisionNode {
         }
     }
 
+    constructor2(contents: FileContents){
+        let items = contents.readLine().split(" ")
+        if (items[0] != "-1"){
+            if (items[1][0] == '='){
+                this.condition = new DecisionCondition(parseInt(items[0]), new DiscreteAttribute(items[2]), items[1][0])
+            } else {
+                this.condition = new DecisionCondition(parseInt(items[0]), new ContinuousAttribute(parseFloat(items[2])), items[1][0])
+            }
+        } else {
+            this.condition = null
+        }
+        let numberOfChildren = parseInt(contents.readLine())
+        if (numberOfChildren != 0){
+            this.leaf = false
+            this.children = new Array<DecisionNode>()
+            for (let i = 0; i < numberOfChildren; i++){
+                this.children.push(new DecisionNode(contents))
+            }
+        } else {
+            this.leaf = true
+            this.classLabel = contents.readLine()
+        }
+    }
+
+    /**
+     * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
+     * the most occurred class label of given data, it then gets distinct class labels as class labels ArrayList. Later, it adds ordered
+     * indices to the indexList and shuffles them randomly. Then, it gets the class distribution of given data and finds the best entropy value
+     * of these class distribution.
+     * <p>
+     * If an attribute of given data is {@link DiscreteIndexedAttribute}, it creates a Distribution according to discrete indexed attribute class distribution
+     * and finds the entropy. If it is better than the last best entropy it reassigns the best entropy, best attribute and best split value according to
+     * the newly founded best entropy's index. At the end, it also adds new distribution to the class distribution .
+     * <p>
+     * If an attribute of given data is {@link DiscreteAttribute}, it directly finds the entropy. If it is better than the last best entropy it
+     * reassigns the best entropy, best attribute and best split value according to the newly founded best entropy's index.
+     * <p>
+     * If an attribute of given data is {@link ContinuousAttribute}, it creates two distributions; left and right according to class distribution
+     * and discrete distribution respectively, and finds the entropy. If it is better than the last best entropy it reassigns the best entropy,
+     * best attribute and best split value according to the newly founded best entropy's index. At the end, it also adds new distribution to
+     * the right distribution and removes from left distribution .
+     *
+     * @param data      {@link InstanceList} input.
+     * @param condition {@link DecisionCondition} to check.
+     * @param parameter RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
+     * @param isStump   Refers to decision trees with only 1 splitting rule.
+     */
+    constructor(data: InstanceList | FileContents, condition?: DecisionCondition, parameter?: RandomForestParameter, isStump?: boolean) {
+        if (data instanceof InstanceList && (condition instanceof DecisionCondition || condition == undefined)){
+            this.constructor1(data, condition, parameter, isStump)
+        } else {
+            if (data instanceof FileContents){
+                this.constructor2(data)
+            }
+        }
+    }
+
     /**
      * The entropyForDiscreteAttribute method takes an attributeIndex and creates an ArrayList of DiscreteDistribution.
      * Then loops through the distributions and calculates the total entropy.
@@ -199,7 +235,7 @@ export class DecisionNode {
      * @param splitValue     Split value is used for partitioning.
      */
     private createChildrenForContinuous(attributeIndex: number, splitValue: number, parameter: RandomForestParameter, isStump: boolean){
-        let childrenData = new Partition(this.data, attributeIndex, splitValue);
+        let childrenData = new Partition(this.data, attributeIndex, splitValue + 0.0000001);
         this.children = new Array<DecisionNode>();
         this.children.push(new DecisionNode(childrenData.get(0), new DecisionCondition(attributeIndex, new ContinuousAttribute(splitValue), "<"), parameter, isStump));
         this.children.push(new DecisionNode(childrenData.get(1), new DecisionCondition(attributeIndex, new ContinuousAttribute(splitValue), ">"), parameter, isStump));

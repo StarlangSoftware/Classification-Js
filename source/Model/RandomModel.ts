@@ -2,16 +2,30 @@ import {Model} from "./Model";
 import {Instance} from "../Instance/Instance";
 import {CompositeInstance} from "../Instance/CompositeInstance";
 import {Random} from "nlptoolkit-util/dist/Random";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class RandomModel extends Model{
 
-    private classLabels: Array<string>
+    private readonly classLabels: Array<string>
     private random: Random
+    private seed: number
 
-    constructor(classLabels: Array<string>, seed: number) {
+    constructor(classLabelsOrFileName: Array<string> | string, seed?: number) {
         super();
-        this.classLabels = classLabels
-        this.random = new Random(seed)
+        if (classLabelsOrFileName instanceof Array){
+            this.classLabels = classLabelsOrFileName
+            this.random = new Random(seed)
+            this.seed = seed
+        } else {
+            let input = new FileContents(classLabelsOrFileName)
+            seed = parseInt(input.readLine())
+            this.random = new Random(seed)
+            let size = parseInt(input.readLine())
+            this.classLabels = new Array<string>()
+            for (let i = 0; i < size; i++){
+                this.classLabels.push(input.readLine())
+            }
+        }
     }
 
     /**
@@ -40,6 +54,9 @@ export class RandomModel extends Model{
             result.set(classLabel, 1.0 / this.classLabels.length);
         }
         return result;
+    }
+
+    saveTxt(fileName: string){
     }
 
 }

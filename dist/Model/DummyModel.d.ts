@@ -8,7 +8,7 @@ export declare class DummyModel extends Model {
      *
      * @param trainSet {@link InstanceList} which is used to get the class distribution.
      */
-    constructor(trainSet: InstanceList);
+    constructor(trainSet: InstanceList | string);
     /**
      * The predict method takes an Instance as an input and returns the entry of distribution which has the maximum value.
      *
@@ -17,4 +17,5 @@ export declare class DummyModel extends Model {
      */
     predict(instance: Instance): string;
     predictProbability(instance: Instance): Map<string, number>;
+    saveTxt(fileName: string): void;
 }

@@ -2,13 +2,16 @@ import { InstanceList } from "../../InstanceList/InstanceList";
 import { DecisionCondition } from "./DecisionCondition";
 import { RandomForestParameter } from "../../Parameter/RandomForestParameter";
 import { Instance } from "../../Instance/Instance";
+import { FileContents } from "nlptoolkit-util/dist/FileContents";
 export declare class DecisionNode {
     children: Array<DecisionNode>;
     private EPSILON;
-    private readonly data;
-    private readonly classLabel;
+    private data;
+    private classLabel;
     leaf: boolean;
     private condition;
+    constructor1(data: InstanceList, condition?: DecisionCondition | number, parameter?: RandomForestParameter, isStump?: boolean): void;
+    constructor2(contents: FileContents): void;
     /**
      * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
      * the most occurred class label of given data, it then gets distinct class labels as class labels ArrayList. Later, it adds ordered
@@ -32,7 +35,7 @@ export declare class DecisionNode {
      * @param parameter RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump   Refers to decision trees with only 1 splitting rule.
      */
-    constructor(data: InstanceList, condition: DecisionCondition, parameter: RandomForestParameter, isStump: boolean);
+    constructor(data: InstanceList | FileContents, condition?: DecisionCondition, parameter?: RandomForestParameter, isStump?: boolean);
     /**
      * The entropyForDiscreteAttribute method takes an attributeIndex and creates an ArrayList of DiscreteDistribution.
      * Then loops through the distributions and calculates the total entropy.

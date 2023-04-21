@@ -61,6 +61,9 @@
                 this.trainContinuousVersion(priorDistribution, classLists);
             }
         }
+        loadModel(fileName) {
+            this.model = new NaiveBayesModel_1.NaiveBayesModel(fileName);
+        }
     }
     exports.NaiveBayes = NaiveBayes;
 });

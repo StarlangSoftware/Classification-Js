@@ -1,6 +1,6 @@
 {
   "name": "nlptoolkit-classification",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Classification Library",
   "main": "index.js",
   "types": "index.js",
@@ -27,6 +27,6 @@
     "nlptoolkit-datastructure": "^1.0.4",
     "nlptoolkit-math": "^1.0.3",
     "nlptoolkit-sampling": "^1.0.2",
-    "nlptoolkit-util": "^1.0.5"
+    "nlptoolkit-util": "^1.0.8"
   }
 }

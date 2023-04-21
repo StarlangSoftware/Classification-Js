@@ -10,4 +10,5 @@ export declare class C45 extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

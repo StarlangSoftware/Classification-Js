@@ -59,4 +59,8 @@ export class NaiveBayes extends Classifier{
         }
     }
 
+    loadModel(fileName: string): void{
+        this.model = new NaiveBayesModel(fileName)
+    }
+
 }

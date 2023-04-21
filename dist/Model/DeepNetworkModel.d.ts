@@ -4,7 +4,7 @@ import { InstanceList } from "../InstanceList/InstanceList";
 export declare class DeepNetworkModel extends NeuralNetworkModel {
     private weights;
     private hiddenLayerSize;
-    private readonly activationFunction;
+    private activationFunction;
     /**
      * The allocateWeights method takes {@link DeepNetworkParameter}s as an input. First it adds random weights to the {@link Array}
      * of {@link Matrix} weights' first layer. Then it loops through the layers and adds random weights till the last layer.
@@ -20,6 +20,8 @@ export declare class DeepNetworkModel extends NeuralNetworkModel {
      * @return An {@link Array} clones from the weights ArrayList.
      */
     private setBestWeights;
+    constructor1(trainSet: InstanceList, validationSet: InstanceList, parameters: DeepNetworkParameter): void;
+    constructor2(fileName: string): void;
     /**
      * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
      * First it sets the class labels, their sizes as K and the size of the continuous attributes as d of given train set and
@@ -29,14 +31,15 @@ export declare class DeepNetworkModel extends NeuralNetworkModel {
      * bestWeights according to the current situation. At the end it updates the learning rate via etaDecrease value and finishes
      * with clearing the weights.
      *
-     * @param trainSet      {@link InstanceList} to be used as trainSet.
+     * @param trainSetOrFileName      {@link InstanceList} to be used as trainSet.
      * @param validationSet {@link InstanceList} to be used as validationSet.
      * @param parameters    {@link DeepNetworkParameter} input.
      */
-    constructor(trainSet: InstanceList, validationSet: InstanceList, parameters: DeepNetworkParameter);
+    constructor(trainSetOrFileName: InstanceList | string, validationSet?: InstanceList, parameters?: DeepNetworkParameter);
     /**
      * The calculateOutput method loops size of the weights times and calculate one hidden layer at a time and adds bias term.
      * At the end it updates the output y value.
      */
     protected calculateOutput(): void;
+    saveTxt(fileName: string): void;
 }

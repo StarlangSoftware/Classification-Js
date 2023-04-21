@@ -26,6 +26,9 @@
             }
             this.model = new RandomModel_1.RandomModel(result, parameters.getSeed());
         }
+        loadModel(fileName) {
+            this.model = new RandomModel_1.RandomModel(fileName);
+        }
     }
     exports.RandomClassifier = RandomClassifier;
 });

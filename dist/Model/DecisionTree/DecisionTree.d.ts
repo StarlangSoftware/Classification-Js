@@ -3,13 +3,13 @@ import { DecisionNode } from "./DecisionNode";
 import { Instance } from "../../Instance/Instance";
 import { InstanceList } from "../../InstanceList/InstanceList";
 export declare class DecisionTree extends ValidatedModel {
-    private root;
+    private readonly root;
     /**
      * Constructor that sets root node of the decision tree.
      *
-     * @param root DecisionNode type input.
+     * @param rootOrFileName DecisionNode type input or fileName
      */
-    constructor(root: DecisionNode);
+    constructor(rootOrFileName: DecisionNode | string);
     /**
      * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the possible class labels.
      * Otherwise it returns the returned class labels.
@@ -19,6 +19,7 @@ export declare class DecisionTree extends ValidatedModel {
      */
     predict(instance: Instance): string;
     predictProbability(instance: Instance): Map<string, number>;
+    saveTxt(fileName: string): void;
     /**
      * The prune method takes a {@link DecisionNode} and an {@link InstanceList} as inputs. It checks the classification performance
      * of given InstanceList before pruning, i.e making a node leaf, and after pruning. If the after performance is better than the

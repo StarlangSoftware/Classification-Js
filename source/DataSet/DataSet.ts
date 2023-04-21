@@ -25,7 +25,7 @@ export class DataSet {
      */
     constructor(definition?: any, separator?: string, fileName?: string) {
         if (definition != undefined){
-            if (definition instanceof DataDefinition){
+            if (definition instanceof DataDefinition && fileName == undefined){
                 this.definition = definition
             } else {
                 if (separator == undefined){

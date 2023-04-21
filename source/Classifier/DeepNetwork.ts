@@ -19,4 +19,8 @@ export class DeepNetwork extends Classifier{
         this.model = new DeepNetworkModel(partition.get(1), partition.get(0), <DeepNetworkParameter> parameters);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new DeepNetworkModel(fileName)
+    }
+
 }

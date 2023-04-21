@@ -23,6 +23,9 @@
         train(trainSet, parameters) {
             this.model = new KnnModel_1.KnnModel(trainSet, parameters.getK(), parameters.getDistanceMetric());
         }
+        loadModel(fileName) {
+            this.model = new KnnModel_1.KnnModel(fileName);
+        }
     }
     exports.Knn = Knn;
 });

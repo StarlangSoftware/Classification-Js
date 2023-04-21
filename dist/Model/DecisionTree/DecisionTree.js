@@ -4,23 +4,31 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../ValidatedModel", "../../Instance/CompositeInstance"], factory);
+        define(["require", "exports", "../ValidatedModel", "./DecisionNode", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DecisionTree = void 0;
     const ValidatedModel_1 = require("../ValidatedModel");
+    const DecisionNode_1 = require("./DecisionNode");
     const CompositeInstance_1 = require("../../Instance/CompositeInstance");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class DecisionTree extends ValidatedModel_1.ValidatedModel {
         /**
          * Constructor that sets root node of the decision tree.
          *
-         * @param root DecisionNode type input.
+         * @param rootOrFileName DecisionNode type input or fileName
          */
-        constructor(root) {
+        constructor(rootOrFileName) {
             super();
-            this.root = root;
+            if (rootOrFileName instanceof DecisionNode_1.DecisionNode) {
+                this.root = rootOrFileName;
+            }
+            else {
+                let contents = new FileContents_1.FileContents(rootOrFileName);
+                this.root = new DecisionNode_1.DecisionNode(contents);
+            }
         }
         /**
          * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the possible class labels.
@@ -38,6 +46,8 @@
         }
         predictProbability(instance) {
             return this.root.predictProbabilityDistribution(instance);
+        }
+        saveTxt(fileName) {
         }
         /**
          * The prune method takes a {@link DecisionNode} and an {@link InstanceList} as inputs. It checks the classification performance

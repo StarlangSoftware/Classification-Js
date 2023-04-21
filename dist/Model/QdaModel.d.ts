@@ -8,12 +8,12 @@ export declare class QdaModel extends LdaModel {
     /**
      * The constructor which sets the priorDistribution, w w1 and HashMap of String Matrix.
      *
-     * @param priorDistribution {@link DiscreteDistribution} input.
+     * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
      * @param W                 {@link HashMap} of String and Matrix.
      * @param w                 {@link HashMap} of String and Vectors.
      * @param w0                {@link HashMap} of String and Double.
      */
-    constructor(priorDistribution: DiscreteDistribution, W: Map<string, Matrix>, w: Map<string, Vector>, w0: Map<string, number>);
+    constructor(priorDistributionOrFileName: DiscreteDistribution | string, W?: Map<string, Matrix>, w?: Map<string, Vector>, w0?: Map<string, number>);
     /**
      * The calculateMetric method takes an {@link Instance} and a String as inputs. It multiplies Matrix Wi with Vector xi
      * then calculates the dot product of it with xi. Then, again it finds the dot product of wi and xi and returns the summation with w0i.
@@ -23,4 +23,5 @@ export declare class QdaModel extends LdaModel {
      * @return The result of Wi.multiplyWithVectorFromLeft(xi).dotProduct(xi) + wi.dotProduct(xi) + w0i.
      */
     calculateMetric(instance: Instance, Ci: string): number;
+    saveTxt(fileName: string): void;
 }

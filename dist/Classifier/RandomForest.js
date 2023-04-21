@@ -33,6 +33,9 @@
             }
             this.model = new TreeEnsembleModel_1.TreeEnsembleModel(forest);
         }
+        loadModel(fileName) {
+            this.model = new TreeEnsembleModel_1.TreeEnsembleModel(fileName);
+        }
     }
     exports.RandomForest = RandomForest;
 });

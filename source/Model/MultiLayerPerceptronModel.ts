@@ -6,6 +6,7 @@ import {MultiLayerPerceptronParameter} from "../Parameter/MultiLayerPerceptronPa
 import {ClassificationPerformance} from "../Performance/ClassificationPerformance";
 import {Vector} from "nlptoolkit-math/dist/Vector";
 import {Random} from "nlptoolkit-util/dist/Random";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class MultiLayerPerceptronModel extends LinearPerceptronModel{
 
@@ -23,18 +24,7 @@ export class MultiLayerPerceptronModel extends LinearPerceptronModel{
         this.V = this.allocateLayerWeights(this.K, H + 1, random);
     }
 
-    /**
-     * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
-     * nodes with given {@link InstanceList} then creates an input vector by using given trainSet and finds error.
-     * Via the validationSet it finds the classification performance and reassigns the allocated weight Matrix with the matrix
-     * that has the best accuracy and the Matrix V with the best Vector input.
-     *
-     * @param trainSet      InstanceList that is used to train.
-     * @param validationSet InstanceList that is used to validate.
-     * @param parameters    Multi layer perceptron parameters; seed, learningRate, etaDecrease, crossValidationRatio, epoch, hiddenNodes.
-     */
-    constructor(trainSet: InstanceList, validationSet: InstanceList, parameters: MultiLayerPerceptronParameter) {
-        super(trainSet);
+    constructor1(trainSet: InstanceList, validationSet?: InstanceList, parameters?: MultiLayerPerceptronParameter){
         this.activationFunction = parameters.getActivationFunction();
         this.allocateWeights(parameters.getHiddenNodes(), new Random(parameters.getSeed()));
         let bestW = this.W.clone();
@@ -88,10 +78,42 @@ export class MultiLayerPerceptronModel extends LinearPerceptronModel{
         this.V = bestV;
     }
 
+    constructor2(fileName: string){
+        let input = new FileContents(fileName)
+        this.activationFunction = this.loadActivationFunction(input)
+        this.loadClassLabels(input)
+        this.W = this.loadMatrix(input)
+        this.V = this.loadMatrix(input)
+    }
+
+    /**
+     * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
+     * nodes with given {@link InstanceList} then creates an input vector by using given trainSet and finds error.
+     * Via the validationSet it finds the classification performance and reassigns the allocated weight Matrix with the matrix
+     * that has the best accuracy and the Matrix V with the best Vector input.
+     *
+     * @param trainSetOrFileName      InstanceList that is used to train.
+     * @param validationSet InstanceList that is used to validate.
+     * @param parameters    Multi layer perceptron parameters; seed, learningRate, etaDecrease, crossValidationRatio, epoch, hiddenNodes.
+     */
+    constructor(trainSetOrFileName: InstanceList | string, validationSet?: InstanceList, parameters?: MultiLayerPerceptronParameter) {
+        if (trainSetOrFileName instanceof InstanceList){
+            super(trainSetOrFileName)
+            this.constructor1(trainSetOrFileName, validationSet, parameters)
+        } else {
+            super()
+            this.constructor2(trainSetOrFileName)
+        }
+    }
+
     /**
      * The calculateOutput method calculates the forward single hidden layer by using Matrices W and V.
      */
     protected calculateOutput() {
         this.calculateForwardSingleHiddenLayer(this.W, this.V, this.activationFunction);
     }
+
+    saveTxt(fileName: string){
+    }
+
 }

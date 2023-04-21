@@ -4,26 +4,37 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./GaussianModel"], factory);
+        define(["require", "exports", "./GaussianModel", "nlptoolkit-math/dist/DiscreteDistribution", "nlptoolkit-util/dist/FileContents", "../DistanceMetric/EuclidianDistance"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.KMeansModel = void 0;
     const GaussianModel_1 = require("./GaussianModel");
+    const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
+    const EuclidianDistance_1 = require("../DistanceMetric/EuclidianDistance");
     class KMeansModel extends GaussianModel_1.GaussianModel {
         /**
          * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
          *
-         * @param priorDistribution {@link DiscreteDistribution} input.
+         * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
          * @param classMeans        {@link InstanceList} of class means.
          * @param distanceMetric    {@link DistanceMetric} input.
          */
-        constructor(priorDistribution, classMeans, distanceMetric) {
+        constructor(priorDistributionOrFileName, classMeans, distanceMetric) {
             super();
-            this.classMeans = classMeans;
-            this.priorDistribution = priorDistribution;
-            this.distanceMetric = distanceMetric;
+            if (priorDistributionOrFileName instanceof DiscreteDistribution_1.DiscreteDistribution) {
+                this.classMeans = classMeans;
+                this.priorDistribution = priorDistributionOrFileName;
+                this.distanceMetric = distanceMetric;
+            }
+            else {
+                this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
+                let input = new FileContents_1.FileContents(priorDistributionOrFileName);
+                this.loadPriorDistribution(input);
+                this.classMeans = this.loadInstanceList(input);
+            }
         }
         /**
          * The calculateMetric method takes an {@link Instance} and a String as inputs. It loops through the class means, if
@@ -41,6 +52,8 @@
                 }
             }
             return Number.NEGATIVE_INFINITY;
+        }
+        saveTxt(fileName) {
         }
     }
     exports.KMeansModel = KMeansModel;

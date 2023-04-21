@@ -23,9 +23,11 @@
          */
         constructor(trainSet) {
             super();
-            this.classLabels = trainSet.getDistinctClassLabels();
-            this.K = this.classLabels.length;
-            this.d = trainSet.get(0).continuousAttributeSize();
+            if (trainSet != undefined) {
+                this.classLabels = trainSet.getDistinctClassLabels();
+                this.K = this.classLabels.length;
+                this.d = trainSet.get(0).continuousAttributeSize();
+            }
         }
         /**
          * The allocateLayerWeights method returns a new {@link Matrix} with random weights.
@@ -48,10 +50,10 @@
         normalizeOutput(o) {
             let sum = 0.0;
             let values = new Array();
-            for (let i = 0; i < values.length; i++) {
+            for (let i = 0; i < o.size(); i++) {
                 sum += Math.exp(o.getValue(i));
             }
-            for (let i = 0; i < values.length; i++) {
+            for (let i = 0; i < o.size(); i++) {
                 values.push(Math.exp(o.getValue(i)) / sum);
             }
             return new Vector_1.Vector(values);
@@ -126,7 +128,7 @@
          * @return Difference between newly created Vector and normalized output.
          */
         calculateRMinusY(instance, input, weights) {
-            this.r = new Vector_1.Vector(this.K, this.classLabels.indexOf(instance.getClassLabel()), 1.0);
+            this.r = new Vector_1.Vector(this.K, 1.0, this.classLabels.indexOf(instance.getClassLabel()));
             let o = weights.multiplyWithVectorFromRight(input);
             this.y = this.normalizeOutput(o);
             return this.r.difference(this.y);
@@ -174,6 +176,25 @@
                 result.set(this.classLabels[i], this.y.getValue(i));
             }
             return result;
+        }
+        loadClassLabels(input) {
+            let items = input.readLine().split(" ");
+            this.K = parseInt(items[0]);
+            this.d = parseInt(items[1]);
+            this.classLabels = new Array();
+            for (let i = 0; i < this.K; i++) {
+                this.classLabels.push(input.readLine());
+            }
+        }
+        loadActivationFunction(input) {
+            switch (input.readLine()) {
+                case "TANH":
+                    return ActivationFunction_1.ActivationFunction.TANH;
+                case "RELU":
+                    return ActivationFunction_1.ActivationFunction.RELU;
+                default:
+                    return ActivationFunction_1.ActivationFunction.SIGMOID;
+            }
         }
     }
     exports.NeuralNetworkModel = NeuralNetworkModel;

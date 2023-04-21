@@ -40,4 +40,8 @@ export class Lda extends Classifier{
         this.model = new LdaModel(priorDistribution, w, w0);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new LdaModel(fileName)
+    }
+
 }

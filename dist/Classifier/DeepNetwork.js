@@ -25,6 +25,9 @@
             let partition = new Partition_1.Partition(trainSet, parameters.getCrossValidationRatio(), true);
             this.model = new DeepNetworkModel_1.DeepNetworkModel(partition.get(1), partition.get(0), parameters);
         }
+        loadModel(fileName) {
+            this.model = new DeepNetworkModel_1.DeepNetworkModel(fileName);
+        }
     }
     exports.DeepNetwork = DeepNetwork;
 });

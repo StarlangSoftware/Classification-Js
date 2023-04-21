@@ -10,4 +10,5 @@ export declare class Knn extends Classifier {
      *                   distanceMetric: distance metric used to calculate the distance between two instances.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

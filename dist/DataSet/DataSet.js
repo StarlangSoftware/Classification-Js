@@ -33,7 +33,7 @@
             this.instances = new InstanceList_1.InstanceList();
             this.definition = undefined;
             if (definition != undefined) {
-                if (definition instanceof DataDefinition_1.DataDefinition) {
+                if (definition instanceof DataDefinition_1.DataDefinition && fileName == undefined) {
                     this.definition = definition;
                 }
                 else {

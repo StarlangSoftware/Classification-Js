@@ -29,4 +29,7 @@ export class Bagging extends Classifier{
         this.model = new TreeEnsembleModel(forest);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new TreeEnsembleModel(fileName)
+    }
 }

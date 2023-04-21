@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./LinearPerceptronModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../Performance/ClassificationPerformance", "nlptoolkit-math/dist/Vector", "nlptoolkit-util/dist/Random"], factory);
+        define(["require", "exports", "./LinearPerceptronModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../InstanceList/InstanceList", "../Performance/ClassificationPerformance", "nlptoolkit-math/dist/Vector", "nlptoolkit-util/dist/Random", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -13,9 +13,11 @@
     const LinearPerceptronModel_1 = require("./LinearPerceptronModel");
     const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
     const ActivationFunction_1 = require("../Parameter/ActivationFunction");
+    const InstanceList_1 = require("../InstanceList/InstanceList");
     const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
     const Vector_1 = require("nlptoolkit-math/dist/Vector");
     const Random_1 = require("nlptoolkit-util/dist/Random");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class MultiLayerPerceptronModel extends LinearPerceptronModel_1.LinearPerceptronModel {
         /**
          * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
@@ -23,12 +25,31 @@
          * Via the validationSet it finds the classification performance and reassigns the allocated weight Matrix with the matrix
          * that has the best accuracy and the Matrix V with the best Vector input.
          *
-         * @param trainSet      InstanceList that is used to train.
+         * @param trainSetOrFileName      InstanceList that is used to train.
          * @param validationSet InstanceList that is used to validate.
          * @param parameters    Multi layer perceptron parameters; seed, learningRate, etaDecrease, crossValidationRatio, epoch, hiddenNodes.
          */
-        constructor(trainSet, validationSet, parameters) {
-            super(trainSet);
+        constructor(trainSetOrFileName, validationSet, parameters) {
+            if (trainSetOrFileName instanceof InstanceList_1.InstanceList) {
+                super(trainSetOrFileName);
+                this.constructor1(trainSetOrFileName, validationSet, parameters);
+            }
+            else {
+                super();
+                this.constructor2(trainSetOrFileName);
+            }
+        }
+        /**
+         * The allocateWeights method allocates layers' weights of Matrix W and V.
+         *
+         * @param H Integer value for weights.
+         * @param random Random function to set weights.
+         */
+        allocateWeights(H, random) {
+            this.W = this.allocateLayerWeights(H, this.d + 1, random);
+            this.V = this.allocateLayerWeights(this.K, H + 1, random);
+        }
+        constructor1(trainSet, validationSet, parameters) {
             this.activationFunction = parameters.getActivationFunction();
             this.allocateWeights(parameters.getHiddenNodes(), new Random_1.Random(parameters.getSeed()));
             let bestW = this.W.clone();
@@ -81,21 +102,20 @@
             this.W = bestW;
             this.V = bestV;
         }
-        /**
-         * The allocateWeights method allocates layers' weights of Matrix W and V.
-         *
-         * @param H Integer value for weights.
-         * @param random Random function to set weights.
-         */
-        allocateWeights(H, random) {
-            this.W = this.allocateLayerWeights(H, this.d + 1, random);
-            this.V = this.allocateLayerWeights(this.K, H + 1, random);
+        constructor2(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            this.activationFunction = this.loadActivationFunction(input);
+            this.loadClassLabels(input);
+            this.W = this.loadMatrix(input);
+            this.V = this.loadMatrix(input);
         }
         /**
          * The calculateOutput method calculates the forward single hidden layer by using Matrices W and V.
          */
         calculateOutput() {
             this.calculateForwardSingleHiddenLayer(this.W, this.V, this.activationFunction);
+        }
+        saveTxt(fileName) {
         }
     }
     exports.MultiLayerPerceptronModel = MultiLayerPerceptronModel;

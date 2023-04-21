@@ -1,9 +1,10 @@
 import { Model } from "./Model";
 import { Instance } from "../Instance/Instance";
 export declare class RandomModel extends Model {
-    private classLabels;
+    private readonly classLabels;
     private random;
-    constructor(classLabels: Array<string>, seed: number);
+    private seed;
+    constructor(classLabelsOrFileName: Array<string> | string, seed?: number);
     /**
      * The predict method gets an Instance as an input and retrieves the possible class labels as an ArrayList. Then selects a
      * random number as an index and returns the class label at this selected index.
@@ -13,4 +14,5 @@ export declare class RandomModel extends Model {
      */
     predict(instance: Instance): string;
     predictProbability(instance: Instance): Map<string, number>;
+    saveTxt(fileName: string): void;
 }

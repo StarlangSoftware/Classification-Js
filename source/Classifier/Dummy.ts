@@ -16,4 +16,8 @@ export class Dummy extends Classifier{
         this.model = new DummyModel(trainSet);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new DummyModel(fileName)
+    }
+
 }

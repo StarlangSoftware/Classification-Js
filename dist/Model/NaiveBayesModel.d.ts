@@ -13,7 +13,7 @@ export declare class NaiveBayesModel extends GaussianModel {
      * @param classMeans        A {@link Map} of String and {@link Vector}.
      * @param classDeviations   A {@link Map} of String and {@link Vector}.
      */
-    constructor(priorDistribution: DiscreteDistribution, classMeans: any, classDeviations?: Map<string, Vector>);
+    constructor(priorDistribution: DiscreteDistribution | string, classMeans?: any, classDeviations?: Map<string, Vector>);
     /**
      * The calculateMetric method takes an {@link Instance} and a String as inputs, and it returns the log likelihood of
      * these inputs.
@@ -44,4 +44,5 @@ export declare class NaiveBayesModel extends GaussianModel {
      * @return The log likelihood of given class label and {@link Instance}.
      */
     private logLikelihoodDiscrete;
+    saveTxt(fileName: string): void;
 }

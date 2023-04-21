@@ -4,6 +4,7 @@ import {Vector} from "nlptoolkit-math/dist/Vector";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {ContinuousAttribute} from "../Attribute/ContinuousAttribute";
 import {DiscreteAttribute} from "../Attribute/DiscreteAttribute";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class NaiveBayesModel extends GaussianModel{
 
@@ -18,14 +19,21 @@ export class NaiveBayesModel extends GaussianModel{
      * @param classMeans        A {@link Map} of String and {@link Vector}.
      * @param classDeviations   A {@link Map} of String and {@link Vector}.
      */
-    constructor(priorDistribution: DiscreteDistribution, classMeans: any, classDeviations?: Map<string, Vector>) {
-        super();
-        this.priorDistribution = priorDistribution
-        if (classDeviations != undefined){
-            this.classMeans = classMeans
-            this.classDeviations = classDeviations
+    constructor(priorDistribution: DiscreteDistribution | string, classMeans?: any, classDeviations?: Map<string, Vector>) {
+        super()
+        if (priorDistribution instanceof DiscreteDistribution){
+            this.priorDistribution = priorDistribution
+            if (classDeviations != undefined){
+                this.classMeans = classMeans
+                this.classDeviations = classDeviations
+            } else {
+                this.classAttributeDistributions = classMeans
+            }
         } else {
-            this.classAttributeDistributions = classMeans
+            let input = new FileContents(priorDistribution)
+            let size = this.loadPriorDistribution(input)
+            this.classMeans = this.loadVectors(input, size)
+            this.classDeviations = this.loadVectors(input, size)
         }
     }
 
@@ -86,4 +94,8 @@ export class NaiveBayesModel extends GaussianModel{
         }
         return logLikelihood;
     }
+
+    saveTxt(fileName: string){
+    }
+
 }

@@ -4,23 +4,36 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Model", "nlptoolkit-math/dist/DiscreteDistribution"], factory);
+        define(["require", "exports", "./Model", "./DecisionTree/DecisionTree", "nlptoolkit-math/dist/DiscreteDistribution", "nlptoolkit-util/dist/FileContents", "./DecisionTree/DecisionNode"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TreeEnsembleModel = void 0;
     const Model_1 = require("./Model");
+    const DecisionTree_1 = require("./DecisionTree/DecisionTree");
     const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
+    const DecisionNode_1 = require("./DecisionTree/DecisionNode");
     class TreeEnsembleModel extends Model_1.Model {
         /**
          * A constructor which sets the {@link Array} of {@link DecisionTree} with given input.
          *
-         * @param forest An {@link Array} of {@link DecisionTree}.
+         * @param forestOrFileName An {@link Array} of {@link DecisionTree}.
          */
-        constructor(forest) {
+        constructor(forestOrFileName) {
             super();
-            this.forest = forest;
+            if (forestOrFileName instanceof Array) {
+                this.forest = forestOrFileName;
+            }
+            else {
+                let input = new FileContents_1.FileContents(forestOrFileName);
+                let numberOfTrees = parseInt(input.readLine());
+                this.forest = new Array();
+                for (let i = 0; i < numberOfTrees; i++) {
+                    this.forest.push(new DecisionTree_1.DecisionTree(new DecisionNode_1.DecisionNode(input)));
+                }
+            }
         }
         /**
          * The predict method takes an {@link Instance} as an input and loops through the {@link ArrayList} of {@link DecisionTree}s.
@@ -42,6 +55,8 @@
                 distribution.addItem(tree.predict(instance));
             }
             return distribution.getProbabilityDistribution();
+        }
+        saveTxt(fileName) {
         }
     }
     exports.TreeEnsembleModel = TreeEnsembleModel;

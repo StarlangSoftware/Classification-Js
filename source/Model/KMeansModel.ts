@@ -3,6 +3,8 @@ import {InstanceList} from "../InstanceList/InstanceList";
 import {DistanceMetric} from "../DistanceMetric/DistanceMetric";
 import {Instance} from "../Instance/Instance";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {EuclidianDistance} from "../DistanceMetric/EuclidianDistance";
 
 export class KMeansModel extends GaussianModel{
 
@@ -12,15 +14,22 @@ export class KMeansModel extends GaussianModel{
     /**
      * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
      *
-     * @param priorDistribution {@link DiscreteDistribution} input.
+     * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
      * @param classMeans        {@link InstanceList} of class means.
      * @param distanceMetric    {@link DistanceMetric} input.
      */
-    constructor(priorDistribution: DiscreteDistribution, classMeans: InstanceList, distanceMetric: DistanceMetric) {
-        super();
-        this.classMeans = classMeans;
-        this.priorDistribution = priorDistribution;
-        this.distanceMetric = distanceMetric;
+    constructor(priorDistributionOrFileName: DiscreteDistribution | string, classMeans?: InstanceList, distanceMetric?: DistanceMetric) {
+        super()
+        if (priorDistributionOrFileName instanceof DiscreteDistribution){
+            this.classMeans = classMeans
+            this.priorDistribution = priorDistributionOrFileName
+            this.distanceMetric = distanceMetric
+        } else {
+            this.distanceMetric = new EuclidianDistance()
+            let input = new FileContents(priorDistributionOrFileName)
+            this.loadPriorDistribution(input)
+            this.classMeans = this.loadInstanceList(input)
+        }
     }
 
     /**
@@ -39,6 +48,9 @@ export class KMeansModel extends GaussianModel{
             }
         }
         return Number.NEGATIVE_INFINITY;
+    }
+
+    saveTxt(fileName: string){
     }
 
 }

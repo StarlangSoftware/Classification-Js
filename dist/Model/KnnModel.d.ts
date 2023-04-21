@@ -9,11 +9,11 @@ export declare class KnnModel extends Model {
     /**
      * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
      *
-     * @param data           {@link InstanceList} input.
+     * @param dataOrFileName           {@link InstanceList} input.
      * @param k              K value.
      * @param distanceMetric {@link DistanceMetric} input.
      */
-    constructor(data: InstanceList, k: number, distanceMetric: DistanceMetric);
+    constructor(dataOrFileName: InstanceList | string, k?: number, distanceMetric?: DistanceMetric);
     /**
      * The predict method takes an {@link Instance} as an input and finds the nearest neighbors of given instance. Then
      * it returns the first possible class label as the predicted class.
@@ -33,4 +33,5 @@ export declare class KnnModel extends Model {
      * @return The first k instances which are nearest to the given instance as an {@link InstanceList}.
      */
     nearestNeighbors(instance: Instance): InstanceList;
+    saveTxt(fileName: string): void;
 }

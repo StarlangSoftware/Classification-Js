@@ -6,12 +6,13 @@ import {InstanceList} from "../InstanceList/InstanceList";
 import {Vector} from "nlptoolkit-math/dist/Vector";
 import {ClassificationPerformance} from "../Performance/ClassificationPerformance";
 import {Random} from "nlptoolkit-util/dist/Random";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class DeepNetworkModel extends NeuralNetworkModel{
 
     private weights: Array<Matrix>
     private hiddenLayerSize: number
-    private readonly activationFunction: ActivationFunction
+    private activationFunction: ActivationFunction
 
     /**
      * The allocateWeights method takes {@link DeepNetworkParameter}s as an input. First it adds random weights to the {@link Array}
@@ -44,21 +45,7 @@ export class DeepNetworkModel extends NeuralNetworkModel{
         return bestWeights;
     }
 
-    /**
-     * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
-     * First it sets the class labels, their sizes as K and the size of the continuous attributes as d of given train set and
-     * allocates weights and sets the best weights. At each epoch, it shuffles the train set and loops through the each item of that train set,
-     * it multiplies the weights Matrix with input Vector than applies the sigmoid function and stores the result as hidden and add bias.
-     * Then updates weights and at the end it compares the performance of these weights with validation set. It updates the bestClassificationPerformance and
-     * bestWeights according to the current situation. At the end it updates the learning rate via etaDecrease value and finishes
-     * with clearing the weights.
-     *
-     * @param trainSet      {@link InstanceList} to be used as trainSet.
-     * @param validationSet {@link InstanceList} to be used as validationSet.
-     * @param parameters    {@link DeepNetworkParameter} input.
-     */
-    constructor(trainSet: InstanceList, validationSet: InstanceList, parameters: DeepNetworkParameter) {
-        super(trainSet);
+    constructor1(trainSet: InstanceList, validationSet: InstanceList, parameters: DeepNetworkParameter){
         let tmpHidden = new Vector(0, 0);
         let deltaWeights = new Array<Matrix>();
         let hidden = new Array<Vector>();
@@ -136,6 +123,40 @@ export class DeepNetworkModel extends NeuralNetworkModel{
         }
     }
 
+    constructor2(fileName: string){
+        let input = new FileContents(fileName)
+        this.activationFunction = this.loadActivationFunction(input)
+        this.loadClassLabels(input)
+        this.hiddenLayerSize = parseInt(input.readLine())
+        this.weights = new Array<Matrix>()
+        for (let i = 0; i < this.hiddenLayerSize + 1; i++){
+            this.weights.push(this.loadMatrix(input))
+        }
+    }
+
+    /**
+     * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
+     * First it sets the class labels, their sizes as K and the size of the continuous attributes as d of given train set and
+     * allocates weights and sets the best weights. At each epoch, it shuffles the train set and loops through the each item of that train set,
+     * it multiplies the weights Matrix with input Vector than applies the sigmoid function and stores the result as hidden and add bias.
+     * Then updates weights and at the end it compares the performance of these weights with validation set. It updates the bestClassificationPerformance and
+     * bestWeights according to the current situation. At the end it updates the learning rate via etaDecrease value and finishes
+     * with clearing the weights.
+     *
+     * @param trainSetOrFileName      {@link InstanceList} to be used as trainSet.
+     * @param validationSet {@link InstanceList} to be used as validationSet.
+     * @param parameters    {@link DeepNetworkParameter} input.
+     */
+    constructor(trainSetOrFileName: InstanceList | string, validationSet?: InstanceList, parameters?: DeepNetworkParameter) {
+        if (trainSetOrFileName instanceof InstanceList){
+            super(trainSetOrFileName)
+            this.constructor1(trainSetOrFileName, validationSet, parameters)
+        } else {
+            super()
+            this.constructor2(trainSetOrFileName)
+        }
+    }
+
     /**
      * The calculateOutput method loops size of the weights times and calculate one hidden layer at a time and adds bias term.
      * At the end it updates the output y value.
@@ -152,6 +173,9 @@ export class DeepNetworkModel extends NeuralNetworkModel{
             hiddenBiased = hidden.biased();
         }
         this.y = this.weights[this.weights.length - 1].multiplyWithVectorFromRight(hiddenBiased);
+    }
+
+    saveTxt(fileName: string){
     }
 
 }

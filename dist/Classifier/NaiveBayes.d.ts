@@ -22,4 +22,5 @@ export declare class NaiveBayes extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

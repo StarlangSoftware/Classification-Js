@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Model", "../InstanceList/InstanceList", "../Instance/CompositeInstance", "./KnnInstance"], factory);
+        define(["require", "exports", "./Model", "../InstanceList/InstanceList", "../Instance/CompositeInstance", "./KnnInstance", "../DistanceMetric/EuclidianDistance", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -14,19 +14,29 @@
     const InstanceList_1 = require("../InstanceList/InstanceList");
     const CompositeInstance_1 = require("../Instance/CompositeInstance");
     const KnnInstance_1 = require("./KnnInstance");
+    const EuclidianDistance_1 = require("../DistanceMetric/EuclidianDistance");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class KnnModel extends Model_1.Model {
         /**
          * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
          *
-         * @param data           {@link InstanceList} input.
+         * @param dataOrFileName           {@link InstanceList} input.
          * @param k              K value.
          * @param distanceMetric {@link DistanceMetric} input.
          */
-        constructor(data, k, distanceMetric) {
+        constructor(dataOrFileName, k, distanceMetric) {
             super();
-            this.data = data;
-            this.k = k;
-            this.distanceMetric = distanceMetric;
+            if (dataOrFileName instanceof InstanceList_1.InstanceList) {
+                this.data = dataOrFileName;
+                this.k = k;
+                this.distanceMetric = distanceMetric;
+            }
+            else {
+                this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
+                let input = new FileContents_1.FileContents(dataOrFileName);
+                this.k = parseInt(input.readLine());
+                this.data = this.loadInstanceList(input);
+            }
         }
         /**
          * The predict method takes an {@link Instance} as an input and finds the nearest neighbors of given instance. Then
@@ -76,6 +86,8 @@
                 result.add(instances[i].getInstance());
             }
             return result;
+        }
+        saveTxt(fileName) {
         }
     }
     exports.KnnModel = KnnModel;

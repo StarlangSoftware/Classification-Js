@@ -19,4 +19,8 @@ export class RandomClassifier extends Classifier{
         this.model = new RandomModel(result, parameters.getSeed());
     }
 
+    loadModel(fileName: string): void{
+        this.model = new RandomModel(fileName)
+    }
+
 }

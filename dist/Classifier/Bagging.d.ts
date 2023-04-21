@@ -13,4 +13,5 @@ export declare class Bagging extends Classifier {
      * @param parameters Parameters of the bagging trees algorithm. ensembleSize returns the number of trees in the bagged forest.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

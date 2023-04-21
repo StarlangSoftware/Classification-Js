@@ -6,6 +6,7 @@ import {Instance} from "../Instance/Instance";
 import {ActivationFunction} from "../Parameter/ActivationFunction";
 import {CompositeInstance} from "../Instance/CompositeInstance";
 import {Random} from "nlptoolkit-util/dist/Random";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export abstract class NeuralNetworkModel extends ValidatedModel{
 
@@ -23,11 +24,13 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
      *
      * @param trainSet {@link InstanceList} to use as train set.
      */
-    protected constructor(trainSet: InstanceList) {
+    protected constructor(trainSet?: InstanceList) {
         super();
-        this.classLabels = trainSet.getDistinctClassLabels()
-        this.K = this.classLabels.length
-        this.d = trainSet.get(0).continuousAttributeSize()
+        if (trainSet != undefined){
+            this.classLabels = trainSet.getDistinctClassLabels()
+            this.K = this.classLabels.length
+            this.d = trainSet.get(0).continuousAttributeSize()
+        }
     }
 
     /**
@@ -52,10 +55,10 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
     protected normalizeOutput(o: Vector): Vector{
         let sum = 0.0;
         let values = new Array<number>()
-        for (let i = 0; i < values.length; i++){
+        for (let i = 0; i < o.size(); i++){
             sum += Math.exp(o.getValue(i));
         }
-        for (let i = 0; i < values.length; i++){
+        for (let i = 0; i < o.size(); i++){
             values.push(Math.exp(o.getValue(i)) / sum);
         }
         return new Vector(values);
@@ -135,7 +138,7 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
      * @return Difference between newly created Vector and normalized output.
      */
     protected calculateRMinusY(instance: Instance, input: Vector, weights: Matrix): Vector{
-        this.r = new Vector(this.K, this.classLabels.indexOf(instance.getClassLabel()), 1.0);
+        this.r = new Vector(this.K, 1.0, this.classLabels.indexOf(instance.getClassLabel()));
         let o = weights.multiplyWithVectorFromRight(input);
         this.y = this.normalizeOutput(o);
         return this.r.difference(this.y);
@@ -185,5 +188,26 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
             result.set(this.classLabels[i], this.y.getValue(i));
         }
         return result;
+    }
+
+    loadClassLabels(input: FileContents){
+        let items = input.readLine().split(" ")
+        this.K = parseInt(items[0])
+        this.d = parseInt(items[1])
+        this.classLabels = new Array<string>()
+        for (let i = 0; i < this.K; i++){
+            this.classLabels.push(input.readLine())
+        }
+    }
+
+    loadActivationFunction(input: FileContents): ActivationFunction{
+        switch (input.readLine()){
+            case "TANH":
+                return ActivationFunction.TANH
+            case "RELU":
+                return ActivationFunction.RELU
+            default:
+                return ActivationFunction.SIGMOID
+        }
     }
 }

@@ -30,6 +30,9 @@
             }
             this.model = new KMeansModel_1.KMeansModel(priorDistribution, classMeans, parameters.getDistanceMetric());
         }
+        loadModel(fileName) {
+            this.model = new KMeansModel_1.KMeansModel(fileName);
+        }
     }
     exports.KMeans = KMeans;
 });

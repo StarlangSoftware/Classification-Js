@@ -4,6 +4,8 @@ import {Instance} from "../Instance/Instance";
 import {DistanceMetric} from "../DistanceMetric/DistanceMetric";
 import {CompositeInstance} from "../Instance/CompositeInstance";
 import {KnnInstance} from "./KnnInstance";
+import {EuclidianDistance} from "../DistanceMetric/EuclidianDistance";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class KnnModel extends Model{
 
@@ -14,15 +16,22 @@ export class KnnModel extends Model{
     /**
      * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
      *
-     * @param data           {@link InstanceList} input.
+     * @param dataOrFileName           {@link InstanceList} input.
      * @param k              K value.
      * @param distanceMetric {@link DistanceMetric} input.
      */
-    constructor(data: InstanceList, k: number, distanceMetric: DistanceMetric) {
-        super();
-        this.data = data
-        this.k = k
-        this.distanceMetric = distanceMetric
+    constructor(dataOrFileName: InstanceList | string, k?: number, distanceMetric?: DistanceMetric) {
+        super()
+        if (dataOrFileName instanceof InstanceList){
+            this.data = dataOrFileName
+            this.k = k
+            this.distanceMetric = distanceMetric
+        } else {
+            this.distanceMetric = new EuclidianDistance()
+            let input = new FileContents(dataOrFileName)
+            this.k = parseInt(input.readLine())
+            this.data = this.loadInstanceList(input)
+        }
     }
 
     /**
@@ -75,4 +84,8 @@ export class KnnModel extends Model{
         }
         return result;
     }
+
+    saveTxt(fileName: string){
+    }
+
 }

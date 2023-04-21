@@ -4,12 +4,13 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/RandomArray"], factory);
+        define(["require", "exports", "../../InstanceList/InstanceList", "./DecisionCondition", "../Model", "../../Attribute/DiscreteIndexedAttribute", "../../Attribute/DiscreteAttribute", "../../Attribute/ContinuousAttribute", "nlptoolkit-math/dist/DiscreteDistribution", "../../InstanceList/Partition", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/RandomArray", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DecisionNode = void 0;
+    const InstanceList_1 = require("../../InstanceList/InstanceList");
     const DecisionCondition_1 = require("./DecisionCondition");
     const Model_1 = require("../Model");
     const DiscreteIndexedAttribute_1 = require("../../Attribute/DiscreteIndexedAttribute");
@@ -19,6 +20,7 @@
     const Partition_1 = require("../../InstanceList/Partition");
     const CompositeInstance_1 = require("../../Instance/CompositeInstance");
     const RandomArray_1 = require("nlptoolkit-util/dist/RandomArray");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class DecisionNode {
         /**
          * The DecisionNode method takes {@link InstanceList} data as input, and then it sets the class label parameter by finding
@@ -50,9 +52,21 @@
             this.classLabel = undefined;
             this.leaf = false;
             this.condition = undefined;
+            if (data instanceof InstanceList_1.InstanceList && (condition instanceof DecisionCondition_1.DecisionCondition || condition == undefined)) {
+                this.constructor1(data, condition, parameter, isStump);
+            }
+            else {
+                if (data instanceof FileContents_1.FileContents) {
+                    this.constructor2(data);
+                }
+            }
+        }
+        constructor1(data, condition, parameter, isStump) {
             let bestAttribute = -1;
             let bestSplitValue = 0;
-            this.condition = condition;
+            if (condition instanceof DecisionCondition_1.DecisionCondition) {
+                this.condition = condition;
+            }
             this.data = data;
             this.classLabel = Model_1.Model.getMaximum(data.getClassLabels());
             this.leaf = true;
@@ -150,6 +164,32 @@
                 }
             }
         }
+        constructor2(contents) {
+            let items = contents.readLine().split(" ");
+            if (items[0] != "-1") {
+                if (items[1][0] == '=') {
+                    this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new DiscreteAttribute_1.DiscreteAttribute(items[2]), items[1][0]);
+                }
+                else {
+                    this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new ContinuousAttribute_1.ContinuousAttribute(parseFloat(items[2])), items[1][0]);
+                }
+            }
+            else {
+                this.condition = null;
+            }
+            let numberOfChildren = parseInt(contents.readLine());
+            if (numberOfChildren != 0) {
+                this.leaf = false;
+                this.children = new Array();
+                for (let i = 0; i < numberOfChildren; i++) {
+                    this.children.push(new DecisionNode(contents));
+                }
+            }
+            else {
+                this.leaf = true;
+                this.classLabel = contents.readLine();
+            }
+        }
         /**
          * The entropyForDiscreteAttribute method takes an attributeIndex and creates an ArrayList of DiscreteDistribution.
          * Then loops through the distributions and calculates the total entropy.
@@ -206,7 +246,7 @@
          * @param splitValue     Split value is used for partitioning.
          */
         createChildrenForContinuous(attributeIndex, splitValue, parameter, isStump) {
-            let childrenData = new Partition_1.Partition(this.data, attributeIndex, splitValue);
+            let childrenData = new Partition_1.Partition(this.data, attributeIndex, splitValue + 0.0000001);
             this.children = new Array();
             this.children.push(new DecisionNode(childrenData.get(0), new DecisionCondition_1.DecisionCondition(attributeIndex, new ContinuousAttribute_1.ContinuousAttribute(splitValue), "<"), parameter, isStump));
             this.children.push(new DecisionNode(childrenData.get(1), new DecisionCondition_1.DecisionCondition(attributeIndex, new ContinuousAttribute_1.ContinuousAttribute(splitValue), ">"), parameter, isStump));

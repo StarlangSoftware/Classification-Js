@@ -27,4 +27,8 @@ export class C45 extends Classifier{
         this.model = tree;
     }
 
+    loadModel(fileName: string): void{
+        this.model = new DecisionTree(fileName)
+    }
+
 }

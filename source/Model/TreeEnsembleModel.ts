@@ -2,6 +2,8 @@ import {Model} from "./Model";
 import {Instance} from "../Instance/Instance";
 import {DecisionTree} from "./DecisionTree/DecisionTree";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {DecisionNode} from "./DecisionTree/DecisionNode";
 
 export class TreeEnsembleModel extends Model{
 
@@ -10,11 +12,20 @@ export class TreeEnsembleModel extends Model{
     /**
      * A constructor which sets the {@link Array} of {@link DecisionTree} with given input.
      *
-     * @param forest An {@link Array} of {@link DecisionTree}.
+     * @param forestOrFileName An {@link Array} of {@link DecisionTree}.
      */
-    constructor(forest: Array<DecisionTree>) {
+    constructor(forestOrFileName: Array<DecisionTree> | string) {
         super();
-        this.forest = forest
+        if (forestOrFileName instanceof Array){
+            this.forest = forestOrFileName
+        } else {
+            let input = new FileContents(forestOrFileName)
+            let numberOfTrees = parseInt(input.readLine())
+            this.forest = new Array<DecisionTree>()
+            for (let i = 0; i < numberOfTrees; i++){
+                this.forest.push(new DecisionTree(new DecisionNode(input)))
+            }
+        }
     }
 
     /**
@@ -38,6 +49,9 @@ export class TreeEnsembleModel extends Model{
             distribution.addItem(tree.predict(instance));
         }
         return distribution.getProbabilityDistribution();
+    }
+
+    saveTxt(fileName: string){
     }
 
 }

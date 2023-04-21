@@ -4,13 +4,15 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./GaussianModel"], factory);
+        define(["require", "exports", "./GaussianModel", "nlptoolkit-math/dist/DiscreteDistribution", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NaiveBayesModel = void 0;
     const GaussianModel_1 = require("./GaussianModel");
+    const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class NaiveBayesModel extends GaussianModel_1.GaussianModel {
         /**
          * A constructor that sets the priorDistribution, classMeans and classDeviations.
@@ -24,13 +26,21 @@
             this.classMeans = undefined;
             this.classDeviations = undefined;
             this.classAttributeDistributions = undefined;
-            this.priorDistribution = priorDistribution;
-            if (classDeviations != undefined) {
-                this.classMeans = classMeans;
-                this.classDeviations = classDeviations;
+            if (priorDistribution instanceof DiscreteDistribution_1.DiscreteDistribution) {
+                this.priorDistribution = priorDistribution;
+                if (classDeviations != undefined) {
+                    this.classMeans = classMeans;
+                    this.classDeviations = classDeviations;
+                }
+                else {
+                    this.classAttributeDistributions = classMeans;
+                }
             }
             else {
-                this.classAttributeDistributions = classMeans;
+                let input = new FileContents_1.FileContents(priorDistribution);
+                let size = this.loadPriorDistribution(input);
+                this.classMeans = this.loadVectors(input, size);
+                this.classDeviations = this.loadVectors(input, size);
             }
         }
         /**
@@ -88,6 +98,8 @@
                 logLikelihood += Math.log(attributeDistributions[i].getProbabilityLaplaceSmoothing(xi));
             }
             return logLikelihood;
+        }
+        saveTxt(fileName) {
         }
     }
     exports.NaiveBayesModel = NaiveBayesModel;

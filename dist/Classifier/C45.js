@@ -34,6 +34,9 @@
             }
             this.model = tree;
         }
+        loadModel(fileName) {
+            this.model = new DecisionTree_1.DecisionTree(fileName);
+        }
     }
     exports.C45 = C45;
 });

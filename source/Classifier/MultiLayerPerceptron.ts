@@ -20,4 +20,8 @@ export class MultiLayerPerceptron extends Classifier{
         this.model = new MultiLayerPerceptronModel(partition.get(1), partition.get(0), <MultiLayerPerceptronParameter> parameters);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new MultiLayerPerceptronModel(fileName)
+    }
+
 }

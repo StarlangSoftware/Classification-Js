@@ -1,6 +1,8 @@
 import { DiscreteDistribution } from "nlptoolkit-math/dist/DiscreteDistribution";
 import { Instance } from "../Instance/Instance";
 import { ValidatedModel } from "./ValidatedModel";
+import { FileContents } from "nlptoolkit-util/dist/FileContents";
+import { Vector } from "nlptoolkit-math/dist/Vector";
 export declare abstract class GaussianModel extends ValidatedModel {
     protected priorDistribution: DiscreteDistribution;
     /**
@@ -20,5 +22,7 @@ export declare abstract class GaussianModel extends ValidatedModel {
      * @return The class which has the maximum value of metric.
      */
     predict(instance: Instance): string;
+    loadPriorDistribution(input: FileContents): number;
+    loadVectors(input: FileContents, size: number): Map<string, Vector>;
     predictProbability(instance: Instance): Map<string, number>;
 }

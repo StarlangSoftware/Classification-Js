@@ -39,4 +39,8 @@ export class Qda extends Classifier{
         this.model = new QdaModel(priorDistribution, W, w, w0);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new QdaModel(fileName)
+    }
+
 }

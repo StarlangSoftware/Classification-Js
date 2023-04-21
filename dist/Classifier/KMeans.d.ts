@@ -9,4 +9,5 @@ export declare class KMeans extends Classifier {
      * @param parameters distanceMetric: distance metric used to calculate the distance between two instances.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

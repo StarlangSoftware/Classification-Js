@@ -26,4 +26,8 @@ export class RandomForest extends Classifier{
         this.model = new TreeEnsembleModel(forest);
     }
 
+    loadModel(fileName: string): void{
+        this.model = new TreeEnsembleModel(fileName)
+    }
+
 }

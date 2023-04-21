@@ -23,6 +23,9 @@
         train(trainSet, parameters) {
             this.model = new DummyModel_1.DummyModel(trainSet);
         }
+        loadModel(fileName) {
+            this.model = new DummyModel_1.DummyModel(fileName);
+        }
     }
     exports.Dummy = Dummy;
 });

@@ -9,4 +9,5 @@ export declare class RandomClassifier extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    loadModel(fileName: string): void;
 }

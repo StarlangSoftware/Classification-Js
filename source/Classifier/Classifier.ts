@@ -13,6 +13,7 @@ export abstract class Classifier {
     protected model: Model
 
     abstract train(trainSet: InstanceList, parameters: Parameter):void
+    abstract loadModel(fileName: string): void
 
     /**
      * Checks given instance's attribute and returns true if it is a discrete indexed attribute, false otherwise.

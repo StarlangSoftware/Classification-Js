@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "nlptoolkit-math/dist/Vector", "../Performance/ClassificationPerformance", "nlptoolkit-util/dist/Random"], factory);
+        define(["require", "exports", "./NeuralNetworkModel", "nlptoolkit-math/dist/Matrix", "../Parameter/ActivationFunction", "../InstanceList/InstanceList", "nlptoolkit-math/dist/Vector", "../Performance/ClassificationPerformance", "nlptoolkit-util/dist/Random", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -13,9 +13,11 @@
     const NeuralNetworkModel_1 = require("./NeuralNetworkModel");
     const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
     const ActivationFunction_1 = require("../Parameter/ActivationFunction");
+    const InstanceList_1 = require("../InstanceList/InstanceList");
     const Vector_1 = require("nlptoolkit-math/dist/Vector");
     const ClassificationPerformance_1 = require("../Performance/ClassificationPerformance");
     const Random_1 = require("nlptoolkit-util/dist/Random");
+    const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class DeepNetworkModel extends NeuralNetworkModel_1.NeuralNetworkModel {
         /**
          * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
@@ -26,12 +28,50 @@
          * bestWeights according to the current situation. At the end it updates the learning rate via etaDecrease value and finishes
          * with clearing the weights.
          *
-         * @param trainSet      {@link InstanceList} to be used as trainSet.
+         * @param trainSetOrFileName      {@link InstanceList} to be used as trainSet.
          * @param validationSet {@link InstanceList} to be used as validationSet.
          * @param parameters    {@link DeepNetworkParameter} input.
          */
-        constructor(trainSet, validationSet, parameters) {
-            super(trainSet);
+        constructor(trainSetOrFileName, validationSet, parameters) {
+            if (trainSetOrFileName instanceof InstanceList_1.InstanceList) {
+                super(trainSetOrFileName);
+                this.constructor1(trainSetOrFileName, validationSet, parameters);
+            }
+            else {
+                super();
+                this.constructor2(trainSetOrFileName);
+            }
+        }
+        /**
+         * The allocateWeights method takes {@link DeepNetworkParameter}s as an input. First it adds random weights to the {@link Array}
+         * of {@link Matrix} weights' first layer. Then it loops through the layers and adds random weights till the last layer.
+         * At the end it adds random weights to the last layer and also sets the hiddenLayerSize value.
+         *
+         * @param parameters {@link DeepNetworkParameter} input.
+         */
+        allocateWeights(parameters) {
+            this.weights = new Array();
+            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1, new Random_1.Random(parameters.getSeed())));
+            for (let i = 0; i < parameters.layerSize() - 1; i++) {
+                this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1, new Random_1.Random(parameters.getSeed())));
+            }
+            this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1, new Random_1.Random(parameters.getSeed())));
+            this.hiddenLayerSize = parameters.layerSize();
+        }
+        /**
+         * The setBestWeights method creates an {@link Array} of Matrix as bestWeights and clones the values of weights {@link Array}
+         * into this newly created {@link Array}.
+         *
+         * @return An {@link Array} clones from the weights ArrayList.
+         */
+        setBestWeights() {
+            let bestWeights = new Array();
+            for (let m of this.weights) {
+                bestWeights.push(m.clone());
+            }
+            return bestWeights;
+        }
+        constructor1(trainSet, validationSet, parameters) {
             let tmpHidden = new Vector_1.Vector(0, 0);
             let deltaWeights = new Array();
             let hidden = new Array();
@@ -111,34 +151,15 @@
                 this.weights.push(m);
             }
         }
-        /**
-         * The allocateWeights method takes {@link DeepNetworkParameter}s as an input. First it adds random weights to the {@link Array}
-         * of {@link Matrix} weights' first layer. Then it loops through the layers and adds random weights till the last layer.
-         * At the end it adds random weights to the last layer and also sets the hiddenLayerSize value.
-         *
-         * @param parameters {@link DeepNetworkParameter} input.
-         */
-        allocateWeights(parameters) {
+        constructor2(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            this.activationFunction = this.loadActivationFunction(input);
+            this.loadClassLabels(input);
+            this.hiddenLayerSize = parseInt(input.readLine());
             this.weights = new Array();
-            this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(0), this.d + 1, new Random_1.Random(parameters.getSeed())));
-            for (let i = 0; i < parameters.layerSize() - 1; i++) {
-                this.weights.push(this.allocateLayerWeights(parameters.getHiddenNodes(i + 1), parameters.getHiddenNodes(i) + 1, new Random_1.Random(parameters.getSeed())));
+            for (let i = 0; i < this.hiddenLayerSize + 1; i++) {
+                this.weights.push(this.loadMatrix(input));
             }
-            this.weights.push(this.allocateLayerWeights(this.K, parameters.getHiddenNodes(parameters.layerSize() - 1) + 1, new Random_1.Random(parameters.getSeed())));
-            this.hiddenLayerSize = parameters.layerSize();
-        }
-        /**
-         * The setBestWeights method creates an {@link Array} of Matrix as bestWeights and clones the values of weights {@link Array}
-         * into this newly created {@link Array}.
-         *
-         * @return An {@link Array} clones from the weights ArrayList.
-         */
-        setBestWeights() {
-            let bestWeights = new Array();
-            for (let m of this.weights) {
-                bestWeights.push(m.clone());
-            }
-            return bestWeights;
         }
         /**
          * The calculateOutput method loops size of the weights times and calculate one hidden layer at a time and adds bias term.
@@ -157,6 +178,8 @@
                 hiddenBiased = hidden.biased();
             }
             this.y = this.weights[this.weights.length - 1].multiplyWithVectorFromRight(hiddenBiased);
+        }
+        saveTxt(fileName) {
         }
     }
     exports.DeepNetworkModel = DeepNetworkModel;

@@ -3,19 +3,26 @@ import {DecisionNode} from "./DecisionNode";
 import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
 import {InstanceList} from "../../InstanceList/InstanceList";
+import * as fs from "fs";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class DecisionTree extends ValidatedModel{
 
-    private root: DecisionNode
+    private readonly root: DecisionNode
 
     /**
      * Constructor that sets root node of the decision tree.
      *
-     * @param root DecisionNode type input.
+     * @param rootOrFileName DecisionNode type input or fileName
      */
-    constructor(root: DecisionNode) {
+    constructor(rootOrFileName: DecisionNode | string) {
         super();
-        this.root = root
+        if (rootOrFileName instanceof DecisionNode){
+            this.root = rootOrFileName
+        } else {
+            let contents = new FileContents(rootOrFileName)
+            this.root = new DecisionNode(contents)
+        }
     }
 
     /**
@@ -35,6 +42,9 @@ export class DecisionTree extends ValidatedModel{
 
     predictProbability(instance: Instance): Map<string, number> {
         return this.root.predictProbabilityDistribution(instance)
+    }
+
+    saveTxt(fileName: string){
     }
 
     /**

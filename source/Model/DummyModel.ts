@@ -3,6 +3,7 @@ import {Instance} from "../Instance/Instance";
 import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {CompositeInstance} from "../Instance/CompositeInstance";
+import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class DummyModel extends Model{
 
@@ -13,9 +14,23 @@ export class DummyModel extends Model{
      *
      * @param trainSet {@link InstanceList} which is used to get the class distribution.
      */
-    constructor(trainSet: InstanceList) {
+    constructor(trainSet: InstanceList | string) {
         super();
-        this.distribution = trainSet.classDistribution();
+        if (trainSet instanceof InstanceList){
+            this.distribution = trainSet.classDistribution();
+        } else {
+            let input = new FileContents(trainSet)
+            this.distribution = new DiscreteDistribution()
+            let size = parseInt(input.readLine())
+            for (let i = 0; i < size; i++){
+                let line = input.readLine()
+                let items = line.split(" ")
+                let count = parseInt(items[1])
+                for (let j = 0; j < count; j++){
+                    this.distribution.addItem(items[0])
+                }
+            }
+        }
     }
 
     /**
@@ -35,6 +50,9 @@ export class DummyModel extends Model{
 
     predictProbability(instance: Instance): Map<string, number> {
         return this.distribution.getProbabilityDistribution();
+    }
+
+    saveTxt(fileName: string){
     }
 
 }
