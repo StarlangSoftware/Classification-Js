@@ -171,7 +171,12 @@
                     this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new DiscreteAttribute_1.DiscreteAttribute(items[2]), items[1][0]);
                 }
                 else {
-                    this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new ContinuousAttribute_1.ContinuousAttribute(parseFloat(items[2])), items[1][0]);
+                    if (items[1][0] == ':') {
+                        this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new DiscreteIndexedAttribute_1.DiscreteIndexedAttribute("", parseInt(items[2]), parseInt(items[3])), '=');
+                    }
+                    else {
+                        this.condition = new DecisionCondition_1.DecisionCondition(parseInt(items[0]), new ContinuousAttribute_1.ContinuousAttribute(parseFloat(items[2])), items[1][0]);
+                    }
                 }
             }
             else {

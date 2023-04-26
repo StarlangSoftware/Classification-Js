@@ -125,7 +125,11 @@ export class DecisionNode {
             if (items[1][0] == '='){
                 this.condition = new DecisionCondition(parseInt(items[0]), new DiscreteAttribute(items[2]), items[1][0])
             } else {
-                this.condition = new DecisionCondition(parseInt(items[0]), new ContinuousAttribute(parseFloat(items[2])), items[1][0])
+                if (items[1][0] == ':'){
+                    this.condition = new DecisionCondition(parseInt(items[0]), new DiscreteIndexedAttribute("", parseInt(items[2]), parseInt(items[3])), '=')
+                } else {
+                    this.condition = new DecisionCondition(parseInt(items[0]), new ContinuousAttribute(parseFloat(items[2])), items[1][0])
+                }
             }
         } else {
             this.condition = null

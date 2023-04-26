@@ -50,6 +50,11 @@ export class InstanceList {
                                 case AttributeType.DISCRETE:
                                     current.addAttribute(new DiscreteAttribute(attributeList[i]));
                                     break;
+                                case AttributeType.DISCRETE_INDEXED:
+                                    current.addAttribute(new DiscreteIndexedAttribute(attributeList[i],
+                                        definition.featureValueIndex(i, attributeList[i]),
+                                        definition.numberOfValues(i)))
+                                    break;
                                 case AttributeType.BINARY:
                                     if (attributeList[i].toLowerCase() == "yes" || attributeList[i] == "1"){
                                         current.addAttribute(new BinaryAttribute(true));

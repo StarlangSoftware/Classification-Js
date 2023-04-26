@@ -4,16 +4,34 @@ import {FeatureSubSet} from "../FeatureSelection/FeatureSubSet";
 export class DataDefinition {
 
     private attributeTypes: Array<AttributeType>
+    private readonly attributeValueList: Array<Array<String>>
 
     /**
      * Constructor for creating a new {@link DataDefinition} with given attribute types.
      *
      * @param attributeTypes Attribute types of the data definition.
+     * @param attributeValueList Array of array of strings to represent all possible values of discrete features.
      */
-    constructor(attributeTypes?: Array<AttributeType>) {
+    constructor(attributeTypes?: Array<AttributeType>, attributeValueList?: Array<Array<String>>) {
         if (attributeTypes != undefined){
             this.attributeTypes = attributeTypes
+            if (attributeValueList != undefined){
+                this.attributeValueList = attributeValueList;
+            }
         }
+    }
+
+    numberOfValues(attributeIndex: number): number{
+        return this.attributeValueList[attributeIndex].length
+    }
+
+    featureValueIndex(attributeIndex: number, value: String): number{
+        for (let i = 0; i < this.attributeValueList[attributeIndex].length; i++){
+            if (this.attributeValueList[attributeIndex][i] == value){
+                return i
+            }
+        }
+        return -1
     }
 
     /**

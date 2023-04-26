@@ -16,11 +16,26 @@
          * Constructor for creating a new {@link DataDefinition} with given attribute types.
          *
          * @param attributeTypes Attribute types of the data definition.
+         * @param attributeValueList Array of array of strings to represent all possible values of discrete features.
          */
-        constructor(attributeTypes) {
+        constructor(attributeTypes, attributeValueList) {
             if (attributeTypes != undefined) {
                 this.attributeTypes = attributeTypes;
+                if (attributeValueList != undefined) {
+                    this.attributeValueList = attributeValueList;
+                }
             }
+        }
+        numberOfValues(attributeIndex) {
+            return this.attributeValueList[attributeIndex].length;
+        }
+        featureValueIndex(attributeIndex, value) {
+            for (let i = 0; i < this.attributeValueList[attributeIndex].length; i++) {
+                if (this.attributeValueList[attributeIndex][i] == value) {
+                    return i;
+                }
+            }
+            return -1;
         }
         /**
          * Returns the number of attribute types.

@@ -56,6 +56,9 @@
                                     case AttributeType_1.AttributeType.DISCRETE:
                                         current.addAttribute(new DiscreteAttribute_1.DiscreteAttribute(attributeList[i]));
                                         break;
+                                    case AttributeType_1.AttributeType.DISCRETE_INDEXED:
+                                        current.addAttribute(new DiscreteIndexedAttribute_1.DiscreteIndexedAttribute(attributeList[i], definition.featureValueIndex(i, attributeList[i]), definition.numberOfValues(i)));
+                                        break;
                                     case AttributeType_1.AttributeType.BINARY:
                                         if (attributeList[i].toLowerCase() == "yes" || attributeList[i] == "1") {
                                             current.addAttribute(new BinaryAttribute_1.BinaryAttribute(true));

@@ -2,12 +2,16 @@ import { AttributeType } from "../Attribute/AttributeType";
 import { FeatureSubSet } from "../FeatureSelection/FeatureSubSet";
 export declare class DataDefinition {
     private attributeTypes;
+    private readonly attributeValueList;
     /**
      * Constructor for creating a new {@link DataDefinition} with given attribute types.
      *
      * @param attributeTypes Attribute types of the data definition.
+     * @param attributeValueList Array of array of strings to represent all possible values of discrete features.
      */
-    constructor(attributeTypes?: Array<AttributeType>);
+    constructor(attributeTypes?: Array<AttributeType>, attributeValueList?: Array<Array<String>>);
+    numberOfValues(attributeIndex: number): number;
+    featureValueIndex(attributeIndex: number, value: String): number;
     /**
      * Returns the number of attribute types.
      *

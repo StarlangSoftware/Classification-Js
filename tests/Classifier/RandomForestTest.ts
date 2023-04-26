@@ -33,6 +33,19 @@ describe('RandomForestTest', function() {
         }
         dataDefinition = new DataDefinition(attributeTypes);
         let car = new DataSet(dataDefinition, ",", "datasets/car.data");
+        attributeTypes = new Array<AttributeType>();
+        let attributeValueList = new Array<Array<String>>()
+        attributeValueList.push(["vhigh", "high", "low", "med"])
+        attributeValueList.push(["vhigh", "high", "low", "med"])
+        attributeValueList.push(["2", "3", "4", "5more"])
+        attributeValueList.push(["2", "4", "more"])
+        attributeValueList.push(["big", "med", "small"])
+        attributeValueList.push(["high", "low", "med"])
+        for (let i = 0; i < 6; i++){
+            attributeTypes.push(AttributeType.DISCRETE_INDEXED)
+        }
+        dataDefinition = new DataDefinition(attributeTypes, attributeValueList)
+        let carIndexed = new DataSet(dataDefinition, ",", "datasets/car.data")
         attributeTypes = new Array<AttributeType>()
         for (let i = 0; i < 9; i++){
             attributeTypes.push(AttributeType.DISCRETE)
@@ -51,6 +64,8 @@ describe('RandomForestTest', function() {
             assert.ok(Math.abs(0.00 - 100 * randomForest.test(car.getInstanceList()).getErrorRate()) <= 0.01);
             randomForest.train(tictactoe.getInstanceList(), randomForestParameter);
             assert.ok(Math.abs(0.00 - 100 * randomForest.test(tictactoe.getInstanceList()).getErrorRate()) <= 0.01);
+            randomForest.train(carIndexed.getInstanceList(), randomForestParameter);
+            assert.ok(Math.abs(0.00 - 100 * randomForest.test(carIndexed.getInstanceList()).getErrorRate()) <= 0.01);
         });
         it('testLoad', function() {
             randomForest.loadModel("models/randomforest-iris.txt");
@@ -63,6 +78,8 @@ describe('RandomForestTest', function() {
             assert.ok(Math.abs(0.00 - 100 * randomForest.test(car.getInstanceList()).getErrorRate()) <= 0.01);
             randomForest.loadModel("models/randomforest-tictactoe.txt");
             assert.ok(Math.abs(0.00 - 100 * randomForest.test(tictactoe.getInstanceList()).getErrorRate()) <= 0.01);
+            randomForest.loadModel("models/randomforest-carIndexed.txt");
+            assert.ok(Math.abs(0.00 - 100 * randomForest.test(carIndexed.getInstanceList()).getErrorRate()) <= 0.01);
         });
     });
 });
