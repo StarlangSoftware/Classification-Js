@@ -3,7 +3,6 @@ import {DecisionNode} from "./DecisionNode";
 import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
 import {InstanceList} from "../../InstanceList/InstanceList";
-import * as fs from "fs";
 import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class DecisionTree extends ValidatedModel{

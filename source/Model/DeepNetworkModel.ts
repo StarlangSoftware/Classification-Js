@@ -125,13 +125,13 @@ export class DeepNetworkModel extends NeuralNetworkModel{
 
     constructor2(fileName: string){
         let input = new FileContents(fileName)
-        this.activationFunction = this.loadActivationFunction(input)
         this.loadClassLabels(input)
         this.hiddenLayerSize = parseInt(input.readLine())
         this.weights = new Array<Matrix>()
         for (let i = 0; i < this.hiddenLayerSize + 1; i++){
             this.weights.push(this.loadMatrix(input))
         }
+        this.activationFunction = this.loadActivationFunction(input)
     }
 
     /**

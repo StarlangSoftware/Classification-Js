@@ -80,10 +80,10 @@ export class MultiLayerPerceptronModel extends LinearPerceptronModel{
 
     constructor2(fileName: string){
         let input = new FileContents(fileName)
-        this.activationFunction = this.loadActivationFunction(input)
         this.loadClassLabels(input)
         this.W = this.loadMatrix(input)
         this.V = this.loadMatrix(input)
+        this.activationFunction = this.loadActivationFunction(input)
     }
 
     /**

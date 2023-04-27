@@ -153,13 +153,13 @@
         }
         constructor2(fileName) {
             let input = new FileContents_1.FileContents(fileName);
-            this.activationFunction = this.loadActivationFunction(input);
             this.loadClassLabels(input);
             this.hiddenLayerSize = parseInt(input.readLine());
             this.weights = new Array();
             for (let i = 0; i < this.hiddenLayerSize + 1; i++) {
                 this.weights.push(this.loadMatrix(input));
             }
+            this.activationFunction = this.loadActivationFunction(input);
         }
         /**
          * The calculateOutput method loops size of the weights times and calculate one hidden layer at a time and adds bias term.

@@ -104,10 +104,10 @@
         }
         constructor2(fileName) {
             let input = new FileContents_1.FileContents(fileName);
-            this.activationFunction = this.loadActivationFunction(input);
             this.loadClassLabels(input);
             this.W = this.loadMatrix(input);
             this.V = this.loadMatrix(input);
+            this.activationFunction = this.loadActivationFunction(input);
         }
         /**
          * The calculateOutput method calculates the forward single hidden layer by using Matrices W and V.
