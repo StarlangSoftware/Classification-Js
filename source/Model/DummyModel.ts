@@ -20,16 +20,7 @@ export class DummyModel extends Model{
             this.distribution = trainSet.classDistribution();
         } else {
             let input = new FileContents(trainSet)
-            this.distribution = new DiscreteDistribution()
-            let size = parseInt(input.readLine())
-            for (let i = 0; i < size; i++){
-                let line = input.readLine()
-                let items = line.split(" ")
-                let count = parseInt(items[1])
-                for (let j = 0; j < count; j++){
-                    this.distribution.addItem(items[0])
-                }
-            }
+            this.distribution = Model.loadDiscreteDistribution(input)
         }
     }
 

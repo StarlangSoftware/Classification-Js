@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../Instance/Instance", "nlptoolkit-datastructure/dist/CounterHashMap", "../InstanceList/InstanceList", "nlptoolkit-math/dist/Matrix"], factory);
+        define(["require", "exports", "../Instance/Instance", "nlptoolkit-datastructure/dist/CounterHashMap", "../InstanceList/InstanceList", "nlptoolkit-math/dist/Matrix", "nlptoolkit-math/dist/DiscreteDistribution"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -14,6 +14,7 @@
     const CounterHashMap_1 = require("nlptoolkit-datastructure/dist/CounterHashMap");
     const InstanceList_1 = require("../InstanceList/InstanceList");
     const Matrix_1 = require("nlptoolkit-math/dist/Matrix");
+    const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
     class Model {
         /**
          * Given an array of class labels, returns the maximum occurred one.
@@ -42,6 +43,19 @@
                 }
             }
             return instance;
+        }
+        static loadDiscreteDistribution(input) {
+            let distribution = new DiscreteDistribution_1.DiscreteDistribution();
+            let size = parseInt(input.readLine());
+            for (let i = 0; i < size; i++) {
+                let line = input.readLine();
+                let items = line.split(" ");
+                let count = parseInt(items[1]);
+                for (let j = 0; j < count; j++) {
+                    distribution.addItem(items[0]);
+                }
+            }
+            return distribution;
         }
         loadInstanceList(input) {
             let types = input.readLine().split(" ");

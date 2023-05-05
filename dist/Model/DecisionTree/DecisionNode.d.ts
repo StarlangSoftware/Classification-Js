@@ -10,6 +10,7 @@ export declare class DecisionNode {
     private classLabel;
     leaf: boolean;
     private condition;
+    private classLabelsDistribution;
     constructor1(data: InstanceList, condition?: DecisionCondition | number, parameter?: RandomForestParameter, isStump?: boolean): void;
     constructor2(contents: FileContents): void;
     /**

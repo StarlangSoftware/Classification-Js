@@ -3,6 +3,7 @@ import {CounterHashMap} from "nlptoolkit-datastructure/dist/CounterHashMap";
 import {FileContents} from "nlptoolkit-util/dist/FileContents";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {Matrix} from "nlptoolkit-math/dist/Matrix";
+import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 
 export abstract class Model {
 
@@ -38,6 +39,20 @@ export abstract class Model {
             }
         }
         return instance
+    }
+
+    static loadDiscreteDistribution(input: FileContents): DiscreteDistribution{
+        let distribution = new DiscreteDistribution()
+        let size = parseInt(input.readLine())
+        for (let i = 0; i < size; i++){
+            let line = input.readLine()
+            let items = line.split(" ")
+            let count = parseInt(items[1])
+            for (let j = 0; j < count; j++){
+                distribution.addItem(items[0])
+            }
+        }
+        return distribution
     }
 
     loadInstanceList(input: FileContents): InstanceList{

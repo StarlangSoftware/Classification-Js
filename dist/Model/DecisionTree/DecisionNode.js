@@ -68,7 +68,12 @@
                 this.condition = condition;
             }
             this.data = data;
-            this.classLabel = Model_1.Model.getMaximum(data.getClassLabels());
+            this.classLabelsDistribution = new DiscreteDistribution_1.DiscreteDistribution();
+            let labels = data.getClassLabels();
+            for (let label of labels) {
+                this.classLabelsDistribution.addItem(label);
+            }
+            this.classLabel = Model_1.Model.getMaximum(labels);
             this.leaf = true;
             let classLabels = data.getDistinctClassLabels();
             if (classLabels.length == 1) {
@@ -193,6 +198,7 @@
             else {
                 this.leaf = true;
                 this.classLabel = contents.readLine();
+                this.classLabelsDistribution = Model_1.Model.loadDiscreteDistribution(contents);
             }
         }
         /**
@@ -302,7 +308,7 @@
         }
         predictProbabilityDistribution(instance) {
             if (this.leaf) {
-                return this.data.classDistribution().getProbabilityDistribution();
+                return this.classLabelsDistribution.getProbabilityDistribution();
             }
             else {
                 for (let node of this.children) {

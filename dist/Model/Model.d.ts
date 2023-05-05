@@ -2,6 +2,7 @@ import { Instance } from "../Instance/Instance";
 import { FileContents } from "nlptoolkit-util/dist/FileContents";
 import { InstanceList } from "../InstanceList/InstanceList";
 import { Matrix } from "nlptoolkit-math/dist/Matrix";
+import { DiscreteDistribution } from "nlptoolkit-math/dist/DiscreteDistribution";
 export declare abstract class Model {
     abstract predict(instance: Instance): string;
     abstract predictProbability(instance: Instance): Map<string, number>;
@@ -14,6 +15,7 @@ export declare abstract class Model {
      */
     static getMaximum(classLabels: Array<string>): string;
     loadInstance(line: string, attributeTypes: string[]): Instance;
+    static loadDiscreteDistribution(input: FileContents): DiscreteDistribution;
     loadInstanceList(input: FileContents): InstanceList;
     loadMatrix(input: FileContents): Matrix;
 }

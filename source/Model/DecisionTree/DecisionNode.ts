@@ -20,6 +20,7 @@ export class DecisionNode {
     private classLabel : string = undefined
     leaf: boolean = false
     private condition: DecisionCondition = undefined
+    private classLabelsDistribution: DiscreteDistribution
 
     constructor1(data: InstanceList, condition?: DecisionCondition | number, parameter?: RandomForestParameter, isStump?: boolean){
         let bestAttribute = -1
@@ -27,8 +28,13 @@ export class DecisionNode {
         if (condition instanceof DecisionCondition){
             this.condition = condition;
         }
-        this.data = data;
-        this.classLabel = Model.getMaximum(data.getClassLabels());
+        this.data = data
+        this.classLabelsDistribution = new DiscreteDistribution()
+        let labels = data.getClassLabels()
+        for (let label of labels){
+            this.classLabelsDistribution.addItem(label)
+        }
+        this.classLabel = Model.getMaximum(labels)
         this.leaf = true;
         let classLabels = data.getDistinctClassLabels();
         if (classLabels.length == 1) {
@@ -144,6 +150,7 @@ export class DecisionNode {
         } else {
             this.leaf = true
             this.classLabel = contents.readLine()
+            this.classLabelsDistribution = Model.loadDiscreteDistribution(contents);
         }
     }
 
@@ -288,7 +295,7 @@ export class DecisionNode {
 
     predictProbabilityDistribution(instance: Instance): Map<string, number>{
         if (this.leaf) {
-            return this.data.classDistribution().getProbabilityDistribution();
+            return this.classLabelsDistribution.getProbabilityDistribution();
         } else {
             for (let node of this.children) {
                 if (node.condition.satisfy(instance)) {
