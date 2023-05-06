@@ -6,7 +6,6 @@ import { FileContents } from "nlptoolkit-util/dist/FileContents";
 export declare class DecisionNode {
     children: Array<DecisionNode>;
     private EPSILON;
-    private data;
     private classLabel;
     leaf: boolean;
     private condition;
@@ -41,6 +40,7 @@ export declare class DecisionNode {
      * The entropyForDiscreteAttribute method takes an attributeIndex and creates an ArrayList of DiscreteDistribution.
      * Then loops through the distributions and calculates the total entropy.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @return Total entropy for the discrete attribute.
      */
@@ -49,6 +49,7 @@ export declare class DecisionNode {
      * The createChildrenForDiscreteIndexed method creates an ArrayList of DecisionNodes as children and a partition with respect to
      * indexed attribute.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param attributeValue Value of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
@@ -59,6 +60,7 @@ export declare class DecisionNode {
      * The createChildrenForDiscrete method creates an ArrayList of values, a partition with respect to attributes and an ArrayList
      * of DecisionNodes as children.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump        Refers to decision trees with only 1 splitting rule.
@@ -68,6 +70,7 @@ export declare class DecisionNode {
      * The createChildrenForContinuous method creates an ArrayList of DecisionNodes as children and a partition with respect to
      * continuous attribute and the given split value.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump        Refers to decision trees with only 1 splitting rule.

@@ -16,7 +16,6 @@ export class DecisionNode {
 
     children: Array<DecisionNode> = undefined
     private EPSILON: number = 0.0000000001;
-    private data : InstanceList = undefined
     private classLabel : string = undefined
     leaf: boolean = false
     private condition: DecisionCondition = undefined
@@ -28,7 +27,6 @@ export class DecisionNode {
         if (condition instanceof DecisionCondition){
             this.condition = condition;
         }
-        this.data = data
         this.classLabelsDistribution = new DiscreteDistribution()
         let labels = data.getClassLabels()
         for (let label of labels){
@@ -75,7 +73,7 @@ export class DecisionNode {
                 }
             } else {
                 if (data.get(0).getAttribute(index) instanceof DiscreteAttribute) {
-                    let entropy = this.entropyForDiscreteAttribute(index);
+                    let entropy = this.entropyForDiscreteAttribute(data, index);
                     if (entropy + this.EPSILON < bestEntropy) {
                         bestEntropy = entropy;
                         bestAttribute = index;
@@ -112,13 +110,13 @@ export class DecisionNode {
         if (bestAttribute != -1) {
             this.leaf = false;
             if (data.get(0).getAttribute(bestAttribute) instanceof DiscreteIndexedAttribute) {
-                this.createChildrenForDiscreteIndexed(bestAttribute, bestSplitValue, parameter, isStump);
+                this.createChildrenForDiscreteIndexed(data, bestAttribute, bestSplitValue, parameter, isStump);
             } else {
                 if (data.get(0).getAttribute(bestAttribute) instanceof DiscreteAttribute) {
-                    this.createChildrenForDiscrete(bestAttribute, parameter, isStump);
+                    this.createChildrenForDiscrete(data, bestAttribute, parameter, isStump);
                 } else {
                     if (data.get(0).getAttribute(bestAttribute) instanceof ContinuousAttribute) {
-                        this.createChildrenForContinuous(bestAttribute, bestSplitValue, parameter, isStump);
+                        this.createChildrenForContinuous(data, bestAttribute, bestSplitValue, parameter, isStump);
                     }
                 }
             }
@@ -191,14 +189,15 @@ export class DecisionNode {
      * The entropyForDiscreteAttribute method takes an attributeIndex and creates an ArrayList of DiscreteDistribution.
      * Then loops through the distributions and calculates the total entropy.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @return Total entropy for the discrete attribute.
      */
-    private entropyForDiscreteAttribute(attributeIndex: number): number{
+    private entropyForDiscreteAttribute(data: InstanceList, attributeIndex: number): number{
         let sum = 0.0;
-        let distributions = this.data.attributeClassDistribution(attributeIndex);
+        let distributions = data.attributeClassDistribution(attributeIndex);
         for (let distribution of distributions) {
-            sum += (distribution.getSum() / this.data.size()) * distribution.entropy();
+            sum += (distribution.getSum() / data.size()) * distribution.entropy();
         }
         return sum;
     }
@@ -207,29 +206,31 @@ export class DecisionNode {
      * The createChildrenForDiscreteIndexed method creates an ArrayList of DecisionNodes as children and a partition with respect to
      * indexed attribute.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param attributeValue Value of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump        Refers to decision trees with only 1 splitting rule.
      */
-    private createChildrenForDiscreteIndexed(attributeIndex: number, attributeValue: number, parameter: RandomForestParameter, isStump: boolean){
-        let childrenData = new Partition(this.data, attributeIndex, attributeValue);
+    private createChildrenForDiscreteIndexed(data: InstanceList, attributeIndex: number, attributeValue: number, parameter: RandomForestParameter, isStump: boolean){
+        let childrenData = new Partition(data, attributeIndex, attributeValue);
         this.children = new Array<DecisionNode>();
-        this.children.push(new DecisionNode(childrenData.get(0), new DecisionCondition(attributeIndex, new DiscreteIndexedAttribute("", attributeValue, (<DiscreteIndexedAttribute> this.data.get(0).getAttribute(attributeIndex)).getMaxIndex())), parameter, isStump));
-        this.children.push(new DecisionNode(childrenData.get(1), new DecisionCondition(attributeIndex, new DiscreteIndexedAttribute("", -1, (<DiscreteIndexedAttribute> this.data.get(0).getAttribute(attributeIndex)).getMaxIndex())), parameter, isStump));
+        this.children.push(new DecisionNode(childrenData.get(0), new DecisionCondition(attributeIndex, new DiscreteIndexedAttribute("", attributeValue, (<DiscreteIndexedAttribute> data.get(0).getAttribute(attributeIndex)).getMaxIndex())), parameter, isStump));
+        this.children.push(new DecisionNode(childrenData.get(1), new DecisionCondition(attributeIndex, new DiscreteIndexedAttribute("", -1, (<DiscreteIndexedAttribute> data.get(0).getAttribute(attributeIndex)).getMaxIndex())), parameter, isStump));
     }
 
     /**
      * The createChildrenForDiscrete method creates an ArrayList of values, a partition with respect to attributes and an ArrayList
      * of DecisionNodes as children.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump        Refers to decision trees with only 1 splitting rule.
      */
-    private createChildrenForDiscrete(attributeIndex: number, parameter: RandomForestParameter, isStump: boolean){
-        let valueList = this.data.getAttributeValueList(attributeIndex);
-        let childrenData = new Partition(this.data, attributeIndex);
+    private createChildrenForDiscrete(data: InstanceList, attributeIndex: number, parameter: RandomForestParameter, isStump: boolean){
+        let valueList = data.getAttributeValueList(attributeIndex);
+        let childrenData = new Partition(data, attributeIndex);
         this.children = new Array<DecisionNode>();
         for (let i = 0; i < valueList.length; i++) {
             this.children.push(new DecisionNode(childrenData.get(i), new DecisionCondition(attributeIndex, new DiscreteAttribute(valueList[i])), parameter, isStump));
@@ -240,13 +241,14 @@ export class DecisionNode {
      * The createChildrenForContinuous method creates an ArrayList of DecisionNodes as children and a partition with respect to
      * continuous attribute and the given split value.
      *
+     * @param data Instance list.
      * @param attributeIndex Index of the attribute.
      * @param parameter      RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
      * @param isStump        Refers to decision trees with only 1 splitting rule.
      * @param splitValue     Split value is used for partitioning.
      */
-    private createChildrenForContinuous(attributeIndex: number, splitValue: number, parameter: RandomForestParameter, isStump: boolean){
-        let childrenData = new Partition(this.data, attributeIndex, splitValue + 0.0000001);
+    private createChildrenForContinuous(data: InstanceList, attributeIndex: number, splitValue: number, parameter: RandomForestParameter, isStump: boolean){
+        let childrenData = new Partition(data, attributeIndex, splitValue + 0.0000001);
         this.children = new Array<DecisionNode>();
         this.children.push(new DecisionNode(childrenData.get(0), new DecisionCondition(attributeIndex, new ContinuousAttribute(splitValue), "<"), parameter, isStump));
         this.children.push(new DecisionNode(childrenData.get(1), new DecisionCondition(attributeIndex, new ContinuousAttribute(splitValue), ">"), parameter, isStump));
@@ -262,7 +264,7 @@ export class DecisionNode {
     predict(instance: Instance): string{
         if (instance instanceof CompositeInstance) {
             let possibleClassLabels = (<CompositeInstance> instance).getPossibleClassLabels();
-            let distribution = this.data.classDistribution();
+            let distribution = this.classLabelsDistribution;
             let predictedClass = distribution.getMaxItem(possibleClassLabels);
             if (this.leaf) {
                 return predictedClass;
@@ -302,7 +304,7 @@ export class DecisionNode {
                     return node.predictProbabilityDistribution(instance);
                 }
             }
-            return this.data.classDistribution().getProbabilityDistribution();
+            return this.classLabelsDistribution.getProbabilityDistribution();
         }
     }
 }
