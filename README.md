@@ -55,6 +55,7 @@ You can also see [Java](https://github.com/starlangsoftware/Classification),
 [Cython](https://github.com/starlangsoftware/Classification-Cy), 
 [Swift](https://github.com/starlangsoftware/Classification-Swift),
 [C++](https://github.com/starlangsoftware/Classification-CPP),
+[C](https://github.com/starlangsoftware/Classification-C),
 or [C#](https://github.com/starlangsoftware/Classification-CS) repository.
 
 ## Requirements
