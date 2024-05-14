@@ -3,7 +3,7 @@ import {CounterHashMap} from "nlptoolkit-datastructure/dist/CounterHashMap";
 export class ConfusionMatrix {
 
     private matrix: Map<string, CounterHashMap<string>> = new Map<string, CounterHashMap<string>>()
-    private classLabels: Array<string>
+    private readonly classLabels: Array<string>
 
     /**
      * Constructor that sets the class labels {@link Array} and creates new {@link Map} matrix

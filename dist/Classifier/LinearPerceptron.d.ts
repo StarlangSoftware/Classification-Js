@@ -11,5 +11,9 @@ export declare class LinearPerceptron extends Classifier {
      * @param parameters Parameters of the linear perceptron.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the linear perceptron model from an input file.
+     * @param fileName File name of the linear perceptron model.
+     */
     loadModel(fileName: string): void;
 }

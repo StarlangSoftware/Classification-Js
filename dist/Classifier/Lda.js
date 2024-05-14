@@ -46,6 +46,10 @@
             }
             this.model = new LdaModel_1.LdaModel(priorDistribution, w, w0);
         }
+        /**
+         * Loads the Lda model from an input file.
+         * @param fileName File name of the Lda model.
+         */
         loadModel(fileName) {
             this.model = new LdaModel_1.LdaModel(fileName);
         }

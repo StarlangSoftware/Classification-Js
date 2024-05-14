@@ -40,6 +40,10 @@ export class Lda extends Classifier{
         this.model = new LdaModel(priorDistribution, w, w0);
     }
 
+    /**
+     * Loads the Lda model from an input file.
+     * @param fileName File name of the Lda model.
+     */
     loadModel(fileName: string): void{
         this.model = new LdaModel(fileName)
     }

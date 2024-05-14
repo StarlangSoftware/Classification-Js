@@ -9,10 +9,16 @@ export declare class KnnModel extends Model {
     /**
      * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
      *
-     * @param dataOrFileName           {@link InstanceList} input.
+     * @param data           {@link InstanceList} input.
      * @param k              K value.
      * @param distanceMetric {@link DistanceMetric} input.
      */
+    constructor1(data: InstanceList, k: number, distanceMetric: DistanceMetric): void;
+    /**
+     * Loads a K-nearest neighbor model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string): void;
     constructor(dataOrFileName: InstanceList | string, k?: number, distanceMetric?: DistanceMetric);
     /**
      * The predict method takes an {@link Instance} as an input and finds the nearest neighbors of given instance. Then
@@ -22,6 +28,11 @@ export declare class KnnModel extends Model {
      * @return The first possible class label as the predicted class.
      */
     predict(instance: Instance): string;
+    /**
+     * Calculates the posterior probability distribution for the given instance according to K-means model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number>;
     /**
      * The nearestNeighbors method takes an {@link Instance} as an input. First it gets the possible class labels, then loops

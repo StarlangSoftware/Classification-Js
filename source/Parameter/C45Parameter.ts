@@ -2,8 +2,8 @@ import {Parameter} from "./Parameter";
 
 export class C45Parameter extends Parameter{
 
-    private prune: boolean
-    private crossValidationRatio: number
+    private readonly prune: boolean
+    private readonly crossValidationRatio: number
 
     /**
      * Parameters of the C4.5 univariate decision tree classifier.

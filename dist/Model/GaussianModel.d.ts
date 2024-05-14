@@ -22,7 +22,25 @@ export declare abstract class GaussianModel extends ValidatedModel {
      * @return The class which has the maximum value of metric.
      */
     predict(instance: Instance): string;
+    /**
+     * Loads the prior probability distribution from an input model file.
+     * @param input Input model file.
+     * @return Prior probability distribution.
+     * @throws IOException If the input file can not be read, the method throws IOException.
+     */
     loadPriorDistribution(input: FileContents): number;
+    /**
+     * Loads hash map of vectors from input model file.
+     * @param input Input model file.
+     * @param size Number of vectors to be read from input model file.
+     * @return Hash map of vectors.
+     * @throws IOException If the input file can not be read, the method throws IOException.
+     */
     loadVectors(input: FileContents, size: number): Map<string, Vector>;
+    /**
+     * Calculates the posterior probability distribution for the given instance according to Gaussian model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number>;
 }

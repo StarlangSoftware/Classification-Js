@@ -16,6 +16,10 @@ export class C45Stump extends Classifier{
         this.model = new DecisionTree(new DecisionNode(trainSet, undefined, undefined, true));
     }
 
+    /**
+     * Loads the decision tree model from an input file.
+     * @param fileName File name of the decision tree model.
+     */
     loadModel(fileName: string): void{
         this.model = new DecisionTree(fileName)
     }

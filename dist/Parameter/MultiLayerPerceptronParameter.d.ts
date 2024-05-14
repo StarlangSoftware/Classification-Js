@@ -1,8 +1,8 @@
 import { LinearPerceptronParameter } from "./LinearPerceptronParameter";
 import { ActivationFunction } from "./ActivationFunction";
 export declare class MultiLayerPerceptronParameter extends LinearPerceptronParameter {
-    private hiddenNodes;
-    private activationFunction;
+    private readonly hiddenNodes;
+    private readonly activationFunction;
     /**
      * Parameters of the multi layer perceptron algorithm.
      *

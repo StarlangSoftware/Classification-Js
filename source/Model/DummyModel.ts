@@ -39,6 +39,11 @@ export class DummyModel extends Model{
         }
     }
 
+    /**
+     * Calculates the posterior probability distribution for the given instance according to dummy model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number> {
         return this.distribution.getProbabilityDistribution();
     }

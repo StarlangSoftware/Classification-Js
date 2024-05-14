@@ -18,19 +18,35 @@
         constructor(classLabelsOrFileName, seed) {
             super();
             if (classLabelsOrFileName instanceof Array) {
-                this.classLabels = classLabelsOrFileName;
-                this.random = new Random_1.Random(seed);
-                this.seed = seed;
+                this.constructor1(classLabelsOrFileName, seed);
             }
             else {
-                let input = new FileContents_1.FileContents(classLabelsOrFileName);
-                seed = parseInt(input.readLine());
-                this.random = new Random_1.Random(seed);
-                let size = parseInt(input.readLine());
-                this.classLabels = new Array();
-                for (let i = 0; i < size; i++) {
-                    this.classLabels.push(input.readLine());
-                }
+                this.constructor2(classLabelsOrFileName);
+            }
+        }
+        /**
+         * A constructor that sets the class labels.
+         *
+         * @param classLabels An ArrayList of class labels.
+         * @param seed Seed of the random function.
+         */
+        constructor1(classLabels, seed) {
+            this.classLabels = classLabels;
+            this.random = new Random_1.Random(seed);
+            this.seed = seed;
+        }
+        /**
+         * Loads a random classifier model from an input model file.
+         * @param fileName Model file name.
+         */
+        constructor2(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            this.seed = parseInt(input.readLine());
+            this.random = new Random_1.Random(this.seed);
+            let size = parseInt(input.readLine());
+            this.classLabels = new Array();
+            for (let i = 0; i < size; i++) {
+                this.classLabels.push(input.readLine());
             }
         }
         /**
@@ -53,6 +69,11 @@
                 return this.classLabels[index];
             }
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to random model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             let result = new Map();
             for (let classLabel of this.classLabels) {

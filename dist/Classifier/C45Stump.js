@@ -23,6 +23,10 @@
         train(trainSet, parameters) {
             this.model = new DecisionTree_1.DecisionTree(new DecisionNode_1.DecisionNode(trainSet, undefined, undefined, true));
         }
+        /**
+         * Loads the decision tree model from an input file.
+         * @param fileName File name of the decision tree model.
+         */
         loadModel(fileName) {
             this.model = new DecisionTree_1.DecisionTree(fileName);
         }

@@ -1,6 +1,6 @@
 export class Parameter {
 
-    private seed: number
+    private readonly seed: number
 
     /**
      * Constructor of {@link Parameter} class which assigns given seed value to seed.

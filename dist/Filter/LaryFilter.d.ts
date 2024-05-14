@@ -7,7 +7,7 @@ export declare abstract class LaryFilter extends FeatureFilter {
     /**
      * Constructor that sets the dataSet and all the attributes distributions.
      *
-     * @param dataSet DataSet that will bu used.
+     * @param dataSet DataSet that will be used.
      */
     constructor(dataSet: DataSet);
     /**

@@ -23,6 +23,10 @@ export class KMeans extends Classifier{
         this.model = new KMeansModel(priorDistribution, classMeans, (<KMeansParameter> parameters).getDistanceMetric());
     }
 
+    /**
+     * Loads the K-means model from an input file.
+     * @param fileName File name of the K-means model.
+     */
     loadModel(fileName: string): void{
         this.model = new KMeansModel(fileName)
     }

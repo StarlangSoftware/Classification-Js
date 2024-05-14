@@ -1,7 +1,7 @@
 import { KMeansParameter } from "./KMeansParameter";
 import { DistanceMetric } from "../DistanceMetric/DistanceMetric";
 export declare class KnnParameter extends KMeansParameter {
-    private k;
+    private readonly k;
     /**
      * Parameters of the K-nearest neighbor classifier.
      *

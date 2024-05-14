@@ -45,6 +45,11 @@
                 return this.distribution.getMaxItem();
             }
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to dummy model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             return this.distribution.getProbabilityDistribution();
         }

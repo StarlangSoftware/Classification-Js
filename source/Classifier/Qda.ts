@@ -39,6 +39,10 @@ export class Qda extends Classifier{
         this.model = new QdaModel(priorDistribution, W, w, w0);
     }
 
+    /**
+     * Loads the Qda model from an input file.
+     * @param fileName File name of the Qda model.
+     */
     loadModel(fileName: string): void{
         this.model = new QdaModel(fileName)
     }

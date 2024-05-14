@@ -5,9 +5,9 @@ import {FeatureSubSet} from "../FeatureSelection/FeatureSubSet";
 
 export class Experiment {
 
-    private classifier: Classifier
-    private parameter: Parameter
-    private dataSet: DataSet
+    private readonly classifier: Classifier
+    private readonly parameter: Parameter
+    private readonly dataSet: DataSet
 
     /**
      * Constructor for a specific machine learning experiment

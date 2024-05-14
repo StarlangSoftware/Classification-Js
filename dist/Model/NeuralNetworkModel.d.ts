@@ -98,7 +98,21 @@ export declare abstract class NeuralNetworkModel extends ValidatedModel {
      * @return The class label which has the maximum y.
      */
     predict(instance: Instance): string;
+    /**
+     * Calculates the posterior probability distribution for the given instance according to neural network model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number>;
+    /**
+     * Loads the class labels from input model file.
+     * @param input Input model file.
+     */
     loadClassLabels(input: FileContents): void;
+    /**
+     * Loads the activation function from an input model file.
+     * @param input Input model file.
+     * @return Activation function read.
+     */
     loadActivationFunction(input: FileContents): ActivationFunction;
 }

@@ -29,6 +29,10 @@ export class Bagging extends Classifier{
         this.model = new TreeEnsembleModel(forest);
     }
 
+    /**
+     * Loads the Bagging ensemble model from an input file.
+     * @param fileName File name of the decision tree model.
+     */
     loadModel(fileName: string): void{
         this.model = new TreeEnsembleModel(fileName)
     }

@@ -12,21 +12,33 @@ export class LdaModel extends GaussianModel{
     /**
      * A constructor which sets the priorDistribution, w and w0 according to given inputs.
      *
-     * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
+     * @param priorDistribution {@link DiscreteDistribution} input.
      * @param w                 {@link HashMap} of String and Vectors.
      * @param w0                {@link HashMap} of String and Double.
      */
+    constructor1(priorDistribution: DiscreteDistribution, w: Map<string, Vector>, w0: Map<string, number>){
+        this.priorDistribution = priorDistribution
+        this.w = w
+        this.w0 = w0
+    }
+
+    /**
+     * Loads a Linear Discriminant Analysis model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string) {
+        let input = new FileContents(fileName)
+        let size = this.loadPriorDistribution(input)
+        this.loadWandW0(input, size)
+    }
+
     constructor(priorDistributionOrFileName?: DiscreteDistribution | string, w?: Map<string, Vector>, w0?: Map<string, number>) {
         super()
         if (priorDistributionOrFileName instanceof DiscreteDistribution){
-            this.priorDistribution = priorDistributionOrFileName
-            this.w = w
-            this.w0 = w0
+            this.constructor1(priorDistributionOrFileName, w, w0)
         } else {
             if (priorDistributionOrFileName != undefined){
-                let input = new FileContents(priorDistributionOrFileName)
-                let size = this.loadPriorDistribution(input)
-                this.loadWandW0(input, size)
+                this.constructor2(priorDistributionOrFileName)
             }
         }
     }
@@ -46,6 +58,12 @@ export class LdaModel extends GaussianModel{
         return wi.dotProduct(xi) + w0i;
     }
 
+    /**
+     * Loads w0 and w hash maps from an input file. The number of items in the hash map is given by the parameter size.
+     * @param input Input file
+     * @param size Number of items in the hash map read.
+     * @throws IOException If the file can not be read, it throws IOException.
+     */
     loadWandW0(input: FileContents, size: number){
         this.w0 = new Map<string, number>()
         for (let i = 0; i < size; i++){

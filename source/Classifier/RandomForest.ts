@@ -26,6 +26,10 @@ export class RandomForest extends Classifier{
         this.model = new TreeEnsembleModel(forest);
     }
 
+    /**
+     * Loads the random forest model from an input file.
+     * @param fileName File name of the random forest model.
+     */
     loadModel(fileName: string): void{
         this.model = new TreeEnsembleModel(fileName)
     }

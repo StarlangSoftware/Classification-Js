@@ -5,7 +5,7 @@ export declare abstract class TrainedFeatureFilter extends FeatureFilter {
     /**
      * Constructor that sets the dataSet.
      *
-     * @param dataSet DataSet that will bu used.
+     * @param dataSet DataSet that will be used.
      */
     constructor(dataSet: DataSet);
 }

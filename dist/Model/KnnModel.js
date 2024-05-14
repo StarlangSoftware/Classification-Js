@@ -17,26 +17,36 @@
     const EuclidianDistance_1 = require("../DistanceMetric/EuclidianDistance");
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class KnnModel extends Model_1.Model {
-        /**
-         * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
-         *
-         * @param dataOrFileName           {@link InstanceList} input.
-         * @param k              K value.
-         * @param distanceMetric {@link DistanceMetric} input.
-         */
         constructor(dataOrFileName, k, distanceMetric) {
             super();
             if (dataOrFileName instanceof InstanceList_1.InstanceList) {
-                this.data = dataOrFileName;
-                this.k = k;
-                this.distanceMetric = distanceMetric;
+                this.constructor1(dataOrFileName, k, distanceMetric);
             }
             else {
-                this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
-                let input = new FileContents_1.FileContents(dataOrFileName);
-                this.k = parseInt(input.readLine());
-                this.data = this.loadInstanceList(input);
+                this.constructor2(dataOrFileName);
             }
+        }
+        /**
+         * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
+         *
+         * @param data           {@link InstanceList} input.
+         * @param k              K value.
+         * @param distanceMetric {@link DistanceMetric} input.
+         */
+        constructor1(data, k, distanceMetric) {
+            this.data = data;
+            this.k = k;
+            this.distanceMetric = distanceMetric;
+        }
+        /**
+         * Loads a K-nearest neighbor model from an input model file.
+         * @param fileName Model file name.
+         */
+        constructor2(fileName) {
+            this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
+            let input = new FileContents_1.FileContents(fileName);
+            this.k = parseInt(input.readLine());
+            this.data = this.loadInstanceList(input);
         }
         /**
          * The predict method takes an {@link Instance} as an input and finds the nearest neighbors of given instance. Then
@@ -56,6 +66,11 @@
             }
             return predictedClass;
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to K-means model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             let nearestNeighbors = this.nearestNeighbors(instance);
             return nearestNeighbors.classDistribution().getProbabilityDistribution();

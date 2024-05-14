@@ -14,6 +14,23 @@
     const DiscreteDistribution_1 = require("nlptoolkit-math/dist/DiscreteDistribution");
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class NaiveBayesModel extends GaussianModel_1.GaussianModel {
+        constructor(priorDistribution, classMeans, classDeviations) {
+            super();
+            this.classMeans = undefined;
+            this.classDeviations = undefined;
+            this.classAttributeDistributions = undefined;
+            if (priorDistribution instanceof DiscreteDistribution_1.DiscreteDistribution) {
+                if (classDeviations != undefined) {
+                    this.constructor1(priorDistribution, classMeans, classDeviations);
+                }
+                else {
+                    this.constructor2(priorDistribution, classMeans);
+                }
+            }
+            else {
+                this.constructor3(priorDistribution);
+            }
+        }
         /**
          * A constructor that sets the priorDistribution, classMeans and classDeviations.
          *
@@ -21,27 +38,30 @@
          * @param classMeans        A {@link Map} of String and {@link Vector}.
          * @param classDeviations   A {@link Map} of String and {@link Vector}.
          */
-        constructor(priorDistribution, classMeans, classDeviations) {
-            super();
-            this.classMeans = undefined;
-            this.classDeviations = undefined;
-            this.classAttributeDistributions = undefined;
-            if (priorDistribution instanceof DiscreteDistribution_1.DiscreteDistribution) {
-                this.priorDistribution = priorDistribution;
-                if (classDeviations != undefined) {
-                    this.classMeans = classMeans;
-                    this.classDeviations = classDeviations;
-                }
-                else {
-                    this.classAttributeDistributions = classMeans;
-                }
-            }
-            else {
-                let input = new FileContents_1.FileContents(priorDistribution);
-                let size = this.loadPriorDistribution(input);
-                this.classMeans = this.loadVectors(input, size);
-                this.classDeviations = this.loadVectors(input, size);
-            }
+        constructor1(priorDistribution, classMeans, classDeviations) {
+            this.priorDistribution = priorDistribution;
+            this.classMeans = classMeans;
+            this.classDeviations = classDeviations;
+        }
+        /**
+         * A constructor that sets the priorDistribution and classAttributeDistributions.
+         *
+         * @param priorDistribution           {@link DiscreteDistribution} input.
+         * @param classAttributeDistributions {@link Map} of String and {@link Array} of {@link DiscreteDistribution}s.
+         */
+        constructor2(priorDistribution, classAttributeDistributions) {
+            this.priorDistribution = priorDistribution;
+            this.classAttributeDistributions = classAttributeDistributions;
+        }
+        /**
+         * Loads a naive Bayes model from an input model file.
+         * @param fileName Model file name.
+         */
+        constructor3(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            let size = this.loadPriorDistribution(input);
+            this.classMeans = this.loadVectors(input, size);
+            this.classDeviations = this.loadVectors(input, size);
         }
         /**
          * The calculateMetric method takes an {@link Instance} and a String as inputs, and it returns the log likelihood of

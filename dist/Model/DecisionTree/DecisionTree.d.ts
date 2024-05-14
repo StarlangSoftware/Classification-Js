@@ -11,13 +11,18 @@ export declare class DecisionTree extends ValidatedModel {
      */
     constructor(rootOrFileName: DecisionNode | string);
     /**
-     * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the possible class labels.
-     * Otherwise it returns the returned class labels.
+     * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the
+     * possible class labels. Otherwise, it returns the returned class labels.
      *
      * @param instance Instance make prediction.
      * @return Possible class labels.
      */
     predict(instance: Instance): string;
+    /**
+     * Calculates the posterior probability distribution for the given instance according to Decision tree model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number>;
     saveTxt(fileName: string): void;
     /**

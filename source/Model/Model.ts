@@ -25,6 +25,13 @@ export abstract class Model {
         return frequencies.max();
     }
 
+    /**
+     * Loads a single instance from a single line.
+     * @param line Line containing the instance.
+     * @param attributeTypes Type of the attributes of the instance. If th attribute is discrete, it is "DISCRETE",
+     *                       otherwise it is "CONTINUOUS".
+     * @return Instance read from the line.
+     */
     loadInstance(line: string, attributeTypes: string[]): Instance{
         let items = line.split(",")
         let instance = new Instance(items[items.length - 1])
@@ -41,6 +48,11 @@ export abstract class Model {
         return instance
     }
 
+    /**
+     * Loads a discrete distribution from an input model file
+     * @param input Input model file.
+     * @return Discrete distribution read from an input model file.
+     */
     static loadDiscreteDistribution(input: FileContents): DiscreteDistribution{
         let distribution = new DiscreteDistribution()
         let size = parseInt(input.readLine())
@@ -55,6 +67,11 @@ export abstract class Model {
         return distribution
     }
 
+    /**
+     * Loads an instance list from an input model file.
+     * @param input Input model file.
+     * @return Instance list read from an input model file.
+     */
     loadInstanceList(input: FileContents): InstanceList{
         let types = input.readLine().split(" ")
         let instanceCount = parseInt(input.readLine())
@@ -65,6 +82,11 @@ export abstract class Model {
         return instanceList;
     }
 
+    /**
+     * Loads a matrix from an input model file.
+     * @param input Input model file.
+     * @return Matrix read from the input model file.
+     */
     loadMatrix(input: FileContents): Matrix{
         let items = input.readLine().split(" ")
         let matrix = new Matrix(parseInt(items[0]), parseInt(items[1]))

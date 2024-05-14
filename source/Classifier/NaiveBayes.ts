@@ -59,6 +59,10 @@ export class NaiveBayes extends Classifier{
         }
     }
 
+    /**
+     * Loads the naive Bayes model from an input file.
+     * @param fileName File name of the naive Bayes model.
+     */
     loadModel(fileName: string): void{
         this.model = new NaiveBayesModel(fileName)
     }

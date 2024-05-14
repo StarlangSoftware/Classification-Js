@@ -21,10 +21,21 @@ export class DataDefinition {
         }
     }
 
+    /**
+     * Returns number of distinct values for a given discrete attribute with index attributeIndex.
+     * @param attributeIndex Index of the discrete attribute.
+     * @return Number of distinct values for a given discrete attribute
+     */
     numberOfValues(attributeIndex: number): number{
         return this.attributeValueList[attributeIndex].length
     }
 
+    /**
+     * Returns the index of the given value in the values list of the attributeIndex'th discrete attribute.
+     * @param attributeIndex Index of the discrete attribute.
+     * @param value Value of the discrete attribute
+     * @return Index of the given value in the values list of the discrete attribute.
+     */
     featureValueIndex(attributeIndex: number, value: String): number{
         for (let i = 0; i < this.attributeValueList[attributeIndex].length; i++){
             if (this.attributeValueList[attributeIndex][i] == value){

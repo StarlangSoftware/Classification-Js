@@ -1,6 +1,6 @@
 import { Attribute } from "./Attribute";
 export declare class DiscreteAttribute extends Attribute {
-    private value;
+    private readonly value;
     /**
      * Constructor for a discrete attribute.
      *

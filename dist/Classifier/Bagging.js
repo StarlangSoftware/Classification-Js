@@ -36,6 +36,10 @@
             }
             this.model = new TreeEnsembleModel_1.TreeEnsembleModel(forest);
         }
+        /**
+         * Loads the Bagging ensemble model from an input file.
+         * @param fileName File name of the decision tree model.
+         */
         loadModel(fileName) {
             this.model = new TreeEnsembleModel_1.TreeEnsembleModel(fileName);
         }

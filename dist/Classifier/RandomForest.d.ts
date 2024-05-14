@@ -10,5 +10,9 @@ export declare class RandomForest extends Classifier {
      * @param parameters Parameters of the bagging trees algorithm. ensembleSize returns the number of trees in the random forest.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the random forest model from an input file.
+     * @param fileName File name of the random forest model.
+     */
     loadModel(fileName: string): void;
 }

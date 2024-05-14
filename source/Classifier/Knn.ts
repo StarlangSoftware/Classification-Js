@@ -18,6 +18,10 @@ export class Knn extends Classifier{
         this.model = new KnnModel(trainSet, (<KnnParameter> parameters).getK(), (<KnnParameter> parameters).getDistanceMetric());
     }
 
+    /**
+     * Loads the K-nearest neighbor model from an input file.
+     * @param fileName File name of the K-nearest neighbor model.
+     */
     loadModel(fileName: string): void{
         this.model = new KnnModel(fileName)
     }

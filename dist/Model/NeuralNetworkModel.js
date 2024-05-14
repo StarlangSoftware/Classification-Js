@@ -168,6 +168,11 @@
                 return this.classLabels[this.y.maxIndex()];
             }
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to neural network model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             this.createInputVector(instance);
             this.calculateOutput();
@@ -177,6 +182,10 @@
             }
             return result;
         }
+        /**
+         * Loads the class labels from input model file.
+         * @param input Input model file.
+         */
         loadClassLabels(input) {
             let items = input.readLine().split(" ");
             this.K = parseInt(items[0]);
@@ -186,6 +195,11 @@
                 this.classLabels.push(input.readLine());
             }
         }
+        /**
+         * Loads the activation function from an input model file.
+         * @param input Input model file.
+         * @return Activation function read.
+         */
         loadActivationFunction(input) {
             switch (input.readLine()) {
                 case "TANH":

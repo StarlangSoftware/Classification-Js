@@ -180,6 +180,11 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
         }
     }
 
+    /**
+     * Calculates the posterior probability distribution for the given instance according to neural network model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number> {
         this.createInputVector(instance);
         this.calculateOutput();
@@ -190,6 +195,10 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
         return result;
     }
 
+    /**
+     * Loads the class labels from input model file.
+     * @param input Input model file.
+     */
     loadClassLabels(input: FileContents){
         let items = input.readLine().split(" ")
         this.K = parseInt(items[0])
@@ -200,6 +209,11 @@ export abstract class NeuralNetworkModel extends ValidatedModel{
         }
     }
 
+    /**
+     * Loads the activation function from an input model file.
+     * @param input Input model file.
+     * @return Activation function read.
+     */
     loadActivationFunction(input: FileContents): ActivationFunction{
         switch (input.readLine()){
             case "TANH":

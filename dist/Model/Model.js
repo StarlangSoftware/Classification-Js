@@ -29,6 +29,13 @@
             }
             return frequencies.max();
         }
+        /**
+         * Loads a single instance from a single line.
+         * @param line Line containing the instance.
+         * @param attributeTypes Type of the attributes of the instance. If th attribute is discrete, it is "DISCRETE",
+         *                       otherwise it is "CONTINUOUS".
+         * @return Instance read from the line.
+         */
         loadInstance(line, attributeTypes) {
             let items = line.split(",");
             let instance = new Instance_1.Instance(items[items.length - 1]);
@@ -44,6 +51,11 @@
             }
             return instance;
         }
+        /**
+         * Loads a discrete distribution from an input model file
+         * @param input Input model file.
+         * @return Discrete distribution read from an input model file.
+         */
         static loadDiscreteDistribution(input) {
             let distribution = new DiscreteDistribution_1.DiscreteDistribution();
             let size = parseInt(input.readLine());
@@ -57,6 +69,11 @@
             }
             return distribution;
         }
+        /**
+         * Loads an instance list from an input model file.
+         * @param input Input model file.
+         * @return Instance list read from an input model file.
+         */
         loadInstanceList(input) {
             let types = input.readLine().split(" ");
             let instanceCount = parseInt(input.readLine());
@@ -66,6 +83,11 @@
             }
             return instanceList;
         }
+        /**
+         * Loads a matrix from an input model file.
+         * @param input Input model file.
+         * @return Matrix read from the input model file.
+         */
         loadMatrix(input) {
             let items = input.readLine().split(" ");
             let matrix = new Matrix_1.Matrix(parseInt(items[0]), parseInt(items[1]));

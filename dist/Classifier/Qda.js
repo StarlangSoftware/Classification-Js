@@ -44,6 +44,10 @@
             }
             this.model = new QdaModel_1.QdaModel(priorDistribution, W, w, w0);
         }
+        /**
+         * Loads the Qda model from an input file.
+         * @param fileName File name of the Qda model.
+         */
         loadModel(fileName) {
             this.model = new QdaModel_1.QdaModel(fileName);
         }

@@ -5,6 +5,12 @@ import {Distribution} from "nlptoolkit-math/dist/Distribution";
 
 export class Combined5x2t extends PairedTest{
 
+    /**
+     * Calculates the test statistic of the combined 5x2 cv t test.
+     * @param classifier1 Performance (error rate or accuracy) results of the first classifier.
+     * @param classifier2 Performance (error rate or accuracy) results of the second classifier.
+     * @return Given the performances of two classifiers, the test statistic of the combined 5x2 cv t test.
+     */
     private testStatistic(classifier1: ExperimentPerformance, classifier2: ExperimentPerformance): number{
         let difference = new Array<number>();
         for (let i = 0; i < classifier1.numberOfExperiments(); i++){
@@ -24,6 +30,13 @@ export class Combined5x2t extends PairedTest{
         return numerator / denominator;
     }
 
+    /**
+     * Compares two classification algorithms based on their performances (accuracy or error rate) using combined 5x2
+     * cv t test.
+     * @param classifier1 Performance (error rate or accuracy) results of the first classifier.
+     * @param classifier2 Performance (error rate or accuracy) results of the second classifier.
+     * @return Statistical test result of the comparison.
+     */
     compareClassifiers(classifier1: ExperimentPerformance, classifier2: ExperimentPerformance): StatisticalTestResult {
         let statistic = this.testStatistic(classifier1, classifier2);
         let degreeOfFreedom = classifier1.numberOfExperiments() / 2;

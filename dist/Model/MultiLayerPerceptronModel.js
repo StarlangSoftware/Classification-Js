@@ -49,6 +49,16 @@
             this.W = this.allocateLayerWeights(H, this.d + 1, random);
             this.V = this.allocateLayerWeights(this.K, H + 1, random);
         }
+        /**
+         * A constructor that takes {@link InstanceList}s as trainsSet and validationSet. It  sets the {@link NeuralNetworkModel}
+         * nodes with given {@link InstanceList} then creates an input vector by using given trainSet and finds error.
+         * Via the validationSet it finds the classification performance and reassigns the allocated weight Matrix with the matrix
+         * that has the best accuracy and the Matrix V with the best Vector input.
+         *
+         * @param trainSet      InstanceList that is used to train.
+         * @param validationSet InstanceList that is used to validate.
+         * @param parameters    Multi layer perceptron parameters; seed, learningRate, etaDecrease, crossValidationRatio, epoch, hiddenNodes.
+         */
         constructor1(trainSet, validationSet, parameters) {
             this.activationFunction = parameters.getActivationFunction();
             this.allocateWeights(parameters.getHiddenNodes(), new Random_1.Random(parameters.getSeed()));
@@ -102,6 +112,10 @@
             this.W = bestW;
             this.V = bestV;
         }
+        /**
+         * Loads a multi-layer perceptron model from an input model file.
+         * @param fileName Model file name.
+         */
         constructor2(fileName) {
             let input = new FileContents_1.FileContents(fileName);
             this.loadClassLabels(input);

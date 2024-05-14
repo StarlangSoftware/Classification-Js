@@ -16,23 +16,33 @@
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     const DecisionNode_1 = require("./DecisionTree/DecisionNode");
     class TreeEnsembleModel extends Model_1.Model {
-        /**
-         * A constructor which sets the {@link Array} of {@link DecisionTree} with given input.
-         *
-         * @param forestOrFileName An {@link Array} of {@link DecisionTree}.
-         */
         constructor(forestOrFileName) {
             super();
             if (forestOrFileName instanceof Array) {
-                this.forest = forestOrFileName;
+                this.constructor1(forestOrFileName);
             }
             else {
-                let input = new FileContents_1.FileContents(forestOrFileName);
-                let numberOfTrees = parseInt(input.readLine());
-                this.forest = new Array();
-                for (let i = 0; i < numberOfTrees; i++) {
-                    this.forest.push(new DecisionTree_1.DecisionTree(new DecisionNode_1.DecisionNode(input)));
-                }
+                this.constructor2(forestOrFileName);
+            }
+        }
+        /**
+         * A constructor which sets the {@link Array} of {@link DecisionTree} with given input.
+         *
+         * @param forest An {@link Array} of {@link DecisionTree}.
+         */
+        constructor1(forest) {
+            this.forest = forest;
+        }
+        /**
+         * Loads a tree ensemble model such as Random Forest model or Bagging model from an input model file.
+         * @param fileName Model file name.
+         */
+        constructor2(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            let numberOfTrees = parseInt(input.readLine());
+            this.forest = new Array();
+            for (let i = 0; i < numberOfTrees; i++) {
+                this.forest.push(new DecisionTree_1.DecisionTree(new DecisionNode_1.DecisionNode(input)));
             }
         }
         /**
@@ -49,6 +59,11 @@
             }
             return distribution.getMaxItem();
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to ensemble tree model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             let distribution = new DiscreteDistribution_1.DiscreteDistribution();
             for (let tree of this.forest) {

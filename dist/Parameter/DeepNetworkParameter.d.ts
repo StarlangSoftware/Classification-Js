@@ -1,8 +1,8 @@
 import { LinearPerceptronParameter } from "./LinearPerceptronParameter";
 import { ActivationFunction } from "./ActivationFunction";
 export declare class DeepNetworkParameter extends LinearPerceptronParameter {
-    private hiddenLayers;
-    private activationFunction;
+    private readonly hiddenLayers;
+    private readonly activationFunction;
     /**
      * Parameters of the deep network classifier.
      *

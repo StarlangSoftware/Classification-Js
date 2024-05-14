@@ -16,21 +16,33 @@ export class KnnModel extends Model{
     /**
      * Constructor that sets the data {@link InstanceList}, k value and the {@link DistanceMetric}.
      *
-     * @param dataOrFileName           {@link InstanceList} input.
+     * @param data           {@link InstanceList} input.
      * @param k              K value.
      * @param distanceMetric {@link DistanceMetric} input.
      */
+    constructor1(data: InstanceList, k: number, distanceMetric: DistanceMetric) {
+        this.data = data
+        this.k = k
+        this.distanceMetric = distanceMetric
+    }
+
+    /**
+     * Loads a K-nearest neighbor model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string) {
+        this.distanceMetric = new EuclidianDistance()
+        let input = new FileContents(fileName)
+        this.k = parseInt(input.readLine())
+        this.data = this.loadInstanceList(input)
+    }
+
     constructor(dataOrFileName: InstanceList | string, k?: number, distanceMetric?: DistanceMetric) {
         super()
         if (dataOrFileName instanceof InstanceList){
-            this.data = dataOrFileName
-            this.k = k
-            this.distanceMetric = distanceMetric
+            this.constructor1(dataOrFileName, k, distanceMetric)
         } else {
-            this.distanceMetric = new EuclidianDistance()
-            let input = new FileContents(dataOrFileName)
-            this.k = parseInt(input.readLine())
-            this.data = this.loadInstanceList(input)
+            this.constructor2(dataOrFileName)
         }
     }
 
@@ -52,6 +64,11 @@ export class KnnModel extends Model{
         return predictedClass;
     }
 
+    /**
+     * Calculates the posterior probability distribution for the given instance according to K-means model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number> {
         let nearestNeighbors = this.nearestNeighbors(instance);
         return nearestNeighbors.classDistribution().getProbabilityDistribution();

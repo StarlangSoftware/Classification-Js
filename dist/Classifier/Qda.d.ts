@@ -9,5 +9,9 @@ export declare class Qda extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the Qda model from an input file.
+     * @param fileName File name of the Qda model.
+     */
     loadModel(fileName: string): void;
 }

@@ -10,5 +10,9 @@ export declare class DeepNetwork extends Classifier {
      * @throws DiscreteFeaturesNotAllowed Exception for discrete features.
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the deep network model from an input file.
+     * @param fileName File name of the deep network model.
+     */
     loadModel(fileName: string): void;
 }

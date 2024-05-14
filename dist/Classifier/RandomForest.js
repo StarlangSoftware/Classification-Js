@@ -33,6 +33,10 @@
             }
             this.model = new TreeEnsembleModel_1.TreeEnsembleModel(forest);
         }
+        /**
+         * Loads the random forest model from an input file.
+         * @param fileName File name of the random forest model.
+         */
         loadModel(fileName) {
             this.model = new TreeEnsembleModel_1.TreeEnsembleModel(fileName);
         }

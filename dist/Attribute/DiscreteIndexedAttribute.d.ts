@@ -1,7 +1,7 @@
 import { DiscreteAttribute } from "./DiscreteAttribute";
 export declare class DiscreteIndexedAttribute extends DiscreteAttribute {
-    private index;
-    private maxIndex;
+    private readonly index;
+    private readonly maxIndex;
     /**
      * Constructor for a discrete attribute.
      *

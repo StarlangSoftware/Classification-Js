@@ -10,7 +10,7 @@ export class NaiveBayesModel extends GaussianModel{
 
     private classMeans: Map<string, Vector> = undefined
     private classDeviations: Map<string, Vector> = undefined
-    private readonly classAttributeDistributions: Map<string, Array<DiscreteDistribution>> = undefined
+    private classAttributeDistributions: Map<string, Array<DiscreteDistribution>> = undefined
 
     /**
      * A constructor that sets the priorDistribution, classMeans and classDeviations.
@@ -19,21 +19,44 @@ export class NaiveBayesModel extends GaussianModel{
      * @param classMeans        A {@link Map} of String and {@link Vector}.
      * @param classDeviations   A {@link Map} of String and {@link Vector}.
      */
+    constructor1(priorDistribution: DiscreteDistribution, classMeans: Map<string, Vector>, classDeviations: Map<string, Vector>) {
+        this.priorDistribution = priorDistribution
+        this.classMeans = classMeans
+        this.classDeviations = classDeviations
+    }
+
+    /**
+     * A constructor that sets the priorDistribution and classAttributeDistributions.
+     *
+     * @param priorDistribution           {@link DiscreteDistribution} input.
+     * @param classAttributeDistributions {@link Map} of String and {@link Array} of {@link DiscreteDistribution}s.
+     */
+    constructor2(priorDistribution: DiscreteDistribution, classAttributeDistributions: Map<string, Array<DiscreteDistribution>>) {
+        this.priorDistribution = priorDistribution
+        this.classAttributeDistributions = classAttributeDistributions
+    }
+
+    /**
+     * Loads a naive Bayes model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor3(fileName: string) {
+        let input = new FileContents(fileName)
+        let size = this.loadPriorDistribution(input)
+        this.classMeans = this.loadVectors(input, size)
+        this.classDeviations = this.loadVectors(input, size)
+    }
+
     constructor(priorDistribution: DiscreteDistribution | string, classMeans?: any, classDeviations?: Map<string, Vector>) {
         super()
         if (priorDistribution instanceof DiscreteDistribution){
-            this.priorDistribution = priorDistribution
             if (classDeviations != undefined){
-                this.classMeans = classMeans
-                this.classDeviations = classDeviations
+                this.constructor1(priorDistribution, classMeans, classDeviations)
             } else {
-                this.classAttributeDistributions = classMeans
+                this.constructor2(priorDistribution, classMeans)
             }
         } else {
-            let input = new FileContents(priorDistribution)
-            let size = this.loadPriorDistribution(input)
-            this.classMeans = this.loadVectors(input, size)
-            this.classDeviations = this.loadVectors(input, size)
+            this.constructor3(priorDistribution)
         }
     }
 

@@ -16,6 +16,10 @@ export class Dummy extends Classifier{
         this.model = new DummyModel(trainSet);
     }
 
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
     loadModel(fileName: string): void{
         this.model = new DummyModel(fileName)
     }

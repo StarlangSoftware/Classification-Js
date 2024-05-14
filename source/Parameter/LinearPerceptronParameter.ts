@@ -2,10 +2,10 @@ import {Parameter} from "./Parameter";
 
 export class LinearPerceptronParameter extends Parameter{
 
-    private learningRate: number
-    private etaDecrease: number
-    private crossValidationRatio: number
-    private epoch: number
+    private readonly learningRate: number
+    private readonly etaDecrease: number
+    private readonly crossValidationRatio: number
+    private readonly epoch: number
 
     /**
      * Parameters of the linear perceptron algorithm.

@@ -14,9 +14,24 @@
     const InstanceList_1 = require("../InstanceList/InstanceList");
     const KFoldCrossValidation_1 = require("nlptoolkit-sampling/dist/KFoldCrossValidation");
     class KFoldRun {
+        /**
+         * Constructor for KFoldRun class. Basically sets K parameter of the K-fold cross-validation.
+         *
+         * @param K K of the K-fold cross-validation.
+         */
         constructor(K) {
             this.K = K;
         }
+        /**
+         * Runs a K fold cross-validated experiment for the given classifier with the given parameters. The experiment
+         * results will be added to the experimentPerformance.
+         * @param classifier Classifier for the experiment
+         * @param parameter Hyperparameters of the classifier of the experiment
+         * @param experimentPerformance Storage to add experiment results
+         * @param crossValidation K-fold crossvalidated dataset.
+         * @throws DiscreteFeaturesNotAllowed If the classifier does not allow discrete features and the dataset contains
+         * discrete features, DiscreteFeaturesNotAllowed will be thrown.
+         */
         runExperiment(classifier, parameter, experimentPerformance, crossValidation) {
             for (let i = 0; i < this.K; i++) {
                 let trainSet = new InstanceList_1.InstanceList(crossValidation.getTrainFold(i));

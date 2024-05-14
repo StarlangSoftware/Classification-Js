@@ -15,7 +15,7 @@
         /**
          * Constructor that sets the dataSet.
          *
-         * @param dataSet DataSet that will bu used.
+         * @param dataSet DataSet that will be used.
          */
         constructor(dataSet) {
             super(dataSet);

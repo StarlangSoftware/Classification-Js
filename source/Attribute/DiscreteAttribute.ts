@@ -2,7 +2,7 @@ import {Attribute} from "./Attribute";
 
 export class DiscreteAttribute extends Attribute{
 
-    private value: string = "NULL"
+    private readonly value: string = "NULL"
 
     /**
      * Constructor for a discrete attribute.

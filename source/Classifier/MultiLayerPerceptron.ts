@@ -20,6 +20,10 @@ export class MultiLayerPerceptron extends Classifier{
         this.model = new MultiLayerPerceptronModel(partition.get(1), partition.get(0), <MultiLayerPerceptronParameter> parameters);
     }
 
+    /**
+     * Loads the multi-layer perceptron model from an input file.
+     * @param fileName File name of the multi-layer perceptron model.
+     */
     loadModel(fileName: string): void{
         this.model = new MultiLayerPerceptronModel(fileName)
     }

@@ -16,6 +16,11 @@ export declare class DummyModel extends Model {
      * @return The entry of distribution which has the maximum value.
      */
     predict(instance: Instance): string;
+    /**
+     * Calculates the posterior probability distribution for the given instance according to dummy model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number>;
     saveTxt(fileName: string): void;
 }

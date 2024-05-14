@@ -3,8 +3,8 @@ import {ActivationFunction} from "./ActivationFunction";
 
 export class MultiLayerPerceptronParameter extends LinearPerceptronParameter{
 
-    private hiddenNodes: number
-    private activationFunction: ActivationFunction
+    private readonly hiddenNodes: number
+    private readonly activationFunction: ActivationFunction
 
     /**
      * Parameters of the multi layer perceptron algorithm.

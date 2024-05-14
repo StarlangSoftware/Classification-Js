@@ -3,9 +3,9 @@ import { Parameter } from "../Parameter/Parameter";
 import { DataSet } from "../DataSet/DataSet";
 import { FeatureSubSet } from "../FeatureSelection/FeatureSubSet";
 export declare class Experiment {
-    private classifier;
-    private parameter;
-    private dataSet;
+    private readonly classifier;
+    private readonly parameter;
+    private readonly dataSet;
     /**
      * Constructor for a specific machine learning experiment
      * @param classifier Classifier used in the machine learning experiment

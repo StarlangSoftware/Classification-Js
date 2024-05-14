@@ -30,6 +30,10 @@
             }
             this.model = new KMeansModel_1.KMeansModel(priorDistribution, classMeans, parameters.getDistanceMetric());
         }
+        /**
+         * Loads the K-means model from an input file.
+         * @param fileName File name of the K-means model.
+         */
         loadModel(fileName) {
             this.model = new KMeansModel_1.KMeansModel(fileName);
         }

@@ -26,6 +26,10 @@
             let partition = new Partition_1.Partition(trainSet, parameters.getCrossValidationRatio(), true);
             this.model = new MultiLayerPerceptronModel_1.MultiLayerPerceptronModel(partition.get(1), partition.get(0), parameters);
         }
+        /**
+         * Loads the multi-layer perceptron model from an input file.
+         * @param fileName File name of the multi-layer perceptron model.
+         */
         loadModel(fileName) {
             this.model = new MultiLayerPerceptronModel_1.MultiLayerPerceptronModel(fileName);
         }

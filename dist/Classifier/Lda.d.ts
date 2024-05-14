@@ -9,5 +9,9 @@ export declare class Lda extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the Lda model from an input file.
+     * @param fileName File name of the Lda model.
+     */
     loadModel(fileName: string): void;
 }

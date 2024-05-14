@@ -9,5 +9,9 @@ export declare class RandomClassifier extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the random classifier model from an input file.
+     * @param fileName File name of the random classifier model.
+     */
     loadModel(fileName: string): void;
 }

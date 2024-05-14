@@ -19,6 +19,10 @@ export class RandomClassifier extends Classifier{
         this.model = new RandomModel(result, parameters.getSeed());
     }
 
+    /**
+     * Loads the random classifier model from an input file.
+     * @param fileName File name of the random classifier model.
+     */
     loadModel(fileName: string): void{
         this.model = new RandomModel(fileName)
     }

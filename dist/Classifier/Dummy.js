@@ -23,6 +23,10 @@
         train(trainSet, parameters) {
             this.model = new DummyModel_1.DummyModel(trainSet);
         }
+        /**
+         * Loads the dummy model from an input file.
+         * @param fileName File name of the dummy model.
+         */
         loadModel(fileName) {
             this.model = new DummyModel_1.DummyModel(fileName);
         }

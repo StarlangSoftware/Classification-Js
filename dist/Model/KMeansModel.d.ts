@@ -9,6 +9,19 @@ export declare class KMeansModel extends GaussianModel {
     /**
      * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
      *
+     * @param priorDistribution {@link DiscreteDistribution} input.
+     * @param classMeans        {@link InstanceList} of class means.
+     * @param distanceMetric    {@link DistanceMetric} input.
+     */
+    constructor1(priorDistribution: DiscreteDistribution, classMeans: InstanceList, distanceMetric: DistanceMetric): void;
+    /**
+     * Loads a K-means model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string): void;
+    /**
+     * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
+     *
      * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
      * @param classMeans        {@link InstanceList} of class means.
      * @param distanceMetric    {@link DistanceMetric} input.

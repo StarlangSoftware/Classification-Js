@@ -14,6 +14,30 @@ export class KMeansModel extends GaussianModel{
     /**
      * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
      *
+     * @param priorDistribution {@link DiscreteDistribution} input.
+     * @param classMeans        {@link InstanceList} of class means.
+     * @param distanceMetric    {@link DistanceMetric} input.
+     */
+    constructor1(priorDistribution: DiscreteDistribution, classMeans: InstanceList, distanceMetric: DistanceMetric) {
+        this.classMeans = classMeans
+        this.priorDistribution = priorDistribution
+        this.distanceMetric = distanceMetric
+    }
+
+    /**
+     * Loads a K-means model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string) {
+        this.distanceMetric = new EuclidianDistance()
+        let input = new FileContents(fileName)
+        this.loadPriorDistribution(input)
+        this.classMeans = this.loadInstanceList(input)
+    }
+
+    /**
+     * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
+     *
      * @param priorDistributionOrFileName {@link DiscreteDistribution} input.
      * @param classMeans        {@link InstanceList} of class means.
      * @param distanceMetric    {@link DistanceMetric} input.
@@ -21,14 +45,9 @@ export class KMeansModel extends GaussianModel{
     constructor(priorDistributionOrFileName: DiscreteDistribution | string, classMeans?: InstanceList, distanceMetric?: DistanceMetric) {
         super()
         if (priorDistributionOrFileName instanceof DiscreteDistribution){
-            this.classMeans = classMeans
-            this.priorDistribution = priorDistributionOrFileName
-            this.distanceMetric = distanceMetric
+            this.constructor1(priorDistributionOrFileName, classMeans, distanceMetric)
         } else {
-            this.distanceMetric = new EuclidianDistance()
-            let input = new FileContents(priorDistributionOrFileName)
-            this.loadPriorDistribution(input)
-            this.classMeans = this.loadInstanceList(input)
+            this.constructor2(priorDistributionOrFileName)
         }
     }
 

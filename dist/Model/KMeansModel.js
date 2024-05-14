@@ -25,16 +25,33 @@
         constructor(priorDistributionOrFileName, classMeans, distanceMetric) {
             super();
             if (priorDistributionOrFileName instanceof DiscreteDistribution_1.DiscreteDistribution) {
-                this.classMeans = classMeans;
-                this.priorDistribution = priorDistributionOrFileName;
-                this.distanceMetric = distanceMetric;
+                this.constructor1(priorDistributionOrFileName, classMeans, distanceMetric);
             }
             else {
-                this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
-                let input = new FileContents_1.FileContents(priorDistributionOrFileName);
-                this.loadPriorDistribution(input);
-                this.classMeans = this.loadInstanceList(input);
+                this.constructor2(priorDistributionOrFileName);
             }
+        }
+        /**
+         * The constructor that sets the classMeans, priorDistribution and distanceMetric according to given inputs.
+         *
+         * @param priorDistribution {@link DiscreteDistribution} input.
+         * @param classMeans        {@link InstanceList} of class means.
+         * @param distanceMetric    {@link DistanceMetric} input.
+         */
+        constructor1(priorDistribution, classMeans, distanceMetric) {
+            this.classMeans = classMeans;
+            this.priorDistribution = priorDistribution;
+            this.distanceMetric = distanceMetric;
+        }
+        /**
+         * Loads a K-means model from an input model file.
+         * @param fileName Model file name.
+         */
+        constructor2(fileName) {
+            this.distanceMetric = new EuclidianDistance_1.EuclidianDistance();
+            let input = new FileContents_1.FileContents(fileName);
+            this.loadPriorDistribution(input);
+            this.classMeans = this.loadInstanceList(input);
         }
         /**
          * The calculateMetric method takes an {@link Instance} and a String as inputs. It loops through the class means, if

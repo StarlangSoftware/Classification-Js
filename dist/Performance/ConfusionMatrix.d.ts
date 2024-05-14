@@ -1,6 +1,6 @@
 export declare class ConfusionMatrix {
     private matrix;
-    private classLabels;
+    private readonly classLabels;
     /**
      * Constructor that sets the class labels {@link Array} and creates new {@link Map} matrix
      *

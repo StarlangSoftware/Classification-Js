@@ -52,6 +52,12 @@
             }
             return predictedClass;
         }
+        /**
+         * Loads the prior probability distribution from an input model file.
+         * @param input Input model file.
+         * @return Prior probability distribution.
+         * @throws IOException If the input file can not be read, the method throws IOException.
+         */
         loadPriorDistribution(input) {
             let size = parseInt(input.readLine());
             this.priorDistribution = new DiscreteDistribution_1.DiscreteDistribution();
@@ -64,6 +70,13 @@
             }
             return size;
         }
+        /**
+         * Loads hash map of vectors from input model file.
+         * @param input Input model file.
+         * @param size Number of vectors to be read from input model file.
+         * @return Hash map of vectors.
+         * @throws IOException If the input file can not be read, the method throws IOException.
+         */
         loadVectors(input, size) {
             let map = new Map();
             for (let i = 0; i < size; i++) {
@@ -77,6 +90,11 @@
             }
             return map;
         }
+        /**
+         * Calculates the posterior probability distribution for the given instance according to Gaussian model.
+         * @param instance Instance for which posterior probability distribution is calculated.
+         * @return Posterior probability distribution for the given instance.
+         */
         predictProbability(instance) {
             return undefined;
         }

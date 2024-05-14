@@ -27,6 +27,10 @@ export class C45 extends Classifier{
         this.model = tree;
     }
 
+    /**
+     * Loads the decision tree model from an input file.
+     * @param fileName File name of the decision tree model.
+     */
     loadModel(fileName: string): void{
         this.model = new DecisionTree(fileName)
     }

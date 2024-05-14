@@ -28,9 +28,17 @@
             this.comparison = comparison;
             this.value = value;
         }
+        /**
+         * Accessor for the attribute index.
+         * @return Attribute index.
+         */
         getAttributeIndex() {
             return this.attributeIndex;
         }
+        /**
+         * Accessor for the value.
+         * @return Value.
+         */
         getValue() {
             return this.value;
         }

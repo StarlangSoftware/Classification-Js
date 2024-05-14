@@ -23,6 +23,10 @@
         train(trainSet, parameters) {
             this.model = new KnnModel_1.KnnModel(trainSet, parameters.getK(), parameters.getDistanceMetric());
         }
+        /**
+         * Loads the K-nearest neighbor model from an input file.
+         * @param fileName File name of the K-nearest neighbor model.
+         */
         loadModel(fileName) {
             this.model = new KnnModel_1.KnnModel(fileName);
         }

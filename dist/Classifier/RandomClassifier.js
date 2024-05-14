@@ -26,6 +26,10 @@
             }
             this.model = new RandomModel_1.RandomModel(result, parameters.getSeed());
         }
+        /**
+         * Loads the random classifier model from an input file.
+         * @param fileName File name of the random classifier model.
+         */
         loadModel(fileName) {
             this.model = new RandomModel_1.RandomModel(fileName);
         }

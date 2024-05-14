@@ -21,6 +21,29 @@ export class DecisionNode {
     private condition: DecisionCondition = undefined
     private classLabelsDistribution: DiscreteDistribution
 
+    /**
+     * The DecisionNode method takes {@link InstanceList} data as input and then it sets the class label parameter by finding
+     * the most occurred class label of given data, it then gets distinct class labels as class labels ArrayList. Later, it adds ordered
+     * indices to the indexList and shuffles them randomly. Then, it gets the class distribution of given data and finds the best entropy value
+     * of these class distribution.
+     * <p>
+     * If an attribute of given data is {@link DiscreteIndexedAttribute}, it creates a Distribution according to discrete indexed attribute class distribution
+     * and finds the entropy. If it is better than the last best entropy it reassigns the best entropy, best attribute and best split value according to
+     * the newly founded best entropy's index. At the end, it also add new distribution to the class distribution .
+     * <p>
+     * If an attribute of given data is {@link DiscreteAttribute}, it directly finds the entropy. If it is better than the last best entropy it
+     * reassigns the best entropy, best attribute and best split value according to the newly founded best entropy's index.
+     * <p>
+     * If an attribute of given data is {@link ContinuousAttribute}, it creates two distributions; left and right according to class distribution
+     * and discrete distribution respectively, and finds the entropy. If it is better than the last best entropy it reassigns the best entropy,
+     * best attribute and best split value according to the newly founded best entropy's index. At the end, it also add new distribution to
+     * the right distribution and removes from left distribution .
+     *
+     * @param data      {@link InstanceList} input.
+     * @param condition {@link DecisionCondition} to check.
+     * @param parameter RandomForestParameter like seed, ensembleSize, attributeSubsetSize.
+     * @param isStump   Refers to decision trees with only 1 splitting rule.
+     */
     constructor1(data: InstanceList, condition?: DecisionCondition | number, parameter?: RandomForestParameter, isStump?: boolean){
         let bestAttribute = -1
         let bestSplitValue = 0
@@ -123,6 +146,10 @@ export class DecisionNode {
         }
     }
 
+    /**
+     * Reads the decision node model (as one line) from model file.
+     * @param contents Model file
+     */
     constructor2(contents: FileContents){
         let items = contents.readLine().split(" ")
         if (items[0] != "-1"){
@@ -295,6 +322,13 @@ export class DecisionNode {
         }
     }
 
+    /**
+     * Recursive method that returns the posterior probability distribution of a given instance. If the node is a leaf
+     * node, it returns the class label distribution, otherwise it checks in which direction (child node) this instance
+     * is forwarded.
+     * @param instance Instance for which the posterior probability distribution is calculated.
+     * @return Posterior probability distribution for this instance.
+     */
     predictProbabilityDistribution(instance: Instance): Map<string, number>{
         if (this.leaf) {
             return this.classLabelsDistribution.getProbabilityDistribution();

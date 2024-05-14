@@ -10,5 +10,9 @@ export declare class Dummy extends Classifier {
      * @param parameters -
      */
     train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
     loadModel(fileName: string): void;
 }

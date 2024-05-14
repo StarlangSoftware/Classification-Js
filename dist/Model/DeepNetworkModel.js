@@ -71,6 +71,19 @@
             }
             return bestWeights;
         }
+        /**
+         * Constructor that takes two {@link InstanceList} train set and validation set and {@link DeepNetworkParameter} as inputs.
+         * First it sets the class labels, their sizes as K and the size of the continuous attributes as d of given train set and
+         * allocates weights and sets the best weights. At each epoch, it shuffles the train set and loops through the each item of that train set,
+         * it multiplies the weights Matrix with input Vector than applies the sigmoid function and stores the result as hidden and add bias.
+         * Then updates weights and at the end it compares the performance of these weights with validation set. It updates the bestClassificationPerformance and
+         * bestWeights according to the current situation. At the end it updates the learning rate via etaDecrease value and finishes
+         * with clearing the weights.
+         *
+         * @param trainSet      {@link InstanceList} to be used as trainSet.
+         * @param validationSet {@link InstanceList} to be used as validationSet.
+         * @param parameters    {@link DeepNetworkParameter} input.
+         */
         constructor1(trainSet, validationSet, parameters) {
             let tmpHidden = new Vector_1.Vector(0, 0);
             let deltaWeights = new Array();
@@ -151,6 +164,10 @@
                 this.weights.push(m);
             }
         }
+        /**
+         * Loads a deep network model from an input model file.
+         * @param fileName Model file name.
+         */
         constructor2(fileName) {
             let input = new FileContents_1.FileContents(fileName);
             this.loadClassLabels(input);

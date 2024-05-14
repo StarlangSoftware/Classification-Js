@@ -2,8 +2,6 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {MultiLayerPerceptron} from "../../dist/Classifier/MultiLayerPerceptron";
-import {MultiLayerPerceptronParameter} from "../../dist/Parameter/MultiLayerPerceptronParameter";
 import {ActivationFunction} from "../../dist/Parameter/ActivationFunction";
 import {DeepNetwork} from "../../dist/Classifier/DeepNetwork";
 import {DeepNetworkParameter} from "../../dist/Parameter/DeepNetworkParameter";

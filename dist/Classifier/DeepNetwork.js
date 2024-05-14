@@ -25,6 +25,10 @@
             let partition = new Partition_1.Partition(trainSet, parameters.getCrossValidationRatio(), true);
             this.model = new DeepNetworkModel_1.DeepNetworkModel(partition.get(1), partition.get(0), parameters);
         }
+        /**
+         * Loads the deep network model from an input file.
+         * @param fileName File name of the deep network model.
+         */
         loadModel(fileName) {
             this.model = new DeepNetworkModel_1.DeepNetworkModel(fileName);
         }

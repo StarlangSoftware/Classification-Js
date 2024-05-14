@@ -61,6 +61,10 @@
                 this.trainContinuousVersion(priorDistribution, classLists);
             }
         }
+        /**
+         * Loads the naive Bayes model from an input file.
+         * @param fileName File name of the naive Bayes model.
+         */
         loadModel(fileName) {
             this.model = new NaiveBayesModel_1.NaiveBayesModel(fileName);
         }

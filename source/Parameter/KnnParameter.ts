@@ -3,7 +3,7 @@ import {DistanceMetric} from "../DistanceMetric/DistanceMetric";
 
 export class KnnParameter extends KMeansParameter{
 
-    private k: number
+    private readonly k: number
 
     /**
      * Parameters of the K-nearest neighbor classifier.

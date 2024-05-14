@@ -12,19 +12,31 @@ export class TreeEnsembleModel extends Model{
     /**
      * A constructor which sets the {@link Array} of {@link DecisionTree} with given input.
      *
-     * @param forestOrFileName An {@link Array} of {@link DecisionTree}.
+     * @param forest An {@link Array} of {@link DecisionTree}.
      */
+    constructor1(forest: Array<DecisionTree>) {
+        this.forest = forest
+    }
+
+    /**
+     * Loads a tree ensemble model such as Random Forest model or Bagging model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string) {
+        let input = new FileContents(fileName)
+        let numberOfTrees = parseInt(input.readLine())
+        this.forest = new Array<DecisionTree>()
+        for (let i = 0; i < numberOfTrees; i++){
+            this.forest.push(new DecisionTree(new DecisionNode(input)))
+        }
+    }
+
     constructor(forestOrFileName: Array<DecisionTree> | string) {
         super();
         if (forestOrFileName instanceof Array){
-            this.forest = forestOrFileName
+            this.constructor1(forestOrFileName)
         } else {
-            let input = new FileContents(forestOrFileName)
-            let numberOfTrees = parseInt(input.readLine())
-            this.forest = new Array<DecisionTree>()
-            for (let i = 0; i < numberOfTrees; i++){
-                this.forest.push(new DecisionTree(new DecisionNode(input)))
-            }
+            this.constructor2(forestOrFileName)
         }
     }
 
@@ -43,6 +55,11 @@ export class TreeEnsembleModel extends Model{
         return distribution.getMaxItem();
     }
 
+    /**
+     * Calculates the posterior probability distribution for the given instance according to ensemble tree model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number> {
         let distribution = new DiscreteDistribution();
         for (let tree of this.forest) {

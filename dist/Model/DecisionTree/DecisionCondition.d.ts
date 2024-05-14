@@ -12,7 +12,15 @@ export declare class DecisionCondition {
      * @param comparison     Comparison character.
      */
     constructor(attributeIndex: number, value: Attribute, comparison?: string);
+    /**
+     * Accessor for the attribute index.
+     * @return Attribute index.
+     */
     getAttributeIndex(): number;
+    /**
+     * Accessor for the value.
+     * @return Value.
+     */
     getValue(): Attribute;
     /**
      * The satisfy method takes an {@link Instance} as an input.

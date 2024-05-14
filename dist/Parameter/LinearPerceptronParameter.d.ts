@@ -1,9 +1,9 @@
 import { Parameter } from "./Parameter";
 export declare class LinearPerceptronParameter extends Parameter {
-    private learningRate;
-    private etaDecrease;
-    private crossValidationRatio;
-    private epoch;
+    private readonly learningRate;
+    private readonly etaDecrease;
+    private readonly crossValidationRatio;
+    private readonly epoch;
     /**
      * Parameters of the linear perceptron algorithm.
      *

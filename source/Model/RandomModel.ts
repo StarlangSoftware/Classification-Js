@@ -6,25 +6,43 @@ import {FileContents} from "nlptoolkit-util/dist/FileContents";
 
 export class RandomModel extends Model{
 
-    private readonly classLabels: Array<string>
+    private classLabels: Array<string>
     private random: Random
     private seed: number
+
+    /**
+     * A constructor that sets the class labels.
+     *
+     * @param classLabels An ArrayList of class labels.
+     * @param seed Seed of the random function.
+     */
+    constructor1(classLabels: Array<string>, seed: number) {
+        this.classLabels = classLabels
+        this.random = new Random(seed)
+        this.seed = seed
+    }
+
+    /**
+     * Loads a random classifier model from an input model file.
+     * @param fileName Model file name.
+     */
+    constructor2(fileName: string) {
+        let input = new FileContents(fileName)
+        this.seed = parseInt(input.readLine())
+        this.random = new Random(this.seed)
+        let size = parseInt(input.readLine())
+        this.classLabels = new Array<string>()
+        for (let i = 0; i < size; i++){
+            this.classLabels.push(input.readLine())
+        }
+    }
 
     constructor(classLabelsOrFileName: Array<string> | string, seed?: number) {
         super();
         if (classLabelsOrFileName instanceof Array){
-            this.classLabels = classLabelsOrFileName
-            this.random = new Random(seed)
-            this.seed = seed
+            this.constructor1(classLabelsOrFileName, seed)
         } else {
-            let input = new FileContents(classLabelsOrFileName)
-            seed = parseInt(input.readLine())
-            this.random = new Random(seed)
-            let size = parseInt(input.readLine())
-            this.classLabels = new Array<string>()
-            for (let i = 0; i < size; i++){
-                this.classLabels.push(input.readLine())
-            }
+            this.constructor2(classLabelsOrFileName)
         }
     }
 
@@ -48,6 +66,11 @@ export class RandomModel extends Model{
         }
     }
 
+    /**
+     * Calculates the posterior probability distribution for the given instance according to random model.
+     * @param instance Instance for which posterior probability distribution is calculated.
+     * @return Posterior probability distribution for the given instance.
+     */
     predictProbability(instance: Instance): Map<string, number> {
         let result = new Map<string, number>();
         for (let classLabel of this.classLabels){
