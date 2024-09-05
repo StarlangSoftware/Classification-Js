@@ -33,8 +33,8 @@
             for (let i = 0; i < this.numberOfBootstraps; i++) {
                 let bootstrap = new Bootstrap_1.Bootstrap(experiment.getDataSet().getInstances(), i + experiment.getParameter().getSeed());
                 let bootstrapSample = new InstanceList_1.InstanceList(bootstrap.getSample());
-                experiment.getClassifier().train(bootstrapSample, experiment.getParameter());
-                result.add(experiment.getClassifier().test(experiment.getDataSet().getInstanceList()));
+                experiment.getmodel().train(bootstrapSample, experiment.getParameter());
+                result.add(experiment.getmodel().test(experiment.getDataSet().getInstanceList()));
             }
             return result;
         }

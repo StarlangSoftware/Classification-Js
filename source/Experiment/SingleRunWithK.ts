@@ -4,9 +4,9 @@ import {KFoldCrossValidation} from "nlptoolkit-sampling/dist/KFoldCrossValidatio
 import {Instance} from "../Instance/Instance";
 import {Performance} from "../Performance/Performance";
 import {InstanceList} from "../InstanceList/InstanceList";
-import {Classifier} from "../Classifier/Classifier";
 import {Parameter} from "../Parameter/Parameter";
 import {CrossValidation} from "nlptoolkit-sampling/dist/CrossValidation";
+import {Model} from "../Model/Model";
 
 export class SingleRunWithK implements SingleRun{
 
@@ -24,19 +24,19 @@ export class SingleRunWithK implements SingleRun{
     /**
      * Runs first fold of a K fold cross-validated experiment for the given classifier with the given parameters.
      * The experiment result will be returned.
-     * @param classifier Classifier for the experiment
+     * @param model Classifier for the experiment
      * @param parameter Hyperparameters of the classifier of the experiment
      * @param crossValidation K-fold crossvalidated dataset.
      * @return The experiment result of the first fold of the K-fold cross-validated experiment.
      * @throws DiscreteFeaturesNotAllowed If the classifier does not allow discrete features and the dataset contains
      * discrete features, DiscreteFeaturesNotAllowed will be thrown.
      */
-    runExperiment(classifier: Classifier,
+    runExperiment(model: Model,
                   parameter: Parameter,
                   crossValidation: CrossValidation<Instance>){
         let trainSet = new InstanceList(crossValidation.getTrainFold(0));
         let testSet = new InstanceList(crossValidation.getTestFold(0));
-        return classifier.singleRun(parameter, trainSet, testSet);
+        return model.singleRun(parameter, trainSet, testSet);
     }
 
     /**
@@ -48,7 +48,7 @@ export class SingleRunWithK implements SingleRun{
     execute(experiment: Experiment): Performance {
         let crossValidation = new KFoldCrossValidation<Instance>(experiment.getDataSet().getInstances(), this.K,
             experiment.getParameter().getSeed());
-        return this.runExperiment(experiment.getClassifier(), experiment.getParameter(), crossValidation);
+        return this.runExperiment(experiment.getmodel(), experiment.getParameter(), crossValidation);
     }
 
 }

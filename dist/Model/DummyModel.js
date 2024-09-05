@@ -4,31 +4,32 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Model", "../InstanceList/InstanceList", "../Instance/CompositeInstance", "nlptoolkit-util/dist/FileContents"], factory);
+        define(["require", "exports", "./Model", "../Instance/CompositeInstance", "nlptoolkit-util/dist/FileContents"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DummyModel = void 0;
     const Model_1 = require("./Model");
-    const InstanceList_1 = require("../InstanceList/InstanceList");
     const CompositeInstance_1 = require("../Instance/CompositeInstance");
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class DummyModel extends Model_1.Model {
         /**
-         * Constructor which sets the distribution using the given {@link InstanceList}.
+         * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+         * the training data, there is no training. Sets the distribution using the given {@link InstanceList}.
          *
-         * @param trainSet {@link InstanceList} which is used to get the class distribution.
+         * @param trainSet   Training data given to the algorithm.
          */
-        constructor(trainSet) {
-            super();
-            if (trainSet instanceof InstanceList_1.InstanceList) {
-                this.distribution = trainSet.classDistribution();
-            }
-            else {
-                let input = new FileContents_1.FileContents(trainSet);
-                this.distribution = Model_1.Model.loadDiscreteDistribution(input);
-            }
+        constructor1(trainSet) {
+            this.distribution = trainSet.classDistribution();
+        }
+        /**
+         * Loads the dummy model from an input file.
+         * @param fileName File name of the dummy model.
+         */
+        constructor2(fileName) {
+            let input = new FileContents_1.FileContents(fileName);
+            this.distribution = Model_1.Model.loadDiscreteDistribution(input);
         }
         /**
          * The predict method takes an Instance as an input and returns the entry of distribution which has the maximum value.
@@ -54,6 +55,23 @@
             return this.distribution.getProbabilityDistribution();
         }
         saveTxt(fileName) {
+        }
+        /**
+         * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+         * the training data, there is no training.
+         *
+         * @param trainSet   Training data given to the algorithm.
+         * @param parameters -
+         */
+        train(trainSet, parameters) {
+            this.constructor1(trainSet);
+        }
+        /**
+         * Loads the dummy model from an input file.
+         * @param fileName File name of the dummy model.
+         */
+        loadModel(fileName) {
+            this.constructor2(fileName);
         }
     }
     exports.DummyModel = DummyModel;

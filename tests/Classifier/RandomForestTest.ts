@@ -2,12 +2,12 @@ import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
 import * as assert from "assert";
-import {RandomForest} from "../../dist/Classifier/RandomForest";
 import {RandomForestParameter} from "../../dist/Parameter/RandomForestParameter";
+import {RandomForestModel} from "../../dist/Model/Ensemble/RandomForestModel";
 
 describe('RandomForestTest', function() {
     describe('RandomForestTest', function() {
-        let randomForest = new RandomForest()
+        let randomForest = new RandomForestModel()
         let randomForestParameter = new RandomForestParameter(1, 100, 35)
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){

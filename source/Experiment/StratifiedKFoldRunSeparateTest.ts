@@ -27,7 +27,7 @@ export class StratifiedKFoldRunSeparateTest extends KFoldRunSeparateTest{
         let instanceList = experiment.getDataSet().getInstanceList();
         let partition = new Partition(instanceList, 0.25, true);
         let crossValidation = new StratifiedKFoldCrossValidation<Instance>(new Partition(partition.get(1)).getLists(), this.K, experiment.getParameter().getSeed());
-        this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation, partition.get(0));
+        this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation, partition.get(0));
         return result;
     }
 }

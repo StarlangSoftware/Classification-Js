@@ -3,12 +3,12 @@ import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
 import {ActivationFunction} from "../../dist/Parameter/ActivationFunction";
-import {DeepNetwork} from "../../dist/Classifier/DeepNetwork";
 import {DeepNetworkParameter} from "../../dist/Parameter/DeepNetworkParameter";
+import {DeepNetworkModel} from "../../dist/Model/NeuralNetwork/DeepNetworkModel";
 
 describe('DeepNetworkTest', function() {
     describe('DeepNetworkTest', function() {
-        let deepNetwork = new DeepNetwork()
+        let deepNetwork = new DeepNetworkModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)
@@ -36,7 +36,7 @@ describe('DeepNetworkTest', function() {
             assert.ok(Math.abs(28.70 -  100 * deepNetwork.test(bupa.getInstanceList()).getErrorRate()) <= 0.01);
             deepNetworkParameter = new DeepNetworkParameter(1, 0.01, 0.99, 0.2, 100, [20], ActivationFunction.SIGMOID)
             deepNetwork.train(dermatology.getInstanceList(), deepNetworkParameter);
-            assert.ok(Math.abs(2.73 -  100 * deepNetwork.test(dermatology.getInstanceList()).getErrorRate()) <= 0.01);
+            assert.ok(Math.abs(1.37 -  100 * deepNetwork.test(dermatology.getInstanceList()).getErrorRate()) <= 0.01);
         });
         it('testLoad', function() {
             deepNetwork.loadModel("models/deepNetwork-iris.txt");

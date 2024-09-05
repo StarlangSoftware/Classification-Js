@@ -25,19 +25,19 @@
         /**
          * Runs a K fold cross-validated experiment for the given classifier with the given parameters. The experiment
          * results will be added to the experimentPerformance.
-         * @param classifier Classifier for the experiment
+         * @param model Model for the experiment
          * @param parameter Hyperparameters of the classifier of the experiment
          * @param experimentPerformance Storage to add experiment results
          * @param crossValidation K-fold crossvalidated dataset.
          * @throws DiscreteFeaturesNotAllowed If the classifier does not allow discrete features and the dataset contains
          * discrete features, DiscreteFeaturesNotAllowed will be thrown.
          */
-        runExperiment(classifier, parameter, experimentPerformance, crossValidation) {
+        runExperiment(model, parameter, experimentPerformance, crossValidation) {
             for (let i = 0; i < this.K; i++) {
                 let trainSet = new InstanceList_1.InstanceList(crossValidation.getTrainFold(i));
                 let testSet = new InstanceList_1.InstanceList(crossValidation.getTestFold(i));
-                classifier.train(trainSet, parameter);
-                experimentPerformance.add(classifier.test(testSet));
+                model.train(trainSet, parameter);
+                experimentPerformance.add(model.test(testSet));
             }
         }
         /**
@@ -49,7 +49,7 @@
         execute(experiment) {
             let result = new ExperimentPerformance_1.ExperimentPerformance();
             let crossValidation = new KFoldCrossValidation_1.KFoldCrossValidation(experiment.getDataSet().getInstances(), this.K, experiment.getParameter().getSeed());
-            this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation);
+            this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation);
             return result;
         }
     }

@@ -37,7 +37,7 @@
             let partition = new Partition_1.Partition(instanceList, 0.25, true);
             for (let j = 0; j < this.M; j++) {
                 let crossValidation = new StratifiedKFoldCrossValidation_1.StratifiedKFoldCrossValidation(new Partition_1.Partition(partition.get(1)).getLists(), this.K, experiment.getParameter().getSeed());
-                this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation, partition.get(0));
+                this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation, partition.get(0));
             }
             return result;
         }

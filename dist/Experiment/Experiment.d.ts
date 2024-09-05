@@ -1,23 +1,23 @@
-import { Classifier } from "../Classifier/Classifier";
 import { Parameter } from "../Parameter/Parameter";
 import { DataSet } from "../DataSet/DataSet";
 import { FeatureSubSet } from "../FeatureSelection/FeatureSubSet";
+import { Model } from "../Model/Model";
 export declare class Experiment {
-    private readonly classifier;
+    private readonly model;
     private readonly parameter;
     private readonly dataSet;
     /**
      * Constructor for a specific machine learning experiment
-     * @param classifier Classifier used in the machine learning experiment
+     * @param model Model used in the machine learning experiment
      * @param parameter Parameter(s) of the classifier.
      * @param dataSet DataSet on which the classifier is run.
      */
-    constructor(classifier: Classifier, parameter: Parameter, dataSet: DataSet);
+    constructor(model: Model, parameter: Parameter, dataSet: DataSet);
     /**
      * Accessor for the classifier attribute.
      * @return Classifier attribute.
      */
-    getClassifier(): Classifier;
+    getmodel(): Model;
     /**
      * Accessor for the parameter attribute.
      * @return Parameter attribute.

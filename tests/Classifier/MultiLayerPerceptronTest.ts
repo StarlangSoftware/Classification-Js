@@ -2,14 +2,13 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {LinearPerceptronParameter} from "../../dist/Parameter/LinearPerceptronParameter";
-import {MultiLayerPerceptron} from "../../dist/Classifier/MultiLayerPerceptron";
 import {MultiLayerPerceptronParameter} from "../../dist/Parameter/MultiLayerPerceptronParameter";
 import {ActivationFunction} from "../../dist/Parameter/ActivationFunction";
+import {MultiLayerPerceptronModel} from "../../dist/Model/NeuralNetwork/MultiLayerPerceptronModel";
 
 describe('MultiLayerPerceptronTest', function() {
     describe('MultiLayerPerceptronTest', function() {
-        let multiLayerPerceptron = new MultiLayerPerceptron()
+        let multiLayerPerceptron = new MultiLayerPerceptronModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)

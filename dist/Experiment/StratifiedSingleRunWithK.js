@@ -31,7 +31,7 @@
             let crossValidation = new StratifiedKFoldCrossValidation_1.StratifiedKFoldCrossValidation(experiment.getDataSet().getClassInstances(), this.K, experiment.getParameter().getSeed());
             let trainSet = new InstanceList_1.InstanceList(crossValidation.getTrainFold(0));
             let testSet = new InstanceList_1.InstanceList(crossValidation.getTestFold(0));
-            return experiment.getClassifier().singleRun(experiment.getParameter(), trainSet, testSet);
+            return experiment.getmodel().singleRun(experiment.getParameter(), trainSet, testSet);
         }
     }
     exports.StratifiedSingleRunWithK = StratifiedSingleRunWithK;

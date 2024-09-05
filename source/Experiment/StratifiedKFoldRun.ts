@@ -23,7 +23,7 @@ export class StratifiedKFoldRun extends KFoldRun{
     execute(experiment: Experiment): ExperimentPerformance {
         let result = new ExperimentPerformance();
         let crossValidation = new StratifiedKFoldCrossValidation<Instance>(experiment.getDataSet().getClassInstances(), this.K, experiment.getParameter().getSeed());
-        this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation);
+        this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation);
         return result;
     }
 

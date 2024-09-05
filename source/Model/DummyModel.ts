@@ -4,24 +4,29 @@ import {DiscreteDistribution} from "nlptoolkit-math/dist/DiscreteDistribution";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {CompositeInstance} from "../Instance/CompositeInstance";
 import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {Parameter} from "../Parameter/Parameter";
 
 export class DummyModel extends Model{
 
     private distribution: DiscreteDistribution
 
     /**
-     * Constructor which sets the distribution using the given {@link InstanceList}.
+     * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+     * the training data, there is no training. Sets the distribution using the given {@link InstanceList}.
      *
-     * @param trainSet {@link InstanceList} which is used to get the class distribution.
+     * @param trainSet   Training data given to the algorithm.
      */
-    constructor(trainSet: InstanceList | string) {
-        super();
-        if (trainSet instanceof InstanceList){
-            this.distribution = trainSet.classDistribution();
-        } else {
-            let input = new FileContents(trainSet)
-            this.distribution = Model.loadDiscreteDistribution(input)
-        }
+    constructor1(trainSet: InstanceList){
+        this.distribution = trainSet.classDistribution()
+    }
+
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
+    constructor2(fileName: string) {
+        let input = new FileContents(fileName)
+        this.distribution = Model.loadDiscreteDistribution(input)
     }
 
     /**
@@ -50,5 +55,25 @@ export class DummyModel extends Model{
 
     saveTxt(fileName: string){
     }
+
+    /**
+     * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+     * the training data, there is no training.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void {
+        this.constructor1(trainSet)
+    }
+
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
+    loadModel(fileName: string): void{
+        this.constructor2(fileName)
+    }
+
 
 }

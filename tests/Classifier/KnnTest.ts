@@ -2,13 +2,13 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {Knn} from "../../dist/Classifier/Knn";
 import {KnnParameter} from "../../dist/Parameter/KnnParameter";
 import {EuclidianDistance} from "../../dist/DistanceMetric/EuclidianDistance";
+import {KnnModel} from "../../dist/Model/NonParametric/KnnModel";
 
 describe('KnnTest', function() {
     describe('KnnTest', function() {
-        let knn = new Knn()
+        let knn = new KnnModel()
         let knnParameter = new KnnParameter(1, 3, new EuclidianDistance())
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){

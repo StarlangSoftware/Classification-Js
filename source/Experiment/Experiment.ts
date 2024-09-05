@@ -1,22 +1,22 @@
-import {Classifier} from "../Classifier/Classifier";
 import {Parameter} from "../Parameter/Parameter";
 import {DataSet} from "../DataSet/DataSet";
 import {FeatureSubSet} from "../FeatureSelection/FeatureSubSet";
+import {Model} from "../Model/Model";
 
 export class Experiment {
 
-    private readonly classifier: Classifier
+    private readonly model: Model
     private readonly parameter: Parameter
     private readonly dataSet: DataSet
 
     /**
      * Constructor for a specific machine learning experiment
-     * @param classifier Classifier used in the machine learning experiment
+     * @param model Model used in the machine learning experiment
      * @param parameter Parameter(s) of the classifier.
      * @param dataSet DataSet on which the classifier is run.
      */
-    constructor(classifier: Classifier, parameter: Parameter, dataSet: DataSet) {
-        this.classifier = classifier
+    constructor(model: Model, parameter: Parameter, dataSet: DataSet) {
+        this.model = model
         this.parameter = parameter
         this.dataSet = dataSet
     }
@@ -25,8 +25,8 @@ export class Experiment {
      * Accessor for the classifier attribute.
      * @return Classifier attribute.
      */
-    getClassifier(): Classifier{
-        return this.classifier
+    getmodel(): Model{
+        return this.model
     }
 
     /**
@@ -51,7 +51,7 @@ export class Experiment {
      * @return Experiment constructed
      */
     featureSelectedExperiment(featureSubSet: FeatureSubSet): Experiment{
-        return new Experiment(this.classifier, this.parameter, this.dataSet.getSubSetOfFeatures(featureSubSet));
+        return new Experiment(this.model, this.parameter, this.dataSet.getSubSetOfFeatures(featureSubSet));
     }
 
 }

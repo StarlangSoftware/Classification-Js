@@ -2,11 +2,11 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {Qda} from "../../dist/Classifier/Qda";
+import {QdaModel} from "../../dist/Model/Parametric/QdaModel";
 
 describe('QdaTest', function() {
     describe('QdaTest', function() {
-        let qda = new Qda()
+        let qda = new QdaModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)

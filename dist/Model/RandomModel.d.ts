@@ -1,5 +1,7 @@
 import { Model } from "./Model";
 import { Instance } from "../Instance/Instance";
+import { InstanceList } from "../InstanceList/InstanceList";
+import { Parameter } from "../Parameter/Parameter";
 export declare class RandomModel extends Model {
     private classLabels;
     private random;
@@ -16,7 +18,6 @@ export declare class RandomModel extends Model {
      * @param fileName Model file name.
      */
     constructor2(fileName: string): void;
-    constructor(classLabelsOrFileName: Array<string> | string, seed?: number);
     /**
      * The predict method gets an Instance as an input and retrieves the possible class labels as an ArrayList. Then selects a
      * random number as an index and returns the class label at this selected index.
@@ -32,4 +33,16 @@ export declare class RandomModel extends Model {
      */
     predictProbability(instance: Instance): Map<string, number>;
     saveTxt(fileName: string): void;
+    /**
+     * Training algorithm for random classifier.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the random classifier model from an input file.
+     * @param fileName File name of the random classifier model.
+     */
+    loadModel(fileName: string): void;
 }

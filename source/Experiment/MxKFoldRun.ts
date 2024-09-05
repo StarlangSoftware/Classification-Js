@@ -29,7 +29,7 @@ export class MxKFoldRun extends KFoldRun{
         let result = new ExperimentPerformance();
         for (let j = 0; j < this.M; j++) {
             let crossValidation = new KFoldCrossValidation<Instance>(experiment.getDataSet().getInstances(), this.K, experiment.getParameter().getSeed());
-            this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation);
+            this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation);
         }
         return result;
     }

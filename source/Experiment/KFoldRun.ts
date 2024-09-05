@@ -1,12 +1,12 @@
 import {MultipleRun} from "./MultipleRun";
 import {Experiment} from "./Experiment";
 import {ExperimentPerformance} from "../Performance/ExperimentPerformance";
-import {Classifier} from "../Classifier/Classifier";
 import {Parameter} from "../Parameter/Parameter";
 import {CrossValidation} from "nlptoolkit-sampling/dist/CrossValidation";
 import {Instance} from "../Instance/Instance";
 import {InstanceList} from "../InstanceList/InstanceList";
 import {KFoldCrossValidation} from "nlptoolkit-sampling/dist/KFoldCrossValidation";
+import {Model} from "../Model/Model";
 
 export class KFoldRun implements MultipleRun{
 
@@ -24,22 +24,22 @@ export class KFoldRun implements MultipleRun{
     /**
      * Runs a K fold cross-validated experiment for the given classifier with the given parameters. The experiment
      * results will be added to the experimentPerformance.
-     * @param classifier Classifier for the experiment
+     * @param model Model for the experiment
      * @param parameter Hyperparameters of the classifier of the experiment
      * @param experimentPerformance Storage to add experiment results
      * @param crossValidation K-fold crossvalidated dataset.
      * @throws DiscreteFeaturesNotAllowed If the classifier does not allow discrete features and the dataset contains
      * discrete features, DiscreteFeaturesNotAllowed will be thrown.
      */
-    protected runExperiment(classifier: Classifier,
+    protected runExperiment(model: Model,
                             parameter: Parameter,
                             experimentPerformance: ExperimentPerformance,
                             crossValidation: CrossValidation<Instance>){
         for (let i = 0; i < this.K; i++) {
             let trainSet = new InstanceList(crossValidation.getTrainFold(i));
             let testSet = new InstanceList(crossValidation.getTestFold(i));
-            classifier.train(trainSet, parameter);
-            experimentPerformance.add(classifier.test(testSet));
+            model.train(trainSet, parameter);
+            experimentPerformance.add(model.test(testSet));
         }
     }
 
@@ -52,7 +52,7 @@ export class KFoldRun implements MultipleRun{
     execute(experiment: Experiment): ExperimentPerformance {
         let result = new ExperimentPerformance();
         let crossValidation = new KFoldCrossValidation<Instance>(experiment.getDataSet().getInstances(), this.K, experiment.getParameter().getSeed());
-        this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation);
+        this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation);
         return result;
     }
 

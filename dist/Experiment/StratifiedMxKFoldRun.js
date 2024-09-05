@@ -33,7 +33,7 @@
             let result = new ExperimentPerformance_1.ExperimentPerformance();
             for (let j = 0; j < this.M; j++) {
                 let crossValidation = new StratifiedKFoldCrossValidation_1.StratifiedKFoldCrossValidation(experiment.getDataSet().getClassInstances(), this.K, experiment.getParameter().getSeed());
-                this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation);
+                this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation);
             }
             return result;
         }

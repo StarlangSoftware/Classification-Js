@@ -15,15 +15,6 @@
     const Random_1 = require("nlptoolkit-util/dist/Random");
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
     class RandomModel extends Model_1.Model {
-        constructor(classLabelsOrFileName, seed) {
-            super();
-            if (classLabelsOrFileName instanceof Array) {
-                this.constructor1(classLabelsOrFileName, seed);
-            }
-            else {
-                this.constructor2(classLabelsOrFileName);
-            }
-        }
         /**
          * A constructor that sets the class labels.
          *
@@ -82,6 +73,26 @@
             return result;
         }
         saveTxt(fileName) {
+        }
+        /**
+         * Training algorithm for random classifier.
+         *
+         * @param trainSet   Training data given to the algorithm.
+         * @param parameters -
+         */
+        train(trainSet, parameters) {
+            let result = new Array();
+            for (let s of trainSet.classDistribution().keys()) {
+                result.push(s);
+            }
+            this.constructor1(result, parameters.getSeed());
+        }
+        /**
+         * Loads the random classifier model from an input file.
+         * @param fileName File name of the random classifier model.
+         */
+        loadModel(fileName) {
+            this.constructor2(fileName);
         }
     }
     exports.RandomModel = RandomModel;

@@ -2,14 +2,11 @@ import { ValidatedModel } from "../ValidatedModel";
 import { DecisionNode } from "./DecisionNode";
 import { Instance } from "../../Instance/Instance";
 import { InstanceList } from "../../InstanceList/InstanceList";
+import { Parameter } from "../../Parameter/Parameter";
 export declare class DecisionTree extends ValidatedModel {
-    private readonly root;
-    /**
-     * Constructor that sets root node of the decision tree.
-     *
-     * @param rootOrFileName DecisionNode type input or fileName
-     */
-    constructor(rootOrFileName: DecisionNode | string);
+    protected root: DecisionNode;
+    constructor2(fileName: string): void;
+    constructor(root?: DecisionNode);
     /**
      * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the
      * possible class labels. Otherwise, it returns the returned class labels.
@@ -40,4 +37,17 @@ export declare class DecisionTree extends ValidatedModel {
      * @param pruneSet {@link InstanceList} to perform pruning.
      */
     prune(pruneSet: InstanceList): void;
+    /**
+     * Training algorithm for C4.5 univariate decision tree classifier. 20 percent of the data are left aside for pruning
+     * 80 percent of the data is used for constructing the tree.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the decision tree model from an input file.
+     * @param fileName File name of the decision tree model.
+     */
+    loadModel(fileName: string): void;
 }

@@ -33,7 +33,7 @@ export class MxKFoldRunSeparateTest extends KFoldRunSeparateTest{
         let partition = new Partition(instanceList, 0.25, true);
         for (let j = 0; j < this.M; j++) {
             let crossValidation = new KFoldCrossValidation<Instance>(partition.get(1).getInstances(), this.K, experiment.getParameter().getSeed());
-            this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation, partition.get(0));
+            this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation, partition.get(0));
         }
         return result;
     }

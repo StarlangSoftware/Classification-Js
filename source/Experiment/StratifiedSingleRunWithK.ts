@@ -28,6 +28,6 @@ export class StratifiedSingleRunWithK {
             this.K, experiment.getParameter().getSeed());
         let trainSet = new InstanceList(crossValidation.getTrainFold(0));
         let testSet = new InstanceList(crossValidation.getTestFold(0));
-        return experiment.getClassifier().singleRun(experiment.getParameter(), trainSet, testSet);
+        return experiment.getmodel().singleRun(experiment.getParameter(), trainSet, testSet);
     }
 }

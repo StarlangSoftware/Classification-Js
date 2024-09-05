@@ -4,7 +4,7 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../ValidatedModel", "./DecisionNode", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/FileContents"], factory);
+        define(["require", "exports", "../ValidatedModel", "./DecisionNode", "../../Instance/CompositeInstance", "nlptoolkit-util/dist/FileContents", "../../InstanceList/Partition"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -14,21 +14,15 @@
     const DecisionNode_1 = require("./DecisionNode");
     const CompositeInstance_1 = require("../../Instance/CompositeInstance");
     const FileContents_1 = require("nlptoolkit-util/dist/FileContents");
+    const Partition_1 = require("../../InstanceList/Partition");
     class DecisionTree extends ValidatedModel_1.ValidatedModel {
-        /**
-         * Constructor that sets root node of the decision tree.
-         *
-         * @param rootOrFileName DecisionNode type input or fileName
-         */
-        constructor(rootOrFileName) {
+        constructor(root) {
             super();
-            if (rootOrFileName instanceof DecisionNode_1.DecisionNode) {
-                this.root = rootOrFileName;
-            }
-            else {
-                let contents = new FileContents_1.FileContents(rootOrFileName);
-                this.root = new DecisionNode_1.DecisionNode(contents);
-            }
+            this.root = root;
+        }
+        constructor2(fileName) {
+            let contents = new FileContents_1.FileContents(fileName);
+            this.root = new DecisionNode_1.DecisionNode(contents);
         }
         /**
          * The predict method  performs prediction on the root node of given instance, and if it is null, it returns the
@@ -83,6 +77,30 @@
          */
         prune(pruneSet) {
             this.pruneNode(this.root, pruneSet);
+        }
+        /**
+         * Training algorithm for C4.5 univariate decision tree classifier. 20 percent of the data are left aside for pruning
+         * 80 percent of the data is used for constructing the tree.
+         *
+         * @param trainSet   Training data given to the algorithm.
+         * @param parameters -
+         */
+        train(trainSet, parameters) {
+            if (parameters.isPrune()) {
+                let partition = new Partition_1.Partition(trainSet, parameters.getCrossValidationRatio(), true);
+                this.root = new DecisionNode_1.DecisionNode(partition.get(1), undefined, undefined, false);
+                this.prune(partition.get(0));
+            }
+            else {
+                this.root = new DecisionNode_1.DecisionNode(trainSet, undefined, undefined, false);
+            }
+        }
+        /**
+         * Loads the decision tree model from an input file.
+         * @param fileName File name of the decision tree model.
+         */
+        loadModel(fileName) {
+            this.constructor2(fileName);
         }
     }
     exports.DecisionTree = DecisionTree;

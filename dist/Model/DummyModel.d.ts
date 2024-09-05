@@ -1,14 +1,21 @@
 import { Model } from "./Model";
 import { Instance } from "../Instance/Instance";
 import { InstanceList } from "../InstanceList/InstanceList";
+import { Parameter } from "../Parameter/Parameter";
 export declare class DummyModel extends Model {
     private distribution;
     /**
-     * Constructor which sets the distribution using the given {@link InstanceList}.
+     * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+     * the training data, there is no training. Sets the distribution using the given {@link InstanceList}.
      *
-     * @param trainSet {@link InstanceList} which is used to get the class distribution.
+     * @param trainSet   Training data given to the algorithm.
      */
-    constructor(trainSet: InstanceList | string);
+    constructor1(trainSet: InstanceList): void;
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
+    constructor2(fileName: string): void;
     /**
      * The predict method takes an Instance as an input and returns the entry of distribution which has the maximum value.
      *
@@ -23,4 +30,17 @@ export declare class DummyModel extends Model {
      */
     predictProbability(instance: Instance): Map<string, number>;
     saveTxt(fileName: string): void;
+    /**
+     * Training algorithm for the dummy classifier. Actually dummy classifier returns the maximum occurring class in
+     * the training data, there is no training.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void;
+    /**
+     * Loads the dummy model from an input file.
+     * @param fileName File name of the dummy model.
+     */
+    loadModel(fileName: string): void;
 }

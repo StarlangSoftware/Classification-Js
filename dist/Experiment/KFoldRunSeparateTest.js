@@ -27,7 +27,7 @@
         /**
          * Runs a K fold cross-validated experiment for the given classifier with the given parameters. Testing will be
          * done on the separate test set. The experiment results will be added to the experimentPerformance.
-         * @param classifier Classifier for the experiment
+         * @param model Model for the experiment
          * @param parameter Hyperparameters of the classifier of the experiment
          * @param experimentPerformance Storage to add experiment results
          * @param crossValidation K-fold crossvalidated dataset.
@@ -35,11 +35,11 @@
          * @throws DiscreteFeaturesNotAllowed If the classifier does not allow discrete features and the dataset contains
          * discrete features, DiscreteFeaturesNotAllowed will be thrown.
          */
-        runExperiment(classifier, parameter, experimentPerformance, crossValidation, testSet) {
+        runExperiment(model, parameter, experimentPerformance, crossValidation, testSet) {
             for (let i = 0; i < this.K; i++) {
                 let trainSet = new InstanceList_1.InstanceList(crossValidation.getTrainFold(i));
-                classifier.train(trainSet, parameter);
-                experimentPerformance.add(classifier.test(testSet));
+                model.train(trainSet, parameter);
+                experimentPerformance.add(model.test(testSet));
             }
         }
         /**
@@ -53,7 +53,7 @@
             let instanceList = experiment.getDataSet().getInstanceList();
             let partition = new Partition_1.Partition(instanceList, 0.25, true);
             let crossValidation = new KFoldCrossValidation_1.KFoldCrossValidation(partition.get(1).getInstances(), this.K, experiment.getParameter().getSeed());
-            this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation, partition.get(0));
+            this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation, partition.get(0));
             return result;
         }
     }

@@ -3,6 +3,8 @@ import {Instance} from "../Instance/Instance";
 import {CompositeInstance} from "../Instance/CompositeInstance";
 import {Random} from "nlptoolkit-util/dist/Random";
 import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {InstanceList} from "../InstanceList/InstanceList";
+import {Parameter} from "../Parameter/Parameter";
 
 export class RandomModel extends Model{
 
@@ -34,15 +36,6 @@ export class RandomModel extends Model{
         this.classLabels = new Array<string>()
         for (let i = 0; i < size; i++){
             this.classLabels.push(input.readLine())
-        }
-    }
-
-    constructor(classLabelsOrFileName: Array<string> | string, seed?: number) {
-        super();
-        if (classLabelsOrFileName instanceof Array){
-            this.constructor1(classLabelsOrFileName, seed)
-        } else {
-            this.constructor2(classLabelsOrFileName)
         }
     }
 
@@ -80,6 +73,28 @@ export class RandomModel extends Model{
     }
 
     saveTxt(fileName: string){
+    }
+
+    /**
+     * Training algorithm for random classifier.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void {
+        let result = new Array<string>()
+        for (let s of trainSet.classDistribution().keys()){
+            result.push(s)
+        }
+        this.constructor1(result, parameters.getSeed());
+    }
+
+    /**
+     * Loads the random classifier model from an input file.
+     * @param fileName File name of the random classifier model.
+     */
+    loadModel(fileName: string): void{
+        this.constructor2(fileName)
     }
 
 }

@@ -33,7 +33,7 @@ export class StratifiedMxKFoldRunSeparateTest extends StratifiedKFoldRunSeparate
         for (let j = 0; j < this.M; j++) {
             let crossValidation = new StratifiedKFoldCrossValidation<Instance>(new Partition(partition.get(1)).getLists(),
                 this.K, experiment.getParameter().getSeed());
-            this.runExperiment(experiment.getClassifier(), experiment.getParameter(), result, crossValidation, partition.get(0));
+            this.runExperiment(experiment.getmodel(), experiment.getParameter(), result, crossValidation, partition.get(0));
         }
         return result;
     }

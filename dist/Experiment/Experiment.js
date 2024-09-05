@@ -13,12 +13,12 @@
     class Experiment {
         /**
          * Constructor for a specific machine learning experiment
-         * @param classifier Classifier used in the machine learning experiment
+         * @param model Model used in the machine learning experiment
          * @param parameter Parameter(s) of the classifier.
          * @param dataSet DataSet on which the classifier is run.
          */
-        constructor(classifier, parameter, dataSet) {
-            this.classifier = classifier;
+        constructor(model, parameter, dataSet) {
+            this.model = model;
             this.parameter = parameter;
             this.dataSet = dataSet;
         }
@@ -26,8 +26,8 @@
          * Accessor for the classifier attribute.
          * @return Classifier attribute.
          */
-        getClassifier() {
-            return this.classifier;
+        getmodel() {
+            return this.model;
         }
         /**
          * Accessor for the parameter attribute.
@@ -49,7 +49,7 @@
          * @return Experiment constructed
          */
         featureSelectedExperiment(featureSubSet) {
-            return new Experiment(this.classifier, this.parameter, this.dataSet.getSubSetOfFeatures(featureSubSet));
+            return new Experiment(this.model, this.parameter, this.dataSet.getSubSetOfFeatures(featureSubSet));
         }
     }
     exports.Experiment = Experiment;

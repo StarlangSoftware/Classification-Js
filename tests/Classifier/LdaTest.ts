@@ -2,11 +2,11 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {Lda} from "../../dist/Classifier/Lda";
+import {LdaModel} from "../../dist/Model/Parametric/LdaModel";
 
 describe('LdaTest', function() {
     describe('LdaTest', function() {
-        let lda = new Lda()
+        let lda = new LdaModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)

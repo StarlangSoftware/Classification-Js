@@ -2,11 +2,11 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {NaiveBayes} from "../../dist/Classifier/NaiveBayes";
+import {NaiveBayesModel} from "../../dist/Model/Parametric/NaiveBayesModel";
 
 describe('NaiveBayesTest', function() {
     describe('NaiveBayesTest', function() {
-        let naiveBayes = new NaiveBayes()
+        let naiveBayes = new NaiveBayesModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)

@@ -4,24 +4,22 @@ import {Instance} from "../../Instance/Instance";
 import {CompositeInstance} from "../../Instance/CompositeInstance";
 import {InstanceList} from "../../InstanceList/InstanceList";
 import {FileContents} from "nlptoolkit-util/dist/FileContents";
+import {Parameter} from "../../Parameter/Parameter";
+import {C45Parameter} from "../../Parameter/C45Parameter";
+import {Partition} from "../../InstanceList/Partition";
 
 export class DecisionTree extends ValidatedModel{
 
-    private readonly root: DecisionNode
+    protected root: DecisionNode
 
-    /**
-     * Constructor that sets root node of the decision tree.
-     *
-     * @param rootOrFileName DecisionNode type input or fileName
-     */
-    constructor(rootOrFileName: DecisionNode | string) {
+    constructor2(fileName: string) {
+        let contents = new FileContents(fileName)
+        this.root = new DecisionNode(contents)
+    }
+
+    constructor(root?: DecisionNode) {
         super();
-        if (rootOrFileName instanceof DecisionNode){
-            this.root = rootOrFileName
-        } else {
-            let contents = new FileContents(rootOrFileName)
-            this.root = new DecisionNode(contents)
-        }
+        this.root = root;
     }
 
     /**
@@ -82,4 +80,30 @@ export class DecisionTree extends ValidatedModel{
     prune(pruneSet: InstanceList){
         this.pruneNode(this.root, pruneSet)
     }
+
+    /**
+     * Training algorithm for C4.5 univariate decision tree classifier. 20 percent of the data are left aside for pruning
+     * 80 percent of the data is used for constructing the tree.
+     *
+     * @param trainSet   Training data given to the algorithm.
+     * @param parameters -
+     */
+    train(trainSet: InstanceList, parameters: Parameter): void {
+        if ((<C45Parameter> parameters).isPrune()) {
+            let partition = new Partition(trainSet, (<C45Parameter> parameters).getCrossValidationRatio(), true);
+            this.root = new DecisionNode(partition.get(1), undefined, undefined, false);
+            this.prune(partition.get(0));
+        } else {
+            this.root = new DecisionNode(trainSet, undefined, undefined, false);
+        }
+    }
+
+    /**
+     * Loads the decision tree model from an input file.
+     * @param fileName File name of the decision tree model.
+     */
+    loadModel(fileName: string): void{
+        this.constructor2(fileName)
+    }
+
 }

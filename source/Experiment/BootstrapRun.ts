@@ -29,8 +29,8 @@ export class BootstrapRun implements MultipleRun{
         for (let i = 0; i < this.numberOfBootstraps; i++) {
             let bootstrap = new Bootstrap<Instance>(experiment.getDataSet().getInstances(), i + experiment.getParameter().getSeed());
             let bootstrapSample = new InstanceList(bootstrap.getSample());
-            experiment.getClassifier().train(bootstrapSample, experiment.getParameter());
-            result.add(experiment.getClassifier().test(experiment.getDataSet().getInstanceList()));
+            experiment.getmodel().train(bootstrapSample, experiment.getParameter());
+            result.add(experiment.getmodel().test(experiment.getDataSet().getInstanceList()));
         }
         return result;
     }

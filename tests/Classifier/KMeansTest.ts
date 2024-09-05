@@ -2,12 +2,12 @@ import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
 import * as assert from "assert";
-import {KMeans} from "../../dist/Classifier/KMeans";
 import {KMeansParameter} from "../../dist/Parameter/KMeansParameter";
+import {KMeansModel} from "../../dist/Model/Parametric/KMeansModel";
 
 describe('KMeansTest', function() {
     describe('KMeansTest', function() {
-        let kMeans = new KMeans()
+        let kMeans = new KMeansModel()
         let kMeansParameter = new KMeansParameter(1)
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){

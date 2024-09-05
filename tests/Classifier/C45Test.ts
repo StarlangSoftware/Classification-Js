@@ -1,13 +1,13 @@
 import * as assert from "assert";
-import {C45} from "../../dist/Classifier/C45";
 import {C45Parameter} from "../../dist/Parameter/C45Parameter";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
+import {DecisionTree} from "../../dist/Model/DecisionTree/DecisionTree";
 
 describe('C45Test', function() {
     describe('C45Test', function() {
-        let c45 = new C45()
+        let c45 = new DecisionTree()
         let c45Parameter = new C45Parameter(1, true, 0.2)
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){

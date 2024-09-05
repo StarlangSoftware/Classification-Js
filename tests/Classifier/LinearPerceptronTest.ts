@@ -2,12 +2,12 @@ import * as assert from "assert";
 import {AttributeType} from "../../dist/Attribute/AttributeType";
 import {DataDefinition} from "../../dist/DataSet/DataDefinition";
 import {DataSet} from "../../dist/DataSet/DataSet";
-import {LinearPerceptron} from "../../dist/Classifier/LinearPerceptron";
 import {LinearPerceptronParameter} from "../../dist/Parameter/LinearPerceptronParameter";
+import {LinearPerceptronModel} from "../../dist/Model/NeuralNetwork/LinearPerceptronModel";
 
 describe('LinearPerceptronTest', function() {
     describe('LinearPerceptronTest', function() {
-        let linearPerceptron = new LinearPerceptron()
+        let linearPerceptron = new LinearPerceptronModel()
         let attributeTypes = new Array<AttributeType>();
         for (let i = 0; i < 4; i++){
             attributeTypes.push(AttributeType.CONTINUOUS)
