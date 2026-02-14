@@ -1,0 +1,111 @@
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./Attribute/Attribute", "./Attribute/AttributeType", "./Attribute/BinaryAttribute", "./Attribute/ContinuousAttribute", "./Attribute/DiscreteAttribute", "./Attribute/DiscreteIndexedAttribute", "./DataSet/DataDefinition", "./DataSet/DataSet", "./DistanceMetric/DistanceMetric", "./DistanceMetric/EuclidianDistance", "./DistanceMetric/MahalanobisDistance", "./Experiment/BootstrapRun", "./Experiment/Experiment", "./Experiment/KFoldRun", "./Experiment/KFoldRunSeparateTest", "./Experiment/MultipleRun", "./Experiment/MxKFoldRun", "./Experiment/MxKFoldRunSeparateTest", "./Experiment/SingleRun", "./Experiment/SingleRunWithK", "./Experiment/StratifiedKFoldRun", "./Experiment/StratifiedKFoldRunSeparateTest", "./Experiment/StratifiedMxKFoldRun", "./Experiment/StratifiedMxKFoldRunSeparateTest", "./Experiment/StratifiedSingleRunWithK", "./FeatureSelection/BackwardSelection", "./FeatureSelection/FeatureSubSet", "./FeatureSelection/FloatingSelection", "./FeatureSelection/ForwardSelection", "./FeatureSelection/SubSetSelection", "./Filter/DiscreteToContinuous", "./Filter/DiscreteToIndexed", "./Filter/FeatureFilter", "./Filter/LaryFilter", "./Filter/LaryToBinary", "./Filter/Normalize", "./Filter/Pca", "./Filter/TrainedFeatureFilter", "./Instance/CompositeInstance", "./Instance/Instance", "./InstanceList/InstanceList", "./InstanceList/InstanceListOfSameClass", "./InstanceList/Partition", "./Model/DecisionTree/DecisionCondition", "./Model/DecisionTree/DecisionNode", "./Model/DecisionTree/DecisionTree", "./Model/DecisionTree/DecisionStump", "./Model/Ensemble/BaggingModel", "./Model/NeuralNetwork/DeepNetworkModel", "./Model/DummyModel", "./Model/Parametric/GaussianModel", "./Model/Parametric/KMeansModel", "./Model/Parametric/LdaModel", "./Model/Parametric/QdaModel", "./Model/Parametric/NaiveBayesModel", "./Model/NonParametric/KnnInstance", "./Model/NonParametric/KnnModel", "./Model/NeuralNetwork/LinearPerceptronModel", "./Model/Model", "./Model/NeuralNetwork/MultiLayerPerceptronModel", "./Model/NeuralNetwork/NeuralNetworkModel", "./Model/RandomModel", "./Model/Ensemble/RandomForestModel", "./Model/Ensemble/TreeEnsembleModel", "./Model/ValidatedModel", "./Parameter/ActivationFunction", "./Parameter/BaggingParameter", "./Parameter/C45Parameter", "./Parameter/DeepNetworkParameter", "./Parameter/KMeansParameter", "./Parameter/KnnParameter", "./Parameter/LinearPerceptronParameter", "./Parameter/MultiLayerPerceptronParameter", "./Parameter/Parameter", "./Parameter/RandomForestParameter", "./Performance/ClassificationPerformance", "./Performance/ConfusionMatrix", "./Performance/DetailedClassificationPerformance", "./Performance/ExperimentPerformance", "./Performance/Performance", "./StatisticalTest/Combined5x2F", "./StatisticalTest/Combined5x2t", "./StatisticalTest/Paired5x2t", "./StatisticalTest/Pairedt", "./StatisticalTest/PairedTest", "./StatisticalTest/Sign", "./StatisticalTest/StatisticalTestResult", "./StatisticalTest/StatisticalTestResultType"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    __exportStar(require("./Attribute/Attribute"), exports);
+    __exportStar(require("./Attribute/AttributeType"), exports);
+    __exportStar(require("./Attribute/BinaryAttribute"), exports);
+    __exportStar(require("./Attribute/ContinuousAttribute"), exports);
+    __exportStar(require("./Attribute/DiscreteAttribute"), exports);
+    __exportStar(require("./Attribute/DiscreteIndexedAttribute"), exports);
+    __exportStar(require("./DataSet/DataDefinition"), exports);
+    __exportStar(require("./DataSet/DataSet"), exports);
+    __exportStar(require("./DistanceMetric/DistanceMetric"), exports);
+    __exportStar(require("./DistanceMetric/EuclidianDistance"), exports);
+    __exportStar(require("./DistanceMetric/MahalanobisDistance"), exports);
+    __exportStar(require("./Experiment/BootstrapRun"), exports);
+    __exportStar(require("./Experiment/Experiment"), exports);
+    __exportStar(require("./Experiment/KFoldRun"), exports);
+    __exportStar(require("./Experiment/KFoldRunSeparateTest"), exports);
+    __exportStar(require("./Experiment/MultipleRun"), exports);
+    __exportStar(require("./Experiment/MxKFoldRun"), exports);
+    __exportStar(require("./Experiment/MxKFoldRunSeparateTest"), exports);
+    __exportStar(require("./Experiment/SingleRun"), exports);
+    __exportStar(require("./Experiment/SingleRunWithK"), exports);
+    __exportStar(require("./Experiment/StratifiedKFoldRun"), exports);
+    __exportStar(require("./Experiment/StratifiedKFoldRunSeparateTest"), exports);
+    __exportStar(require("./Experiment/StratifiedMxKFoldRun"), exports);
+    __exportStar(require("./Experiment/StratifiedMxKFoldRunSeparateTest"), exports);
+    __exportStar(require("./Experiment/StratifiedSingleRunWithK"), exports);
+    __exportStar(require("./FeatureSelection/BackwardSelection"), exports);
+    __exportStar(require("./FeatureSelection/FeatureSubSet"), exports);
+    __exportStar(require("./FeatureSelection/FloatingSelection"), exports);
+    __exportStar(require("./FeatureSelection/ForwardSelection"), exports);
+    __exportStar(require("./FeatureSelection/SubSetSelection"), exports);
+    __exportStar(require("./Filter/DiscreteToContinuous"), exports);
+    __exportStar(require("./Filter/DiscreteToIndexed"), exports);
+    __exportStar(require("./Filter/FeatureFilter"), exports);
+    __exportStar(require("./Filter/LaryFilter"), exports);
+    __exportStar(require("./Filter/LaryToBinary"), exports);
+    __exportStar(require("./Filter/Normalize"), exports);
+    __exportStar(require("./Filter/Pca"), exports);
+    __exportStar(require("./Filter/TrainedFeatureFilter"), exports);
+    __exportStar(require("./Instance/CompositeInstance"), exports);
+    __exportStar(require("./Instance/Instance"), exports);
+    __exportStar(require("./InstanceList/InstanceList"), exports);
+    __exportStar(require("./InstanceList/InstanceListOfSameClass"), exports);
+    __exportStar(require("./InstanceList/Partition"), exports);
+    __exportStar(require("./Model/DecisionTree/DecisionCondition"), exports);
+    __exportStar(require("./Model/DecisionTree/DecisionNode"), exports);
+    __exportStar(require("./Model/DecisionTree/DecisionTree"), exports);
+    __exportStar(require("./Model/DecisionTree/DecisionStump"), exports);
+    __exportStar(require("./Model/Ensemble/BaggingModel"), exports);
+    __exportStar(require("./Model/NeuralNetwork/DeepNetworkModel"), exports);
+    __exportStar(require("./Model/DummyModel"), exports);
+    __exportStar(require("./Model/Parametric/GaussianModel"), exports);
+    __exportStar(require("./Model/Parametric/KMeansModel"), exports);
+    __exportStar(require("./Model/Parametric/LdaModel"), exports);
+    __exportStar(require("./Model/Parametric/QdaModel"), exports);
+    __exportStar(require("./Model/Parametric/NaiveBayesModel"), exports);
+    __exportStar(require("./Model/NonParametric/KnnInstance"), exports);
+    __exportStar(require("./Model/NonParametric/KnnModel"), exports);
+    __exportStar(require("./Model/NeuralNetwork/LinearPerceptronModel"), exports);
+    __exportStar(require("./Model/Model"), exports);
+    __exportStar(require("./Model/NeuralNetwork/MultiLayerPerceptronModel"), exports);
+    __exportStar(require("./Model/NeuralNetwork/NeuralNetworkModel"), exports);
+    __exportStar(require("./Model/RandomModel"), exports);
+    __exportStar(require("./Model/Ensemble/RandomForestModel"), exports);
+    __exportStar(require("./Model/Ensemble/TreeEnsembleModel"), exports);
+    __exportStar(require("./Model/ValidatedModel"), exports);
+    __exportStar(require("./Parameter/ActivationFunction"), exports);
+    __exportStar(require("./Parameter/BaggingParameter"), exports);
+    __exportStar(require("./Parameter/C45Parameter"), exports);
+    __exportStar(require("./Parameter/DeepNetworkParameter"), exports);
+    __exportStar(require("./Parameter/KMeansParameter"), exports);
+    __exportStar(require("./Parameter/KnnParameter"), exports);
+    __exportStar(require("./Parameter/LinearPerceptronParameter"), exports);
+    __exportStar(require("./Parameter/MultiLayerPerceptronParameter"), exports);
+    __exportStar(require("./Parameter/Parameter"), exports);
+    __exportStar(require("./Parameter/RandomForestParameter"), exports);
+    __exportStar(require("./Performance/ClassificationPerformance"), exports);
+    __exportStar(require("./Performance/ConfusionMatrix"), exports);
+    __exportStar(require("./Performance/DetailedClassificationPerformance"), exports);
+    __exportStar(require("./Performance/ExperimentPerformance"), exports);
+    __exportStar(require("./Performance/Performance"), exports);
+    __exportStar(require("./StatisticalTest/Combined5x2F"), exports);
+    __exportStar(require("./StatisticalTest/Combined5x2t"), exports);
+    __exportStar(require("./StatisticalTest/Paired5x2t"), exports);
+    __exportStar(require("./StatisticalTest/Pairedt"), exports);
+    __exportStar(require("./StatisticalTest/PairedTest"), exports);
+    __exportStar(require("./StatisticalTest/Sign"), exports);
+    __exportStar(require("./StatisticalTest/StatisticalTestResult"), exports);
+    __exportStar(require("./StatisticalTest/StatisticalTestResultType"), exports);
+});
+//# sourceMappingURL=index.js.map
