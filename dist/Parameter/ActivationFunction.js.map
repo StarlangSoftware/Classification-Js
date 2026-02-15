@@ -1,1 +1,1 @@
-{"version":3,"file":"ActivationFunction.js","sourceRoot":"","sources":["../../source/Parameter/ActivationFunction.ts"],"names":[],"mappings":";;;;;;;;;;;;IAAA,IAAY,kBAEX;IAFD,WAAY,kBAAkB;QAC1B,iEAAO,CAAA;QAAE,2DAAI,CAAA;QAAE,2DAAI,CAAA;IACvB,CAAC,EAFW,kBAAkB,GAAlB,0BAAkB,KAAlB,0BAAkB,QAE7B"}
+{"version":3,"file":"ActivationFunction.js","sourceRoot":"","sources":["../../source/Parameter/ActivationFunction.ts"],"names":[],"mappings":";;;AAAA,IAAY,kBAEX;AAFD,WAAY,kBAAkB;IAC1B,iEAAO,CAAA;IAAE,2DAAI,CAAA;IAAE,2DAAI,CAAA;AACvB,CAAC,EAFW,kBAAkB,kCAAlB,kBAAkB,QAE7B"}
